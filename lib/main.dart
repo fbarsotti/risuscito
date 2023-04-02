@@ -29,15 +29,8 @@ void main() async {
             return MaterialApp(
               title: 'Studio Lab',
               navigatorKey: navigatorKey,
-              supportedLocales: [
-                Locale('en', 'US'),
-                Locale('it', 'IT'),
-              ],
-              localizationsDelegates: [
-                AppLocalizations.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-              ],
+              supportedLocales: RSApp.supportedLocales,
+              localizationsDelegates: RSApp.localizationsDelegates,
               locale: languageState.locale,
               theme: ThemeData(
                 fontFamily: 'Montserrat',

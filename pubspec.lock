@@ -124,12 +124,11 @@ packages:
   f_logs:
     dependency: "direct main"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: f5def63be33b6d9e5458db256ec31a7c44dccac8
-      url: "https://github.com/Saerlig-Software-Development/Flogs"
-    source: git
-    version: "1.4.1+1"
+      name: f_logs
+      sha256: "8ccf733949dcc934d7c7425e94a973cee71af1d7675b94dd1fbd6cbe707a3ce7"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.1"
   fake_async:
     dependency: transitive
     description:
