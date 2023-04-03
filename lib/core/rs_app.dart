@@ -65,6 +65,15 @@ class RSApp extends StatelessWidget {
     );
   }
 
+  static TextStyle get defaultTextThemeData {
+    return TextStyle(
+      color: CupertinoDynamicColor.withBrightness(
+        color: RSColors.text,
+        darkColor: RSColors.darkText,
+      ),
+    );
+  }
+
   static Future<void> init() async {
     // E' necessario aggiungerlo prima della dependency injection
     WidgetsFlutterBinding.ensureInitialized();

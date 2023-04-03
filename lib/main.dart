@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,32 +18,49 @@ void main() async {
 
   Bloc.observer = LoggerBlocDelegate();
 
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent,
-    statusBarIconBrightness: Brightness.dark,
-  ));
+  // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+  //   statusBarColor: Colors.transparent,
+  //   statusBarIconBrightness: Brightness.dark,
+  // ));
 
   runZonedGuarded(() {
     runApp(
       RSApp(
         child: BlocBuilder<LanguageBloc, LanguageState>(
           builder: (context, languageState) {
-            return MaterialApp(
-              title: 'Studio Lab',
+            return CupertinoApp(
+              title: 'Risuscitò',
               navigatorKey: navigatorKey,
               supportedLocales: RSApp.supportedLocales,
               localizationsDelegates: RSApp.localizationsDelegates,
               locale: languageState.locale,
               debugShowCheckedModeBanner: false,
-              theme: ThemeData(
-                fontFamily: 'Montserrat',
-                scaffoldBackgroundColor: Color(0xffffffff),
+              theme: CupertinoThemeData(
+                // barBackgroundColor: RSColors.bgColor,
+                // scaffoldBackgroundColor: RSColors.bgColor,
                 primaryColor: RSColors.primary,
-                primarySwatch: Colors.teal,
-                visualDensity: VisualDensity.adaptivePlatformDensity,
+                textTheme: CupertinoTextThemeData(
+                  textStyle: RSApp.defaultTextThemeData,
+                ),
               ),
               home: HomePage(),
             );
+            // return MaterialApp(
+            //   title: 'Studio Lab',
+            //   navigatorKey: navigatorKey,
+            //   supportedLocales: RSApp.supportedLocales,
+            //   localizationsDelegates: RSApp.localizationsDelegates,
+            //   locale: languageState.locale,
+            //   debugShowCheckedModeBanner: false,
+            //   theme: ThemeData(
+            //     fontFamily: 'Montserrat',
+            //     scaffoldBackgroundColor: Color(0xffffffff),
+            //     primaryColor: RSColors.primary,
+            //     primarySwatch: Colors.teal,
+            //     visualDensity: VisualDensity.adaptivePlatformDensity,
+            //   ),
+            //   home: HomePage(),
+            // );
           },
         ),
       ),

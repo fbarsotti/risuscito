@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 /// Class that contains all the main appc olors
@@ -11,7 +12,14 @@ class RSColors {
   static Color get lightText => const Color(0xffACACAC);
   static Color get facebookColor => const Color(0xff3A569B);
   static Color get errorColor => const Color(0xffE8431F);
-  static Color get bgColor => const Color(0xfff5f8fa);
+  static Color get bgColor => CupertinoColors.extraLightBackgroundGray;
+
+  static Color get text => const Color(0xff000000);
+  static Color get darkText => const Color(0xffffffff);
+
+  static Color get whiteSongsColor => const Color(0xffffffff);
+  static Color get blueSongsColor => Color(0xff7FB3D5);
+  static Color get greenSongsColor => const Color(0xff7DCEA0);
 
   static Color get greyBlue => const Color(0xffF5F4F8);
   static Color get lightPurple => const Color(0xff97AFF3);
