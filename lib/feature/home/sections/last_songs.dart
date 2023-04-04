@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
+import 'package:risuscito/core/presentation/customization/rs_colors.dart';
 
 class LastSongs extends StatelessWidget {
   const LastSongs({Key? key}) : super(key: key);
@@ -10,14 +12,14 @@ class LastSongs extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
-          Text('Ultimi canti'),
+          Text(AppLocalizations.of(context)!.translate('last_songs')!),
           CupertinoButton(
             onPressed: () {},
             child: Container(
               height: 100,
               width: MediaQuery.of(context).size.width,
               child: Card(
-                color: Colors.red,
+                color: RSColors.primary,
               ),
             ),
           )

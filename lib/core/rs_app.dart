@@ -4,12 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:provider/provider.dart';
+import 'package:risuscito/core/presentation/customization/theme/rs_theme_provider.dart';
+import '../feature/home/home_page.dart';
 import 'core_container.dart';
+import 'data/remote/rs_dio_client.dart';
 import 'infrastructure/localization/app_localizations.dart';
 import 'infrastructure/localization/bloc/language_bloc.dart';
 import 'presentation/customization/rs_colors.dart';
 
-class RSApp extends StatelessWidget {
+class RSApp extends StatefulWidget {
   final Widget child;
 
   const RSApp({
@@ -18,17 +22,7 @@ class RSApp extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        ...CoreContainer.getBlocProviders(),
-        BlocProvider<LanguageBloc>(
-          create: (_) => LanguageBloc()..add(LanguageLoadStarted()),
-        ),
-      ],
-      child: child,
-    );
-  }
+  State<RSApp> createState() => _RSAppState();
 
   static List<Locale> get supportedLocales {
     return [
@@ -91,5 +85,78 @@ class RSApp extends StatelessWidget {
       systemNavigationBarIconBrightness: Brightness.dark,
       statusBarBrightness: Brightness.dark,
     ));
+  }
+}
+
+class _RSAppState extends State<RSApp> {
+  DarkThemeProvider themeChangeProvider = new DarkThemeProvider();
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentAppTheme();
+  }
+
+  void getCurrentAppTheme() async {
+    themeChangeProvider.darkTheme =
+        await themeChangeProvider.darkThemePreference.getTheme();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        ...CoreContainer.getBlocProviders(),
+        BlocProvider<LanguageBloc>(
+          create: (_) => LanguageBloc()..add(LanguageLoadStarted()),
+        ),
+      ],
+      child: ChangeNotifierProvider(
+        create: (context) => themeChangeProvider,
+        child: Consumer<DarkThemeProvider>(
+          builder: (context, value, child) {
+            return BlocBuilder<LanguageBloc, LanguageState>(
+              builder: (context, languageState) {
+                return CupertinoApp(
+                  title: 'Risuscitò',
+                  navigatorKey: navigatorKey,
+                  supportedLocales: RSApp.supportedLocales,
+                  localizationsDelegates: RSApp.localizationsDelegates,
+                  locale: languageState.locale,
+                  debugShowCheckedModeBanner: false,
+                  theme: CupertinoThemeData(
+                    brightness:
+                        value.darkTheme ? Brightness.dark : Brightness.light,
+                    // barBackgroundColor: RSColors.bgColor,
+                    // scaffoldBackgroundColor: RSColors.bgColor,
+                    primaryColor: RSColors.primary,
+                    textTheme: CupertinoTextThemeData(
+                      textStyle: RSApp.defaultTextThemeData,
+                    ),
+                  ),
+                  home: widget.child,
+                );
+                // return MaterialApp(
+                //   title: 'Studio Lab',
+                //   navigatorKey: navigatorKey,
+                //   supportedLocales: RSApp.supportedLocales,
+                //   localizationsDelegates: RSApp.localizationsDelegates,
+                //   locale: languageState.locale,
+                //   debugShowCheckedModeBanner: false,
+                //   theme: ThemeData(
+                //     fontFamily: 'Montserrat',
+                //     scaffoldBackgroundColor: Color(0xffffffff),
+                //     primaryColor: RSColors.primary,
+                //     primarySwatch: Colors.teal,
+                //     visualDensity: VisualDensity.adaptivePlatformDensity,
+                //   ),
+                //   home: HomePage(),
+                // );
+              },
+            );
+          },
+        ),
+      ),
+    );
   }
 }

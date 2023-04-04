@@ -1,8 +1,9 @@
 enum Language { it, en }
 
-class SLLanguage {
+class RSLanguage {
+  final String code;
   final String? name;
   final Language language;
 
-  SLLanguage(this.name, this.language);
+  RSLanguage(this.code, this.name, this.language);
 }

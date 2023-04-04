@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class RSColors {
   RSColors._();
 
-  static Color get primary => const Color(0xff5EA034);
+  static Color get primary => const Color(0xff964946); //0xff964946
   static Color get extraLightText => const Color(0xffD8D8D8);
   static Color get lightText => const Color(0xffACACAC);
   static Color get facebookColor => const Color(0xff3A569B);

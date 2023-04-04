@@ -7,24 +7,24 @@ import 'package:risuscito/core/data/remote/rs_dio_client.dart';
 
 import 'infrastructure/network_info.dart';
 
-final sl = GetIt.instance;
+final rs = GetIt.instance;
 
 class CoreContainer {
   static Future<void> init() async {
     // wait for all modules
 
-    sl.registerLazySingleton<Connectivity>(
+    rs.registerLazySingleton<Connectivity>(
       () => Connectivity(),
     );
 
-    sl.registerLazySingleton<NetworkInfo>(
-      () => NetworkInfoImpl(connectivity: sl()),
+    rs.registerLazySingleton<NetworkInfo>(
+      () => NetworkInfoImpl(connectivity: rs()),
     );
 
     final sharedPreferences = await SharedPreferences.getInstance();
-    sl.registerLazySingleton(() => sharedPreferences);
+    rs.registerLazySingleton(() => sharedPreferences);
 
-    sl.registerLazySingleton<Dio>(RSDioClient.createDio);
+    rs.registerLazySingleton<Dio>(RSDioClient.createDio);
   }
 
   static List<BlocProvider> getBlocProviders() {

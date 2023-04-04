@@ -1,3 +1,11 @@
 {
-  "home_title": "Home"
+  "it": "Italian",
+  "en": "English",
+  "home_title": "Home",
+  "settings": "Settings",
+  "generals": "Generals",
+  "dark_theme": "Dark theme",
+  "language": "Language",
+  "choose_a_language": "Choose a language",
+  "last_songs": "Last songs"
 }
