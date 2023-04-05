@@ -9,4 +9,4 @@ Project structure:
   lib
   ├── core
   ├── feature
-</prexs>
+</pre>
