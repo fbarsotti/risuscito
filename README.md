@@ -1,6 +1,6 @@
-# risuscito
+# base_cupertino_app
 
-A new Flutter application for the Neocatechumenal Way.
+A new Flutter application with dark theme and language selection.
 
 ## Getting Started
 
