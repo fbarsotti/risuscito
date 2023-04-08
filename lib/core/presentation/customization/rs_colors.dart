@@ -12,7 +12,17 @@ class RSColors {
   static Color get lightText => const Color(0xffACACAC);
   static Color get facebookColor => const Color(0xff3A569B);
   static Color get errorColor => const Color(0xffE8431F);
-  static Color get bgColor => CupertinoColors.extraLightBackgroundGray;
+
+  static Color get bgColor => CupertinoDynamicColor.withBrightness(
+        color: CupertinoColors.extraLightBackgroundGray, // Color(0xffF0F3F4)
+        darkColor: CupertinoColors.black,
+      );
+  static Color get bgLightColor => CupertinoColors
+      .extraLightBackgroundGray; // CupertinoColors.extraLightBackgroundGray
+  static Color get bgDarkColor => CupertinoColors.black;
+
+  static Color get cardColorLight => CupertinoColors.white;
+  static Color get cardColorDark => CupertinoColors.darkBackgroundGray;
 
   static Color get text => const Color(0xff000000);
   static Color get darkText => const Color(0xffffffff);

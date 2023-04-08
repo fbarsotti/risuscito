@@ -9,8 +9,4 @@ Project structure:
   lib
   ├── core
   ├── feature
-<<<<<<< HEAD
 </pre>
-=======
-</prexs>
->>>>>>> parent of 9db8254 (feat(readme): update on readme)

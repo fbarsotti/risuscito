@@ -68,6 +68,13 @@ class RSApp extends StatefulWidget {
     );
   }
 
+  static TextStyle headerTextStyle(bool darkTheme) {
+    return TextStyle(
+      color: darkTheme ? RSColors.darkText : RSColors.text,
+      fontSize: 24,
+    );
+  }
+
   static Future<void> init() async {
     // E' necessario aggiungerlo prima della dependency injection
     WidgetsFlutterBinding.ensureInitialized();
@@ -125,6 +132,7 @@ class _RSAppState extends State<RSApp> {
                   locale: languageState.locale,
                   debugShowCheckedModeBanner: false,
                   theme: CupertinoThemeData(
+                    scaffoldBackgroundColor: RSColors.bgColor,
                     brightness:
                         value.darkTheme ? Brightness.dark : Brightness.light,
                     // barBackgroundColor: RSColors.bgColor,

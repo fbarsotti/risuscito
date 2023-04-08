@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
 import 'package:risuscito/core/infrastructure/localization/bloc/language_bloc.dart';
 import 'package:risuscito/core/infrastructure/localization/languages.dart';
+import 'package:risuscito/core/presentation/customization/rs_colors.dart';
 
 class SettingsLanguage extends StatefulWidget {
   const SettingsLanguage({Key? key}) : super(key: key);
@@ -36,6 +37,12 @@ class _SettingsLanguageState extends State<SettingsLanguage> {
         (index) {
           final language = _languages[index];
           return CupertinoListTile(
+            leading: Text(
+              language.code,
+              style: TextStyle(
+                color: RSColors.primary,
+              ),
+            ),
             title:
                 Text(AppLocalizations.of(context)!.translate(language.code)!),
             trailing: code == language.code

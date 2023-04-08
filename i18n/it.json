@@ -1,11 +1,14 @@
 {
     "it": "Italiano",
     "en": "Inglese",
-    "home_title": "Home",
+    "home": "Home",
     "settings": "Impostazioni",
     "generals": "Generali",
     "dark_theme": "Tema scuro",
     "language": "Lingua",
     "choose_a_language": "Scegli una lingua",
-    "last_songs": "Ultimi canti"
+    "seen_recently": "Visti di recente",
+    "index": "Indice",
+    "search": "Cerca",
+    "quick_actions": "Azioni rapide"
 }
