@@ -36,6 +36,7 @@ dependencies:
       url: https://github.com/followthemoney1/modal_bottom_sheet.git
       ref: main
       path: modal_bottom_sheet
+  xml: ^6.2.2
 
 dev_dependencies:
   flutter_test:

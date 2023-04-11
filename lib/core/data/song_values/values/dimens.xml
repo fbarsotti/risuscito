@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="activity_min_margin">5dip</dimen>
+    <dimen name="activity_min_top_margin">10dip</dimen>
+    <dimen name="myListPreferredItemMargin">16dip</dimen>
+    <dimen name="myListPreferredTextMarginStart">72dip</dimen>
+    <dimen name="myListPreferredItemHeightMedium">56dip</dimen>
+    <dimen name="max_bottomsheet_width">380dp</dimen>
+
+    <dimen name="button_playbar_padding">16dp</dimen>
+    <dimen name="fab_margin_coord">16dp</dimen>
+    <dimen name="fab_margin_frame">16dp</dimen>
+
+    <dimen name="text_min_margin">20dip</dimen>
+
+    <dimen name="custom_peek_height">335dp</dimen>
+
+</resources>

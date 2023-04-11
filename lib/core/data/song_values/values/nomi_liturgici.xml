@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tempo_avvento">AVVENTO</string>
+    <string name="tempo_natale">NATALE</string>
+    <string name="tempo_quaresima">QUARESIMA</string>
+    <string name="tempo_pasqua">PASQUA</string>
+    <string name="canti_pentecoste">PENTECOSTE</string>
+    <string name="canti_vergine">CANTI ALLA VERGINE</string>
+    <string name="lodi_vespri">LODI - VESPRI</string>
+    <string name="canti_ingresso">CANTI D\'INGRESSO</string>
+    <string name="canti_pace">PACE - PRESENTAZIONE DELLE OFFERTE</string>
+    <string name="canti_pane">FRAZIONE DEL PANE</string>
+    <string name="canti_fine">CANTO FINALE</string>
+    <string name="canti_comunione">COMUNIONE</string>
+    <string name="canti_bambini">CANTI PER I BAMBINI</string>
+</resources>

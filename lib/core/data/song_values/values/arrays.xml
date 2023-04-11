@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="pref_default_index_entries">
+        <item>@string/letter_order_text</item>
+        <item>@string/page_order_text</item>
+        <item>@string/indice_liturgico_index</item>
+        <item>@string/salmi_musica_index</item>
+    </string-array>
+
+    <string-array name="pref_default_index_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="pref_default_search_entries">
+        <item>@string/fast_search_title</item>
+        <item>@string/advanced_search_title</item>
+    </string-array>
+
+    <string-array name="pref_default_search_values">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
+    <string-array name="save_location_sd_entries">
+        <item>@string/private_memory</item>
+        <item>@string/public_memory</item>
+    </string-array>
+    <string-array name="save_location_nosd_entries">
+        <item>@string/private_memory</item>
+    </string-array>
+
+    <string-array name="save_location_sd_values">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
+    <string-array name="save_location_nosd_values">
+        <item>0</item>
+    </string-array>
+
+    <string-array name="pref_languages_entries">
+        <item>@string/lang_it</item>
+        <item>@string/lang_en</item>
+        <item>@string/lang_ep</item>
+        <item>@string/lang_pl</item>
+        <item>@string/lang_tr</item>
+        <item>@string/lang_uk</item>
+    </string-array>
+
+    <string-array name="pref_languages_values">
+        <item>@string/lang_it_value</item>
+        <item>@string/lang_en_value</item>
+        <item>@string/lang_ep_value</item>
+        <item>@string/lang_pl_value</item>
+        <item>@string/lang_tr_value</item>
+        <item>@string/lang_uk_value</item>
+    </string-array>
+
+<!--    <integer-array name="primary_colors_list">-->
+<!--        <item>@color/md_amber_500</item>-->
+<!--        <item>@color/md_blue_500</item>-->
+<!--        <item>@color/md_brown_500</item>-->
+<!--        <item>@color/md_cyan_500</item>-->
+<!--        <item>@color/md_green_500</item>-->
+<!--        <item>@color/md_grey_500</item>-->
+<!--        <item>@color/md_indigo_500</item>-->
+<!--        <item>@color/md_lime_500</item>-->
+<!--        <item>@color/md_orange_500</item>-->
+<!--        <item>@color/md_pink_500</item>-->
+<!--        <item>@color/md_purple_500</item>-->
+<!--        <item>@color/md_teal_500</item>-->
+<!--        <item>@color/md_red_500</item>-->
+<!--        <item>@color/md_deep_orange_500</item>-->
+<!--        <item>@color/md_deep_purple_500</item>-->
+<!--        <item>@color/md_light_blue_500</item>-->
+<!--        <item>@color/md_blue_grey_500</item>-->
+<!--        <item>@color/md_light_green_500</item>-->
+<!--        <item>@color/md_yellow_500</item>-->
+<!--    </integer-array>-->
+
+<!--    <integer-array name="accent_colors_list">-->
+<!--        <item>@color/md_amber_a200</item>-->
+<!--        <item>@color/md_blue_a200</item>-->
+<!--        <item>@color/md_cyan_a200</item>-->
+<!--        <item>@color/md_green_a200</item>-->
+<!--        <item>@color/md_indigo_a200</item>-->
+<!--        <item>@color/md_lime_a200</item>-->
+<!--        <item>@color/md_orange_a200</item>-->
+<!--        <item>@color/md_pink_a200</item>-->
+<!--        <item>@color/md_purple_a200</item>-->
+<!--        <item>@color/md_teal_a200</item>-->
+<!--        <item>@color/md_red_a200</item>-->
+<!--        <item>@color/md_deep_orange_a200</item>-->
+<!--        <item>@color/md_deep_purple_a200</item>-->
+<!--        <item>@color/md_light_blue_a200</item>-->
+<!--        <item>@color/md_light_green_a200</item>-->
+<!--        <item>@color/md_yellow_a200</item>-->
+<!--    </integer-array>-->
+
+    <string-array name="themeListArray">
+        <item>@string/night_mode_light</item>
+        <item>@string/night_mode_dark</item>
+        <item>@string/night_mode_auto_battery</item>
+    </string-array>
+
+    <string-array name="themeEntryArray">
+        <item>light</item>
+        <item>dark</item>
+        <item>default</item>
+    </string-array>
+
+    <string-array name="passaggi_entries">
+        <item>@string/passaggio_none</item>
+        <item>@string/catechesi_iniziali</item>
+        <item>@string/scrutinio_1</item>
+        <item>@string/shema</item>
+        <item>@string/scrutinio_2</item>
+        <item>@string/iniziazione_preghiera</item>
+        <item>@string/traditio</item>
+        <item>@string/ritraditio</item>
+        <item>@string/redditio</item>
+        <item>@string/padre_nostro_1</item>
+        <item>@string/padre_nostro_2</item>
+        <item>@string/padre_nostro_3</item>
+        <item>@string/elezione_1</item>
+        <item>@string/elezione_2</item>
+        <item>@string/elezione_3</item>
+    </string-array>
+
+    <integer-array name="passaggi_values">
+        <item>-1</item>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+    </integer-array>
+
+</resources>
