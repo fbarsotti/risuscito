@@ -14,11 +14,11 @@ class RSColors {
   static Color get errorColor => const Color(0xffE8431F);
 
   static Color get bgColor => CupertinoDynamicColor.withBrightness(
-        color: CupertinoColors.extraLightBackgroundGray, // Color(0xffF0F3F4)
+        color: Color(0xffF0F3F4), // Color(0xffF0F3F4)
         darkColor: CupertinoColors.black,
       );
-  static Color get bgLightColor => CupertinoColors
-      .extraLightBackgroundGray; // CupertinoColors.extraLightBackgroundGray
+  static Color get bgLightColor =>
+      Color(0xffF0F3F4); // CupertinoColors.extraLightBackgroundGray
   static Color get bgDarkColor => CupertinoColors.black;
 
   static Color get cardColorLight => CupertinoColors.white;
@@ -37,6 +37,7 @@ class RSColors {
   static Color get lightOrange => const Color(0xffF28E1A);
   static Color get darkGrey => const Color(0xff484A54);
 
+  static Color get white => Colors.white;
   static Color get blue => Colors.blue;
   static Color get orange => Colors.orange;
   static Color get red => Colors.red;

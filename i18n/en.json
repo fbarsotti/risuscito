@@ -10,5 +10,8 @@
   "seen_recently": "Seen recently",
   "index": "Index",
   "search": "Search",
-  "quick_actions": "Quick actions"
+  "quick_actions": "Quick actions",
+  "welcome_morning": "Good morning",
+  "welcome_afternoon": "Goog afternoon",
+  "welcome_evening": "Good evening"
 }

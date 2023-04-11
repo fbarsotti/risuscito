@@ -37,28 +37,24 @@ class QuickActions extends StatelessWidget {
               ),
               QuickActionButton(
                 text: 'Preferiti',
-                icon: CupertinoIcons.star_fill,
+                icon: CupertinoIcons.text_badge_star,
                 iconColor: CupertinoColors.systemYellow,
-                bgColor: Color(0xffF9E79F),
               ),
               QuickActionButton(
                 text: 'Liste personalizzate',
-                icon: CupertinoIcons.square_list_fill,
+                icon: CupertinoIcons.rectangle_stack_badge_person_crop,
                 iconColor: CupertinoColors.systemRed,
-                bgColor: Color(0xffF1948A),
               ),
               QuickActionButton(
                 text: 'Cronologia',
                 icon: CupertinoIcons.refresh_circled,
                 iconColor: CupertinoColors.systemBlue,
-                bgColor: Color(0xff7FB3D5),
               ),
-              QuickActionButton(
-                text: 'Preferiti',
-                icon: CupertinoIcons.star_fill,
-                iconColor: CupertinoColors.systemYellow,
-                bgColor: Color(0xffF9E79F),
-              ),
+              // QuickActionButton(
+              //   text: 'Impostazioni',
+              //   icon: CupertinoIcons.settings,
+              //   iconColor: CupertinoColors.inactiveGray,
+              // ),
             ],
           ),
         )

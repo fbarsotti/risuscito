@@ -11,13 +11,11 @@ class QuickActionButton extends StatelessWidget {
   final String text;
   final IconData icon;
   final Color iconColor;
-  final Color bgColor;
 
   const QuickActionButton({
     required this.text,
     required this.icon,
     required this.iconColor,
-    required this.bgColor,
     Key? key,
   }) : super(key: key);
 
@@ -39,17 +37,19 @@ class QuickActionButton extends StatelessWidget {
               ? RSColors.cardColorDark
               : RSColors.cardColorLight,
           boxShadow: [
-            !themeChange.darkTheme
-                ? BoxShadow(
-                    color: CupertinoColors.inactiveGray.withOpacity(0.5),
-                    blurRadius: 24,
-                    offset: Offset(8, 20), // Shadow position
-                  )
-                : BoxShadow(),
+            // !themeChange.darkTheme
+            // CupertinoColors.inactiveGray
+            BoxShadow(
+              color: themeChange.darkTheme
+                  ? CupertinoColors.darkBackgroundGray.withOpacity(0.8)
+                  : CupertinoColors.inactiveGray.withOpacity(0.4),
+              blurRadius: 24,
+              offset: Offset(8, 20), // Shadow position
+            )
+            // : BoxShadow(),
           ],
         ),
         width: 140,
-        height: 160,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [

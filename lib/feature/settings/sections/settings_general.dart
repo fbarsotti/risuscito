@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
+import 'package:risuscito/core/presentation/customization/rs_colors.dart';
 import 'package:risuscito/feature/settings/sections/settings_language.dart';
 
 import '../../../core/presentation/customization/theme/rs_theme_provider.dart';
@@ -29,6 +30,8 @@ class _SettingsGeneralState extends State<SettingsGeneral> {
     final themeChange = Provider.of<DarkThemeProvider>(context);
     return CupertinoListSection.insetGrouped(
       header: Text(AppLocalizations.of(context)!.translate("generals")!),
+      backgroundColor:
+          themeChange.darkTheme ? RSColors.bgDarkColor : RSColors.bgColor,
       children: [
         CupertinoListTile.notched(
           title: Text(AppLocalizations.of(context)!.translate("dark_theme")!),

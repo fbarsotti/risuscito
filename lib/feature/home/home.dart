@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
 import 'package:risuscito/feature/home/home_page.dart';
+import 'package:risuscito/feature/index/index_page.dart';
 import 'package:risuscito/feature/settings/settings_page.dart';
 
 import '../search/search_page.dart';
@@ -17,10 +18,9 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   List<Widget> _pages = [
-    HomePage(),
-    SettingsPage(),
     SearchPage(),
-    SettingsPage(),
+    HomePage(),
+    IndexPage(),
   ];
 
   @override
@@ -29,20 +29,16 @@ class _HomeState extends State<Home> {
       tabBar: CupertinoTabBar(
         items: [
           BottomNavigationBarItem(
+            icon: Icon(CupertinoIcons.search),
+            label: AppLocalizations.of(context)!.translate('search'),
+          ),
+          BottomNavigationBarItem(
             icon: Icon(CupertinoIcons.home),
             label: AppLocalizations.of(context)!.translate('home')!,
           ),
           BottomNavigationBarItem(
             icon: Icon(CupertinoIcons.list_bullet),
             label: AppLocalizations.of(context)!.translate('index'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.search),
-            label: AppLocalizations.of(context)!.translate('search'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.circle_grid_3x3_fill),
-            label: 'Keypad',
           ),
         ],
       ),

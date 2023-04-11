@@ -10,5 +10,9 @@
     "seen_recently": "Visti di recente",
     "index": "Indice",
     "search": "Cerca",
-    "quick_actions": "Azioni rapide"
+    "quick_actions": "Azioni rapide",
+    "welcome_morning": "Buongiorno",
+    "welcome_afternoon": "Buon pomeriggio",
+    "welcome_evening": "Buonasera"
+    
 }
