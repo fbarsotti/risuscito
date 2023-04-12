@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:package_info/package_info.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../infrastructure/flavors.dart';
 import '../presentation/device_info_dialog.dart';
@@ -60,5 +61,11 @@ Android version: ${device.version.release}
 Android SDK: ${device.version.sdkInt}
 App version:, ${packageInfo.version}
 Package name: ${packageInfo.packageName}""";
+  }
+
+  Future<String> get _localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+
+    return directory.path;
   }
 }

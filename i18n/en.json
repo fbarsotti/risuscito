@@ -13,5 +13,11 @@
   "quick_actions": "Quick actions",
   "welcome_morning": "Good morning",
   "welcome_afternoon": "Goog afternoon",
-  "welcome_evening": "Good evening"
+  "welcome_evening": "Good evening",
+  "personalized_lists": "Personalized lists",
+  "favourites": "Favourites",
+  "history": "History",
+  "songs": "Songs",
+  "browse_lists": "Browse through the lists of songs",
+  "alphabetical_index": "Alphabetical Index"
 }

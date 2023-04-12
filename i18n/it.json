@@ -13,6 +13,11 @@
     "quick_actions": "Azioni rapide",
     "welcome_morning": "Buongiorno",
     "welcome_afternoon": "Buon pomeriggio",
-    "welcome_evening": "Buonasera"
+    "welcome_evening": "Buonasera",
+    "personalized_lists": "Liste personalizzate",
+    "favourites": "Preferiti",
+    "history": "Cronologia",
+    "browse_lists": "Naviga tra le liste dei canti",
+    "alphabetical_index": "Indice alfabetico"
     
 }
