@@ -1,11 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
 import 'package:risuscito/feature/home/home_page.dart';
-import 'package:risuscito/feature/index/index_page.dart';
-import 'package:risuscito/feature/settings/settings_page.dart';
+import 'package:risuscito/feature/index/indexes_page.dart';
 
 import '../search/search_page.dart';
 
@@ -20,7 +16,7 @@ class _HomeState extends State<Home> {
   List<Widget> _pages = [
     SearchPage(),
     HomePage(),
-    IndexPage(),
+    IndexesPage(),
   ];
 
   @override

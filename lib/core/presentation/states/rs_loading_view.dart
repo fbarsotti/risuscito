@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 class RSLoadingView extends StatelessWidget {
   const RSLoadingView({Key? key}) : super(key: key);
@@ -6,7 +6,7 @@ class RSLoadingView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: CircularProgressIndicator(),
+      child: CupertinoActivityIndicator(),
     );
   }
 }

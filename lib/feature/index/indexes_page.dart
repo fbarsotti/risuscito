@@ -2,22 +2,24 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
+import 'package:risuscito/feature/index/alphabetical/presentation/bloc/alphabetical_index_bloc.dart';
 
 import '../../core/presentation/customization/rs_colors.dart';
 import '../../core/presentation/customization/theme/rs_theme_provider.dart';
 import '../../core/utils/rs_dates_utils.dart';
 import 'alphabetical/presentation/alphabetical_index_page.dart';
 
-class IndexPage extends StatefulWidget {
-  const IndexPage({Key? key}) : super(key: key);
+class IndexesPage extends StatefulWidget {
+  const IndexesPage({Key? key}) : super(key: key);
 
   @override
-  State<IndexPage> createState() => _IndexPageState();
+  State<IndexesPage> createState() => _IndexesPageState();
 }
 
-class _IndexPageState extends State<IndexPage> {
+class _IndexesPageState extends State<IndexesPage> {
   @override
   Widget build(BuildContext context) {
     final themeChange = Provider.of<DarkThemeProvider>(context);
@@ -51,11 +53,20 @@ class _IndexPageState extends State<IndexPage> {
                       ),
                       leading: Icon(CupertinoIcons.textformat_abc),
                       trailing: const CupertinoListTileChevron(),
-                      onTap: () => Navigator.of(context).push(
-                        CupertinoPageRoute(
-                          builder: (context) => AlphabeticalIndexPage(),
-                        ),
-                      ),
+                      onTap: () {
+                        BlocProvider.of<AlphabeticalIndexBloc>(context).add(
+                          GetAlphabeticalIndexedSongs(
+                            languageCode: AppLocalizations.of(context)!
+                                .locale
+                                .languageCode,
+                          ),
+                        );
+                        Navigator.of(context).push(
+                          CupertinoPageRoute(
+                            builder: (context) => AlphabeticalIndexPage(),
+                          ),
+                        );
+                      },
                     ),
                     // CupertinoListTile.notched(
                     //   title: const Text('Push to master'),

@@ -1,9 +1,13 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:risuscito/core/presentation/states/rs_loading_view.dart';
 import 'package:xml/xml.dart';
 
 import '../../../../../../core/infrastructure/localization/app_localizations.dart';
+import '../../../../core/presentation/states/rs_failure_view.dart';
 import '../domain/model/song_domain_model.dart';
+import 'bloc/alphabetical_index_bloc.dart';
 
 class AlphabeticalIndexPage extends StatefulWidget {
   const AlphabeticalIndexPage({Key? key}) : super(key: key);
@@ -13,24 +17,10 @@ class AlphabeticalIndexPage extends StatefulWidget {
 }
 
 class _AlphabeticalIndexPageState extends State<AlphabeticalIndexPage> {
-  List<SongDomainModel> songs = [];
-
   @override
   void initState() {
     super.initState();
     //final code = AppLocalizations.of(context)!.locale.languageCode;
-    final file =
-        new File('../../../core/data/song_values/values-it/titoli.xml');
-    final document = XmlDocument.parse(file.readAsStringSync());
-    final resourcesNode = document.findElements('resources').first;
-    final resources = resourcesNode.findElements('string');
-    for (final resource in resources) {
-      songs.add(SongDomainModel(
-        id: null,
-        title: resource.text,
-        number: null,
-      ));
-    }
   }
 
   @override
@@ -41,12 +31,30 @@ class _AlphabeticalIndexPageState extends State<AlphabeticalIndexPage> {
         middle: Text(
             AppLocalizations.of(context)!.translate('alphabetical_index')!),
       ),
-      child: ListView.builder(
-        itemCount: songs.length,
-        itemBuilder: (context, index) {
-          return CupertinoListTile(title: Text(songs[index].title!));
+      child: BlocBuilder<AlphabeticalIndexBloc, AlphabeticalIndexState>(
+        builder: (context, state) {
+          if (state is AlphabeticalIndexFailure)
+            return RSFailureView(failure: state.failure);
+          if (state is AlphabeticalIndexLoaded) {
+            final songs = state.songs;
+            return ListView.builder(
+              itemCount: songs.length,
+              itemBuilder: (context, index) {
+                return CupertinoListTile(title: Text(songs[index].title!));
+              },
+            );
+          } else
+            return RSLoadingView();
         },
       ),
     );
   }
 }
+
+
+// ListView.builder(
+//         itemCount: songs.length,
+//         itemBuilder: (context, index) {
+//           return CupertinoListTile(title: Text(songs[index].title!));
+//         },
+//       ),

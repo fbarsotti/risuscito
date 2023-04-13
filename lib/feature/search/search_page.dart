@@ -48,7 +48,7 @@ class SearchPage extends StatelessWidget {
                           radius: 130,
                           backgroundColor: RSColors.white,
                           child: Image.asset(
-                            'assets/images/cammino-neoc.jpg',
+                            'assets/images/risuscito_logo_white.jpg',
                             scale: 3,
                           ),
                         ),

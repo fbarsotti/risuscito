@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:risuscito/core/data/local/local_datasource.dart';
+import 'package:risuscito/core/data/local/base_local_datasource.dart';
 import 'package:risuscito/core/infrastructure/error/handler.dart';
 import 'package:risuscito/core/infrastructure/error/types/failures.dart';
 import 'package:dartz/dartz.dart';
@@ -9,21 +9,36 @@ import 'package:risuscito/feature/index/alphabetical/domain/repository/alphabeti
 import 'package:xml/xml.dart';
 
 class AlphabeticalIndexRepositoryImpl implements AlphabeticalIndexRepository {
-  final LocalDatasource localDatasource;
+  final BaseLocalDatasource localDatasource;
 
   AlphabeticalIndexRepositoryImpl({
     required this.localDatasource,
   });
   @override
-  Future<Either<Failure, List<SongDomainModel>>>
-      getAlphabeticalIndexedSongs() async {
+  Future<Either<Failure, List<SongDomainModel>>> getAlphabeticalIndexedSongs(
+    String languageCode,
+  ) async {
     try {
-      var path = await localDatasource.getPath();
       // /core/data/song_values/values-it/titoli.xml
-      final file = new File(path);
-      final document = XmlDocument.parse(file.readAsStringSync());
+      final titlesContent =
+          await localDatasource.getLocalizedTitlesFileContent(languageCode);
+
+      List<SongDomainModel> songs = [];
+
+      final document = XmlDocument.parse(titlesContent);
+      final resourcesNode = document.findElements('resources').first;
+      final resources = resourcesNode.findElements('string');
+      for (final resource in resources) {
+        songs.add(
+          SongDomainModel(
+            id: null,
+            title: resource.text,
+            number: null,
+          ),
+        );
+      }
       // parse on Datasource
-      return Right([]);
+      return Right(songs);
     } catch (e, s) {
       return Left(handleError(e, s));
     }

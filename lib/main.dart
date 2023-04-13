@@ -9,13 +9,7 @@ import 'core/infrastructure/log/logger.dart';
 
 void main() async {
   await RSApp.init();
-
   Bloc.observer = LoggerBlocDelegate();
-
-  // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-  //   statusBarColor: Colors.transparent,
-  //   statusBarIconBrightness: Brightness.dark,
-  // ));
 
   runZonedGuarded(() {
     runApp(

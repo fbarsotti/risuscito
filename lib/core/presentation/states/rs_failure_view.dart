@@ -1,21 +1,23 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:risuscito/core/presentation/customization/rs_colors.dart';
 
 import '../../infrastructure/error/types/failures.dart';
 import '../../infrastructure/localization/app_localizations.dart';
 import '../../infrastructure/report/report_manager.dart';
 
-class SLFailureView extends StatelessWidget {
+class RSFailureView extends StatelessWidget {
   final Failure failure;
   final Function? refresh;
   final String? refreshText;
   final Color iconColor;
 
-  const SLFailureView({
+  const RSFailureView({
     Key? key,
     required this.failure,
     this.refresh,
     this.refreshText,
-    this.iconColor = Colors.grey,
+    this.iconColor = CupertinoColors.inactiveGray,
   }) : super(key: key);
 
   @override
@@ -25,9 +27,9 @@ class SLFailureView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(bottom: 16.0),
+            padding: const EdgeInsets.only(bottom: 32.0),
             child: Icon(
-              Icons.error,
+              CupertinoIcons.exclamationmark,
               size: 70, //overflow
               color: iconColor,
             ),
@@ -43,29 +45,29 @@ class SLFailureView extends StatelessWidget {
             const SizedBox(
               height: 12,
             ),
-          TextButton(
+          CupertinoButton(
             child: Text(
               AppLocalizations.of(context)!.translate('show_error')!,
               style: TextStyle(
-                color: Colors.grey[600],
+                color: RSColors.primary,
               ),
             ),
             onPressed: () {
               showDialog(
                 context: context,
                 builder: (context) {
-                  return AlertDialog(
+                  return CupertinoAlertDialog(
                     title: Text(failure.localizedDescription(context)!),
-                    content: SelectableText(failure.e.toString()),
+                    content: Text(failure.e.toString()),
                     actions: [
-                      TextButton(
+                      CupertinoDialogAction(
                         onPressed: () {
                           Navigator.pop(context);
                         },
                         child: Text(
                             AppLocalizations.of(context)!.translate('ok')!),
                       ),
-                      TextButton(
+                      CupertinoDialogAction(
                         onPressed: () async {
                           RSReportManager.sendEmail(
                             context,
