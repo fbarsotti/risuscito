@@ -9,6 +9,7 @@ import 'package:risuscito/core/utils/rs_dates_utils.dart';
 
 import '../../core/presentation/customization/rs_colors.dart';
 import '../../core/presentation/customization/theme/rs_theme_provider.dart';
+import 'sections/last_songs.dart';
 
 class SearchPage extends StatelessWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -24,7 +25,8 @@ class SearchPage extends StatelessWidget {
             backgroundColor: themeChange.darkTheme
                 ? RSColors.bgDarkColor
                 : RSColors.bgLightColor,
-            largeTitle: Text(RSDatesUtils.localizedTimeMessage(context)!),
+            largeTitle:
+                Text(AppLocalizations.of(context)!.translate('search')!),
           ),
           SliverToBoxAdapter(
             child: Column(
@@ -39,20 +41,9 @@ class SearchPage extends StatelessWidget {
                     children: [
                       CupertinoSearchTextField(),
                       const SizedBox(
-                        height: 128,
+                        height: 32,
                       ),
-                      CircleAvatar(
-                        radius: 140,
-                        backgroundColor: RSColors.primary,
-                        child: CircleAvatar(
-                          radius: 130,
-                          backgroundColor: RSColors.white,
-                          child: Image.asset(
-                            'assets/images/risuscito_logo_white.jpg',
-                            scale: 3,
-                          ),
-                        ),
-                      ),
+                      LastSongs(),
                     ],
                   ),
                 ),

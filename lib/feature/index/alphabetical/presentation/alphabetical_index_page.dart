@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:risuscito/core/presentation/customization/rs_colors.dart';
 import 'package:risuscito/core/presentation/states/rs_loading_view.dart';
 import 'package:xml/xml.dart';
 
@@ -37,11 +39,26 @@ class _AlphabeticalIndexPageState extends State<AlphabeticalIndexPage> {
             return RSFailureView(failure: state.failure);
           if (state is AlphabeticalIndexLoaded) {
             final songs = state.songs;
-            return ListView.builder(
-              itemCount: songs.length,
-              itemBuilder: (context, index) {
-                return CupertinoListTile(title: Text(songs[index].title!));
-              },
+            return SafeArea(
+              child: SingleChildScrollView(
+                child: CupertinoListSection(
+                  children: List.generate(
+                    songs.length,
+                    (index) => CupertinoListTile(
+                      leading: CircleAvatar(
+                        backgroundColor: RSColors.white,
+                        child: Text(
+                          '99',
+                          style: TextStyle(
+                            color: RSColors.text,
+                          ),
+                        ),
+                      ),
+                      title: Text(songs[index].title!),
+                    ),
+                  ),
+                ),
+              ),
             );
           } else
             return RSLoadingView();

@@ -17,8 +17,8 @@ class RSColors {
         color: Color(0xffF0F3F4), // Color(0xffF0F3F4)
         darkColor: CupertinoColors.black,
       );
-  static Color get bgLightColor =>
-      Color(0xffF0F3F4); // CupertinoColors.extraLightBackgroundGray
+  // CupertinoColors.extraLightBackgroundGray
+  static Color get bgLightColor => Color(0xffF0F3F4);
   static Color get bgDarkColor => CupertinoColors.black;
 
   static Color get cardColorLight => CupertinoColors.white;
