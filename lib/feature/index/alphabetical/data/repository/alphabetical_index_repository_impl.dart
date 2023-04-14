@@ -31,7 +31,10 @@ class AlphabeticalIndexRepositoryImpl implements AlphabeticalIndexRepository {
       for (final resource in resources) {
         songs.add(
           SongDomainModel(
-            id: resource.getAttribute('name')!.replaceAll('_title', ''),
+            id: resource
+                .getAttribute('name')!
+                .replaceAll('_title', '')
+                .toLowerCase(),
             title: resource.text,
             number: null,
           ),

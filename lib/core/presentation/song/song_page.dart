@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:risuscito/core/data/local/base_local_datasource.dart';
+import 'package:risuscito/core/presentation/customization/rs_colors.dart';
 import 'package:risuscito/core/presentation/states/rs_loading_view.dart';
 import 'package:webview_flutter_plus/webview_flutter_plus.dart';
 
@@ -26,23 +27,23 @@ class SongPage extends StatelessWidget {
         previousPageTitle: AppLocalizations.of(context)!.translate('back')!,
         middle: Text(AppLocalizations.of(context)!.translate('song')!),
       ),
-      child: FutureBuilder(
-          future:
-              BaseLocalDatasource.getLocalizedSongPath(languageCode, songId),
-          builder: (context, AsyncSnapshot<String> snapshot) {
-            if (snapshot.hasData)
-              return SafeArea(
-                bottom: false,
-                child: WebViewPlus(
+      child: SafeArea(
+        bottom: false,
+        child: FutureBuilder(
+            future:
+                BaseLocalDatasource.getLocalizedSongPath(languageCode, songId),
+            builder: (context, AsyncSnapshot<String> snapshot) {
+              if (snapshot.hasData)
+                return WebViewPlus(
                   javascriptMode: JavascriptMode.unrestricted,
                   onWebViewCreated: (controller) {
                     controller.loadString(snapshot.data!);
                   },
-                ),
-              );
-            else
-              return RSLoadingView();
-          }),
+                );
+              else
+                return RSLoadingView();
+            }),
+      ),
     );
   }
 }
