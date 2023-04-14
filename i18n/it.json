@@ -28,5 +28,7 @@
   "network_failure_generic": "Problema di connessione generico",
   "server_failure_404": "Elemento non trovato",
   "server_failure": "Errore del server",
-  "not_connected_failure": "Non connesso a internet"
+  "not_connected_failure": "Non connesso a internet",
+  "back": "Indietro",
+  "song": "Canto"
 }

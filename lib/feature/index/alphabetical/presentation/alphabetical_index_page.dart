@@ -1,29 +1,15 @@
-import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:risuscito/core/presentation/customization/rs_colors.dart';
+import 'package:risuscito/core/presentation/song/song_page.dart';
 import 'package:risuscito/core/presentation/states/rs_loading_view.dart';
-import 'package:xml/xml.dart';
-
 import '../../../../../../core/infrastructure/localization/app_localizations.dart';
 import '../../../../core/presentation/states/rs_failure_view.dart';
-import '../domain/model/song_domain_model.dart';
 import 'bloc/alphabetical_index_bloc.dart';
 
-class AlphabeticalIndexPage extends StatefulWidget {
+class AlphabeticalIndexPage extends StatelessWidget {
   const AlphabeticalIndexPage({Key? key}) : super(key: key);
-
-  @override
-  State<AlphabeticalIndexPage> createState() => _AlphabeticalIndexPageState();
-}
-
-class _AlphabeticalIndexPageState extends State<AlphabeticalIndexPage> {
-  @override
-  void initState() {
-    super.initState();
-    //final code = AppLocalizations.of(context)!.locale.languageCode;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +31,9 @@ class _AlphabeticalIndexPageState extends State<AlphabeticalIndexPage> {
                   children: List.generate(
                     songs.length,
                     (index) => CupertinoListTile(
+                      leadingSize: 40,
                       leading: CircleAvatar(
+                        radius: 200,
                         backgroundColor: RSColors.white,
                         child: Text(
                           '99',
@@ -54,7 +42,33 @@ class _AlphabeticalIndexPageState extends State<AlphabeticalIndexPage> {
                           ),
                         ),
                       ),
-                      title: Text(songs[index].title!),
+                      trailing: Icon(CupertinoIcons.chevron_right,
+                          color: CupertinoColors.systemGrey),
+                      title: Container(
+                        height: 70,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              songs[index].title!,
+                              textAlign: TextAlign.start,
+                            ),
+                          ],
+                        ),
+                      ),
+                      onTap: () {
+                        Navigator.of(context, rootNavigator: true).push(
+                          CupertinoPageRoute(
+                            builder: (context) => SongPage(
+                              songId: songs[index].id!,
+                              languageCode: AppLocalizations.of(context)!
+                                  .locale
+                                  .languageCode,
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ),
@@ -67,7 +81,6 @@ class _AlphabeticalIndexPageState extends State<AlphabeticalIndexPage> {
     );
   }
 }
-
 
 // ListView.builder(
 //         itemCount: songs.length,

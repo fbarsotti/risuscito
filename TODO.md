@@ -3,7 +3,11 @@
 - Reduce size of BottomPopUp for languages
 > https://jamesblasco.github.io/modal_bottom_sheet/#/
 
-- Add BLoC on container (!), move parse logic on datasource layer
+- Add BLoC on Index feature (!), it is used everywhere
+
+- Add song body in SongDomainModel, fetch number and color
+
+- Create ordering for each index available
 
 Ecco alcuni suggerimenti per creare una UI efficace per un'app di ricerca di canti del cammino neocatecumenale:
 

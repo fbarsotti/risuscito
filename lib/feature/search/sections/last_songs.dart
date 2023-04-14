@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
 import 'package:risuscito/core/presentation/header_text.dart';
-import 'package:risuscito/core/presentation/song_card.dart';
+import 'package:risuscito/core/presentation/song/song_card.dart';
 import '../../../core/presentation/customization/theme/rs_theme_provider.dart';
 
 class LastSongs extends StatelessWidget {

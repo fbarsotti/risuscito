@@ -25,17 +25,19 @@ class BaseLocalDatasource {
     return 'assets/data/songs_values/values-$languageCode';
   }
 
-  String getLocalizedSongPath(String languageCode, String songTitle) {
-    return 'assets/data/songs_values/raw-$languageCode/$songTitle';
-  }
-
-  Future<String> _getFileContent(String path) async {
-    return await rootBundle.loadString('$path/titoli.xml');
-  }
-
   Future<String> getLocalizedTitlesFileContent(String languageCode) async {
     var path = _getLocalizedValuePath(languageCode);
     var content = await _getFileContent(path);
     return content;
+  }
+
+  static Future<String> getLocalizedSongPath(
+      String languageCode, String songTitle) async {
+    return await rootBundle
+        .loadString('assets/data/songs_raw/raw-$languageCode/$songTitle');
+  }
+
+  Future<String> _getFileContent(String path) async {
+    return await rootBundle.loadString('$path/titoli.xml');
   }
 }

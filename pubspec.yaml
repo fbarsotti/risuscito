@@ -38,6 +38,7 @@ dependencies:
       ref: main
       path: modal_bottom_sheet
   xml: ^6.2.2
+  webview_flutter_plus: ^0.3.0+2
 
 dev_dependencies:
   flutter_test:

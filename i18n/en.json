@@ -29,5 +29,7 @@
   "network_failure_generic": "Generic connection problem",
   "server_failure_404": "Element not found",
   "server_failure": "Server error",
-  "not_connected_failure": "Not connected to the internet"
+  "not_connected_failure": "Not connected to the internet",
+  "back": "Back",
+  "song": "Song"
 }

@@ -4,8 +4,6 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
 import 'package:risuscito/core/presentation/customization/rs_colors.dart';
-import 'package:risuscito/core/utils/rs_dates_utils.dart';
-import 'package:risuscito/feature/home/sections/logo_card.dart';
 import 'package:risuscito/feature/home/sections/quick_actions.dart';
 import 'package:risuscito/feature/settings/settings_page.dart';
 
@@ -30,7 +28,8 @@ class _HomePageState extends State<HomePage> {
             backgroundColor: themeChange.darkTheme
                 ? RSColors.bgDarkColor
                 : RSColors.bgLightColor,
-            largeTitle: Text(RSDatesUtils.localizedTimeMessage(context)!),
+            // largeTitle: Text(RSDatesUtils.localizedTimeMessage(context)!),
+            largeTitle: Text(AppLocalizations.of(context)!.translate('home')!),
             trailing: CupertinoButton(
               child: Icon(
                 CupertinoIcons.settings,
