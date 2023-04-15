@@ -31,5 +31,6 @@
   "server_failure": "Server error",
   "not_connected_failure": "Not connected to the internet",
   "back": "Back",
-  "song": "Song"
+  "song": "Song",
+  "biblical_index": "Biblical index"
 }

@@ -1,12 +1,21 @@
+import 'package:flutter/services.dart';
+import 'package:webview_flutter_plus/webview_flutter_plus.dart';
+
 class SongDomainModel {
   String? id;
   String? title;
-  int? number;
+  String? number;
+  String? content;
+  Color? color;
+  WebViewPlus? songWebView;
 
   SongDomainModel({
     this.id,
     this.title,
     this.number,
+    this.content,
+    this.color,
+    this.songWebView,
   });
 
   // @override

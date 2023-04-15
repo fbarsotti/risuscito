@@ -2,10 +2,9 @@ import 'package:connectivity/connectivity.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:risuscito/core/data/local/base_local_datasource.dart';
-import 'package:risuscito/feature/index/alphabetical/alphabetical_index_container.dart';
+import 'package:risuscito/core/infrastructure/songs/data/datasource/songs_datasource.dart';
+import 'package:risuscito/core/infrastructure/songs/songs_container.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'data/remote/rs_dio_client.dart';
 import 'infrastructure/network_info.dart';
 
@@ -24,7 +23,7 @@ class CoreContainer {
     );
 
     _rs.registerLazySingleton(
-      () => BaseLocalDatasource(
+      () => SongsDatasource(
         sharedPreferences: _rs(),
       ),
     );
@@ -34,12 +33,12 @@ class CoreContainer {
 
     _rs.registerLazySingleton<Dio>(RSDioClient.createDio);
 
-    await AlphabeticalIndexContainer.init();
+    await SongsContainer.init();
   }
 
   static List<BlocProvider> getBlocProviders() {
     return [
-      ...AlphabeticalIndexContainer.getBlocProviders(),
+      ...SongsContainer.getBlocProviders(),
     ];
   }
 }

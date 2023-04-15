@@ -30,5 +30,6 @@
   "server_failure": "Errore del server",
   "not_connected_failure": "Non connesso a internet",
   "back": "Indietro",
-  "song": "Canto"
+  "song": "Canto",
+  "biblical_index": "Indice biblico"
 }

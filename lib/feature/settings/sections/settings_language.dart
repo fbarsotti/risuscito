@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
 import 'package:risuscito/core/infrastructure/localization/bloc/language_bloc.dart';
 import 'package:risuscito/core/infrastructure/localization/languages.dart';
+import 'package:risuscito/core/infrastructure/songs/presentation/bloc/songs_bloc.dart';
 import 'package:risuscito/core/presentation/customization/rs_colors.dart';
 
 import '../../../core/presentation/customization/theme/rs_theme_provider.dart';
@@ -56,6 +57,11 @@ class _SettingsLanguageState extends State<SettingsLanguage> {
             onTap: () {
               BlocProvider.of<LanguageBloc>(context)
                   .add(LanguageSelected(language.language));
+              BlocProvider.of<SongsBloc>(context).add(
+                GetLocalizedSongs(
+                  languageCode: language.code,
+                ),
+              );
               Navigator.pop(context);
             },
           );

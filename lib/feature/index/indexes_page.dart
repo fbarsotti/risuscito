@@ -5,12 +5,11 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
-import 'package:risuscito/feature/index/alphabetical/presentation/bloc/alphabetical_index_bloc.dart';
-
+import 'package:risuscito/core/presentation/bulked_cupertino_list_tile.dart';
 import '../../core/presentation/customization/rs_colors.dart';
 import '../../core/presentation/customization/theme/rs_theme_provider.dart';
 import '../../core/utils/rs_dates_utils.dart';
-import 'alphabetical/presentation/alphabetical_index_page.dart';
+import 'pages/alphabetical_index_page.dart';
 
 class IndexesPage extends StatefulWidget {
   const IndexesPage({Key? key}) : super(key: key);
@@ -46,21 +45,14 @@ class _IndexesPageState extends State<IndexesPage> {
                     AppLocalizations.of(context)!.translate('browse_lists')!,
                   ),
                   children: [
-                    CupertinoListTile.notched(
-                      title: Text(
-                        AppLocalizations.of(context)!
-                            .translate('alphabetical_index')!,
+                    BulkedCupertinoListTile(
+                      text: AppLocalizations.of(context)!
+                          .translate('alphabetical_index')!,
+                      icon: Icon(
+                        CupertinoIcons.textformat_abc,
+                        size: 30,
                       ),
-                      leading: Icon(CupertinoIcons.textformat_abc),
-                      trailing: const CupertinoListTileChevron(),
                       onTap: () {
-                        BlocProvider.of<AlphabeticalIndexBloc>(context).add(
-                          GetAlphabeticalIndexedSongs(
-                            languageCode: AppLocalizations.of(context)!
-                                .locale
-                                .languageCode,
-                          ),
-                        );
                         Navigator.of(context).push(
                           CupertinoPageRoute(
                             builder: (context) => AlphabeticalIndexPage(),
@@ -68,6 +60,31 @@ class _IndexesPageState extends State<IndexesPage> {
                         );
                       },
                     ),
+                    // CupertinoListTile.notched(
+                    //   title: Text(
+                    //     AppLocalizations.of(context)!
+                    //         .translate('alphabetical_index')!,
+                    //   ),
+                    //   leading: Icon(CupertinoIcons.textformat_abc),
+                    //   trailing: const CupertinoListTileChevron(),
+                    //   onTap: () {
+                    //     Navigator.of(context).push(
+                    //       CupertinoPageRoute(
+                    //         builder: (context) => AlphabeticalIndexPage(),
+                    //       ),
+                    //     );
+                    //   },
+                    // ),
+                    BulkedCupertinoListTile(
+                      text: AppLocalizations.of(context)!
+                          .translate('biblical_index')!,
+                      icon: Icon(
+                        CupertinoIcons.book,
+                        size: 30,
+                      ),
+                      onTap: () {},
+                    ),
+
                     // CupertinoListTile.notched(
                     //   title: const Text('Push to master'),
                     //   leading: Container(
