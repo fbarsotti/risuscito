@@ -21,6 +21,9 @@ class RSColors {
   static Color get bgLightColor => Color(0xffF0F3F4);
   static Color get bgDarkColor => CupertinoColors.black;
 
+  static Color get tagInactive => Color(0xffBBBBBB);
+  static Color get tagBg => Color(0xff515151);
+
   static Color get cardColorLight => CupertinoColors.white;
   static Color get cardColorDark => CupertinoColors.darkBackgroundGray;
 
@@ -38,6 +41,7 @@ class RSColors {
   static Color get darkGrey => const Color(0xff484A54);
 
   static Color get white => Colors.white;
+  static Color get black => Colors.black;
   static Color get blue => Colors.blue;
   static Color get orange => Colors.orange;
   static Color get red => Colors.red;

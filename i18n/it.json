@@ -18,7 +18,10 @@
   "favourites": "Preferiti",
   "history": "Cronologia",
   "browse_lists": "Naviga tra le liste dei canti",
+  "generic_indexes": "Indici generici",
   "alphabetical_index": "Indice alfabetico",
+  "biblical_index": "Indice biblico",
+  "numerical_index": "Indice numerico",
   "show_error": "Mostra errore",
   "ok": "Ok",
   "refresh": "Ricarica",
@@ -30,6 +33,5 @@
   "server_failure": "Errore del server",
   "not_connected_failure": "Non connesso a internet",
   "back": "Indietro",
-  "song": "Canto",
-  "biblical_index": "Indice biblico"
+  "song": "Canto"
 }

@@ -140,6 +140,7 @@ class _RSAppState extends State<RSApp> {
                     primaryColor: RSColors.primary,
                     textTheme: CupertinoTextThemeData(
                       textStyle: RSApp.defaultTextThemeData,
+                      primaryColor: RSColors.primary,
                     ),
                   ),
                   home: widget.child,

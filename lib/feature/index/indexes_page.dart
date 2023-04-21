@@ -5,11 +5,14 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
+import 'package:risuscito/core/infrastructure/songs/presentation/bloc/songs_bloc.dart';
+import 'package:risuscito/core/infrastructure/songs/presentation/songs_biblical/bloc/songs_biblical_bloc.dart';
 import 'package:risuscito/core/presentation/bulked_cupertino_list_tile.dart';
+import 'package:risuscito/feature/index/pages/biblical_index_page.dart';
+import 'package:risuscito/feature/index/pages/generic_indexes_page.dart';
 import '../../core/presentation/customization/rs_colors.dart';
 import '../../core/presentation/customization/theme/rs_theme_provider.dart';
 import '../../core/utils/rs_dates_utils.dart';
-import 'pages/alphabetical_index_page.dart';
 
 class IndexesPage extends StatefulWidget {
   const IndexesPage({Key? key}) : super(key: key);
@@ -47,7 +50,7 @@ class _IndexesPageState extends State<IndexesPage> {
                   children: [
                     BulkedCupertinoListTile(
                       text: AppLocalizations.of(context)!
-                          .translate('alphabetical_index')!,
+                          .translate('generic_indexes')!,
                       icon: Icon(
                         CupertinoIcons.textformat_abc,
                         size: 30,
@@ -55,26 +58,11 @@ class _IndexesPageState extends State<IndexesPage> {
                       onTap: () {
                         Navigator.of(context).push(
                           CupertinoPageRoute(
-                            builder: (context) => AlphabeticalIndexPage(),
+                            builder: (context) => GenericIndexesPage(),
                           ),
                         );
                       },
                     ),
-                    // CupertinoListTile.notched(
-                    //   title: Text(
-                    //     AppLocalizations.of(context)!
-                    //         .translate('alphabetical_index')!,
-                    //   ),
-                    //   leading: Icon(CupertinoIcons.textformat_abc),
-                    //   trailing: const CupertinoListTileChevron(),
-                    //   onTap: () {
-                    //     Navigator.of(context).push(
-                    //       CupertinoPageRoute(
-                    //         builder: (context) => AlphabeticalIndexPage(),
-                    //       ),
-                    //     );
-                    //   },
-                    // ),
                     BulkedCupertinoListTile(
                       text: AppLocalizations.of(context)!
                           .translate('biblical_index')!,
@@ -82,7 +70,20 @@ class _IndexesPageState extends State<IndexesPage> {
                         CupertinoIcons.book,
                         size: 30,
                       ),
-                      onTap: () {},
+                      onTap: () {
+                        // BlocProvider.of<SongsBiblicalBloc>(context).add(
+                        //   GetLocalizedSongsBiblical(
+                        //     languageCode: AppLocalizations.of(context)!
+                        //         .locale
+                        //         .languageCode,
+                        //   ),
+                        // );
+                        Navigator.of(context).push(
+                          CupertinoPageRoute(
+                            builder: (context) => BiblicalIndexPage(),
+                          ),
+                        );
+                      },
                     ),
 
                     // CupertinoListTile.notched(

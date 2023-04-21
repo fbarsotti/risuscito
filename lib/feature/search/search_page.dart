@@ -40,10 +40,6 @@ class SearchPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       CupertinoSearchTextField(),
-                      const SizedBox(
-                        height: 32,
-                      ),
-                      LastSongs(),
                     ],
                   ),
                 ),

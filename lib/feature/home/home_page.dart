@@ -8,6 +8,7 @@ import 'package:risuscito/feature/home/sections/quick_actions.dart';
 import 'package:risuscito/feature/settings/settings_page.dart';
 
 import '../../core/presentation/customization/theme/rs_theme_provider.dart';
+import '../search/sections/last_songs.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -49,6 +50,13 @@ class _HomePageState extends State<HomePage> {
                   height: 16.0,
                 ),
                 QuickActions(),
+                const SizedBox(
+                  height: 16,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: LastSongs(),
+                ),
                 // CircleAvatar(
                 //   radius: 140,
                 //   backgroundColor: RSColors.primary,

@@ -19,7 +19,10 @@
   "history": "History",
   "songs": "Songs",
   "browse_lists": "Browse through the lists of songs",
+  "generic_indexes": "Generic indexes",
   "alphabetical_index": "Alphabetical Index",
+  "biblical_index": "Biblical index",
+  "numerical_index": "Numerical index",
   "show_error": "Show error",
   "ok": "Ok",
   "refresh": "Refresh",
@@ -31,6 +34,5 @@
   "server_failure": "Server error",
   "not_connected_failure": "Not connected to the internet",
   "back": "Back",
-  "song": "Song",
-  "biblical_index": "Biblical index"
+  "song": "Song"
 }

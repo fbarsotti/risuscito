@@ -5,6 +5,7 @@ import 'package:risuscito/core/infrastructure/localization/app_localizations.dar
 import 'package:risuscito/core/infrastructure/localization/bloc/language_bloc.dart';
 import 'package:risuscito/core/infrastructure/localization/languages.dart';
 import 'package:risuscito/core/infrastructure/songs/presentation/bloc/songs_bloc.dart';
+import 'package:risuscito/core/infrastructure/songs/presentation/songs_biblical/bloc/songs_biblical_bloc.dart';
 import 'package:risuscito/core/presentation/customization/rs_colors.dart';
 
 import '../../../core/presentation/customization/theme/rs_theme_provider.dart';
@@ -59,6 +60,11 @@ class _SettingsLanguageState extends State<SettingsLanguage> {
                   .add(LanguageSelected(language.language));
               BlocProvider.of<SongsBloc>(context).add(
                 GetLocalizedSongs(
+                  languageCode: language.code,
+                ),
+              );
+              BlocProvider.of<SongsBiblicalBloc>(context).add(
+                GetLocalizedSongsBiblical(
                   languageCode: language.code,
                 ),
               );

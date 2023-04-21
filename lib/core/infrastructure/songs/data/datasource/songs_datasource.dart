@@ -9,6 +9,13 @@ class SongsDatasource {
     required this.sharedPreferences,
   });
 
+  Future<String> _getFileContent(
+    String path,
+    String filename,
+  ) async {
+    return await rootBundle.loadString('$path/$filename.xml');
+  }
+
   String getAssetsPath() {
     return 'assets/';
   }
@@ -25,10 +32,6 @@ class SongsDatasource {
     return 'assets/data/songs_values/values-$languageCode';
   }
 
-  String _getLocalizedPagesPath(String languageCode) {
-    return 'assets/data/songs_values/values-$languageCode';
-  }
-
   Future<String> getLocalizedTitlesFileContent(String languageCode) async {
     var path = _getLocalizedValuesPath(languageCode);
     var content = await _getFileContent(path, 'titoli');
@@ -36,8 +39,16 @@ class SongsDatasource {
   }
 
   Future<String> getLocalizedPagesFileContent(String languageCode) async {
-    var path = _getLocalizedPagesPath(languageCode);
+    var path = _getLocalizedValuesPath(languageCode);
     var content = await _getFileContent(path, 'pagine');
+    return content;
+  }
+
+  Future<String> getLocalizedBiblicalRefsFileContent(
+    String languageCode,
+  ) async {
+    var path = _getLocalizedValuesPath(languageCode);
+    var content = await _getFileContent(path, 'indice_biblico');
     return content;
   }
 
@@ -49,10 +60,10 @@ class SongsDatasource {
         .loadString('assets/data/songs_raw/raw-$languageCode/$songTitle');
   }
 
-  Future<String> _getFileContent(
-    String path,
-    String filename,
+  Future<String> getLocalizedSongSources(
+    String languageCode,
   ) async {
-    return await rootBundle.loadString('$path/$filename.xml');
+    return await rootBundle.loadString(
+        'assets/data/songs_values/values-$languageCode/sorgenti.xml');
   }
 }

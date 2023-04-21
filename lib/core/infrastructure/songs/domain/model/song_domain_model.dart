@@ -4,6 +4,7 @@ import 'package:webview_flutter_plus/webview_flutter_plus.dart';
 class SongDomainModel {
   String? id;
   String? title;
+  String? biblicalRef;
   String? number;
   String? content;
   Color? color;
@@ -12,6 +13,7 @@ class SongDomainModel {
   SongDomainModel({
     this.id,
     this.title,
+    this.biblicalRef,
     this.number,
     this.content,
     this.color,

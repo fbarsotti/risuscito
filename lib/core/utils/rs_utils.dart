@@ -69,3 +69,9 @@ Package name: ${packageInfo.packageName}""";
     return directory.path;
   }
 }
+
+enum Index {
+  alphabetical,
+  numerical,
+  biblical,
+}

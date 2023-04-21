@@ -43,7 +43,7 @@ class QuickActionButton extends StatelessWidget {
               color: themeChange.darkTheme
                   ? CupertinoColors.darkBackgroundGray.withOpacity(0.8)
                   : CupertinoColors.inactiveGray.withOpacity(0.4),
-              blurRadius: 24,
+              blurRadius: 20,
               offset: Offset(8, 20), // Shadow position
             )
             // : BoxShadow(),
