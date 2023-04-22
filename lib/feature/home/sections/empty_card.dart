@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:provider/provider.dart';
+import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
 import 'package:risuscito/core/presentation/customization/rs_colors.dart';
 import 'package:risuscito/core/presentation/customization/theme/rs_theme_provider.dart';
 
@@ -32,7 +30,7 @@ class EmptyCard extends StatelessWidget {
               ),
             ),
             Text(
-              'Tutto vuoto...',
+              AppLocalizations.of(context)!.translate('all_empty')!,
               style: TextStyle(
                 color: themeChange.darkTheme
                     ? CupertinoColors.white
@@ -45,7 +43,7 @@ class EmptyCard extends StatelessWidget {
               height: 8,
             ),
             Text(
-              'Da un occhiata a qualche canto!',
+              AppLocalizations.of(context)!.translate('check_out_songs')!,
               style: TextStyle(
                 color: CupertinoColors.inactiveGray,
                 fontSize: 16,

@@ -33,5 +33,7 @@
   "server_failure": "Errore del server",
   "not_connected_failure": "Non connesso a internet",
   "back": "Indietro",
-  "song": "Canto"
+  "song": "Canto",
+  "all_empty": "Tutto vuoto...",
+  "check_out_songs": "Dai un occhiata a qualche canto!" 
 }

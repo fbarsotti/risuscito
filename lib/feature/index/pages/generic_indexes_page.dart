@@ -19,24 +19,11 @@ class GenericIndexesPage extends StatefulWidget {
 
 class _GenericIndexesPageState extends State<GenericIndexesPage> {
   late List<SongDomainModel> songs;
-  late bool init;
+  bool init = true;
   Index selected = Index.alphabetical;
-
-  int _alphabeticalComparison(SongDomainModel a, SongDomainModel b) {
-    return a.title!.compareTo(b.title!);
-  }
-
-  int _numericalComparison(SongDomainModel a, SongDomainModel b) {
-    return int.parse(a.number!) < int.parse(b.number!)
-        ? -1
-        : int.parse(a.number!) > int.parse(b.number!)
-            ? 1
-            : 0;
-  }
 
   @override
   void initState() {
-    init = true;
     super.initState();
   }
 
@@ -53,9 +40,8 @@ class _GenericIndexesPageState extends State<GenericIndexesPage> {
           if (state is SongsFailure)
             return RSFailureView(failure: state.failure);
           if (state is SongsLoaded) {
-            songs = state.songs;
             if (init) {
-              songs.sort(_alphabeticalComparison); // sort list by index
+              songs = state.songs.alphabeticalOrder!;
               init = false;
             }
             return SafeArea(
@@ -96,9 +82,9 @@ class _GenericIndexesPageState extends State<GenericIndexesPage> {
                             setState(() {
                               selected = value;
                               if (value == Index.alphabetical)
-                                songs.sort(_alphabeticalComparison);
+                                songs = state.songs.alphabeticalOrder!;
                               else
-                                songs.sort(_numericalComparison);
+                                songs = state.songs.numericalOrder!;
                             });
                           }
                         },

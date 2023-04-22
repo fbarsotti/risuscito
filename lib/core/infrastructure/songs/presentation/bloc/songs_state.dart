@@ -8,7 +8,7 @@ class SongsInitial extends SongsState {}
 class SongsLoading extends SongsState {}
 
 class SongsLoaded extends SongsState {
-  final List<SongDomainModel> songs;
+  final PagedSongsDomainModel songs;
 
   SongsLoaded({
     required this.songs,

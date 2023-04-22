@@ -40,6 +40,20 @@ class SearchPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       CupertinoSearchTextField(),
+                      // Row(
+                      //   children: [
+                      //     Container(
+                      //       height: 100,
+                      //       width: MediaQuery.of(context).size.width / 2,
+                      //       color: RSColors.white,
+                      //     )
+                      // Container(
+                      //   height: 100,
+                      //   width: MediaQuery.of(context).size.width / 2,
+                      //   color: RSColors.white,
+                      // )
+                      // ],
+                      // )
                     ],
                   ),
                 ),

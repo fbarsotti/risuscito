@@ -2,10 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:risuscito/core/infrastructure/songs/domain/model/song_domain_model.dart';
 import 'package:risuscito/core/infrastructure/songs/presentation/bloc/songs_bloc.dart';
-import 'package:risuscito/core/infrastructure/songs/presentation/songs_biblical/bloc/songs_biblical_bloc.dart';
 import 'package:risuscito/core/presentation/song/song_tile.dart';
 import 'package:risuscito/core/presentation/states/rs_loading_view.dart';
-import 'package:risuscito/core/utils/rs_utils.dart';
 import '../../../../../core/infrastructure/localization/app_localizations.dart';
 import '../../../core/presentation/states/rs_failure_view.dart';
 
@@ -27,12 +25,12 @@ class _BiblicalIndexPageState extends State<BiblicalIndexPage> {
         middle:
             Text(AppLocalizations.of(context)!.translate('biblical_index')!),
       ),
-      child: BlocBuilder<SongsBiblicalBloc, SongsBiblicalState>(
+      child: BlocBuilder<SongsBloc, SongsState>(
         builder: (context, state) {
-          if (state is SongsBiblicalFailure)
+          if (state is SongsFailure)
             return RSFailureView(failure: state.failure);
-          if (state is SongsBiblicalLoaded) {
-            songs = state.songs;
+          if (state is SongsLoaded) {
+            songs = state.songs.biblicalOrder!;
             return SafeArea(
               child: SingleChildScrollView(
                 child: CupertinoListSection(
