@@ -1,18 +1,46 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
-import 'package:risuscito/core/utils/rs_dates_utils.dart';
-
+import 'package:risuscito/core/infrastructure/songs/domain/model/song_domain_model.dart';
+import 'package:risuscito/core/infrastructure/songs/presentation/bloc/songs_bloc.dart';
+import 'package:risuscito/core/presentation/song/song_tile.dart';
+import 'package:risuscito/core/presentation/states/rs_failure_view.dart';
+import 'package:risuscito/core/presentation/states/rs_loading_view.dart';
+import 'package:risuscito/feature/search/sections/empty_search.dart';
 import '../../core/presentation/customization/rs_colors.dart';
 import '../../core/presentation/customization/theme/rs_theme_provider.dart';
-import 'sections/last_songs.dart';
 
-class SearchPage extends StatelessWidget {
+class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
+
+  @override
+  State<SearchPage> createState() => _SearchPageState();
+}
+
+class _SearchPageState extends State<SearchPage> {
+  TextEditingController _searchController = TextEditingController();
+  List<SongDomainModel> songs = [];
+  List<SongDomainModel> _filteredSongs = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController.addListener(() {
+      setState(() {
+        if (_searchController.text.length >= 3)
+          _filteredSongs = songs
+              .where(
+                (element) => element.title!.toLowerCase().contains(
+                      _searchController.text,
+                    ),
+              )
+              .toList();
+        else
+          _filteredSongs = [];
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,17 +57,44 @@ class SearchPage extends StatelessWidget {
                 Text(AppLocalizations.of(context)!.translate('search')!),
           ),
           SliverToBoxAdapter(
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 16.0,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            child: BlocBuilder<SongsBloc, SongsState>(
+              builder: (context, state) {
+                if (state is SongsFailure)
+                  return RSFailureView(failure: state.failure);
+                if (state is SongsLoaded) {
+                  songs = state.songs.alphabeticalOrder!;
+                  return Column(
                     children: [
-                      CupertinoSearchTextField(),
+                      const SizedBox(
+                        height: 16.0,
+                      ),
+
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                        child: CupertinoSearchTextField(
+                          padding: EdgeInsets.all(12),
+                          controller: _searchController,
+                          placeholder: AppLocalizations.of(context)!
+                              .translate('search_a_song'),
+                        ),
+                      ),
+                      if (_filteredSongs.length == 0)
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height / 5,
+                        ),
+                      if (_filteredSongs.length == 0) EmptySearch(),
+                      if (_filteredSongs.length > 0)
+                        CupertinoListSection(
+                          children: [
+                            ...List.generate(
+                              _filteredSongs.length,
+                              (index) => SongTile(
+                                song: _filteredSongs[index],
+                              ),
+                            ),
+                          ],
+                        ),
+
                       // Row(
                       //   children: [
                       //     Container(
@@ -55,9 +110,10 @@ class SearchPage extends StatelessWidget {
                       // ],
                       // )
                     ],
-                  ),
-                ),
-              ],
+                  );
+                } else
+                  return RSLoadingView();
+              },
             ),
           ),
         ],

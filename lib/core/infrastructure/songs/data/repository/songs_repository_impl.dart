@@ -34,12 +34,12 @@ class SongsRepositoryImpl implements SongsRepository {
     String languageCode,
   ) async {
     try {
-      // /core/data/song_values/values-it/titoli.xml
+      List<SongDomainModel> songs = [];
+
       final titlesContent =
           await localDatasource.getLocalizedTitlesFileContent(languageCode);
       final pagesContent =
           await localDatasource.getLocalizedPagesFileContent(languageCode);
-      List<SongDomainModel> songs = [];
 
       final titlesDocument = XmlDocument.parse(titlesContent);
       final pagesDocument = XmlDocument.parse(pagesContent);
@@ -87,12 +87,16 @@ class SongsRepositoryImpl implements SongsRepository {
           );
         }
       }
-      // parse on Datasource
+
+      final biblicalOrder = await getLocalizedSongsBiblical(languageCode);
+      for (final biblicalRef in biblicalOrder) {
+        songs[songs.indexWhere((element) => element.id == biblicalRef.id)]
+            .biblicalRef = biblicalRef.title;
+      }
       songs.sort(_alphabeticalComparison);
       final alphabeticalOrder = new List<SongDomainModel>.from(songs);
       songs.sort(_numericalComparison);
       final numericalOrder = new List<SongDomainModel>.from(songs);
-      final biblicalOrder = await getLocalizedSongsBiblical(languageCode);
 
       PagedSongsDomainModel pagedSongs = PagedSongsDomainModel(
         alphabeticalOrder: alphabeticalOrder,
@@ -108,12 +112,12 @@ class SongsRepositoryImpl implements SongsRepository {
   Future<List<SongDomainModel>> getLocalizedSongsBiblical(
     String languageCode,
   ) async {
+    List<SongDomainModel> songs = [];
+
     final pagesContent =
         await localDatasource.getLocalizedPagesFileContent(languageCode);
     final biblicalContent =
         await localDatasource.getLocalizedBiblicalRefsFileContent(languageCode);
-
-    List<SongDomainModel> songs = [];
 
     final pagesDocument = XmlDocument.parse(pagesContent);
     final biblicalDocument = XmlDocument.parse(biblicalContent);

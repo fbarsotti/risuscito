@@ -36,6 +36,7 @@ class LastSongs extends StatelessWidget {
           // ),
           HeaderText(
             text: AppLocalizations.of(context)!.translate('seen_recently')!,
+            textAlign: TextAlign.start,
           ),
           const SizedBox(
             height: 8,

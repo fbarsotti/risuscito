@@ -23,11 +23,9 @@ class EmptyCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Center(
-              child: Text(
-                '😕',
-                style: TextStyle(fontSize: 40),
-              ),
+            Text(
+              '😕',
+              style: TextStyle(fontSize: 40),
             ),
             Text(
               AppLocalizations.of(context)!.translate('all_empty')!,

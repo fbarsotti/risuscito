@@ -1,14 +1,12 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
 import 'package:risuscito/core/presentation/customization/rs_colors.dart';
+import 'package:risuscito/core/presentation/customization/theme/rs_theme_provider.dart';
 import 'package:risuscito/feature/home/sections/quick_actions.dart';
+import 'package:risuscito/feature/home/sections/last_songs.dart';
 import 'package:risuscito/feature/settings/settings_page.dart';
-
-import '../../core/presentation/customization/theme/rs_theme_provider.dart';
-import '../search/sections/last_songs.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);

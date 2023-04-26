@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:risuscito/core/infrastructure/songs/domain/model/song_domain_model.dart';
 import 'package:risuscito/core/presentation/song/song_page.dart';

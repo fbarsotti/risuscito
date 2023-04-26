@@ -22,6 +22,7 @@ class QuickActions extends StatelessWidget {
           padding: const EdgeInsets.only(left: 16.0),
           child: HeaderText(
             text: AppLocalizations.of(context)!.translate('quick_actions')!,
+            textAlign: TextAlign.start,
           ),
         ),
         const SizedBox(
