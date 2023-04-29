@@ -37,5 +37,9 @@
   "song": "Song",
   "all_empty": "All empty...",
   "check_out_songs": "Check out some songs!",
-  "search_a_song": "Search a song..."
+  "search_a_song": "Search a song...",
+  "type": "Type 3 characters",
+  "type_full": "Start your search by typing at least 3 characters",
+  "no_result": "No result",
+  "no_result_full": "Try to search for something else or switch research mode"
 }

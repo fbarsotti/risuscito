@@ -2,22 +2,22 @@ import 'package:flutter/cupertino.dart';
 import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
 import 'package:risuscito/core/presentation/header_text.dart';
 
-class EmptySearch extends StatelessWidget {
-  const EmptySearch({Key? key}) : super(key: key);
+class NotSearching extends StatelessWidget {
+  const NotSearching({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Icon(
-          CupertinoIcons.bin_xmark,
-          size: 80,
-        ),
-        const SizedBox(
-          height: 16,
-        ),
+        // Icon(
+        //   CupertinoIcons.doc_text_search,
+        //   size: 80,
+        // ),
+        // const SizedBox(
+        //   height: 16,
+        // ),
         HeaderText(
-          text: AppLocalizations.of(context)!.translate('no_result')!,
+          text: AppLocalizations.of(context)!.translate('type')!,
           textAlign: TextAlign.center,
         ),
         const SizedBox(
@@ -26,7 +26,7 @@ class EmptySearch extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 16.0, right: 16.0),
           child: Text(
-            AppLocalizations.of(context)!.translate('no_result_full')!,
+            AppLocalizations.of(context)!.translate('type_full')!,
             textAlign: TextAlign.center,
             style: TextStyle(
               color: CupertinoColors.inactiveGray,

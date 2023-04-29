@@ -8,6 +8,8 @@ import 'package:risuscito/core/presentation/song/song_tile.dart';
 import 'package:risuscito/core/presentation/states/rs_failure_view.dart';
 import 'package:risuscito/core/presentation/states/rs_loading_view.dart';
 import 'package:risuscito/feature/search/sections/empty_search.dart';
+import 'package:risuscito/feature/search/sections/not_searching.dart';
+import 'package:risuscito/feature/search/sections/search_tag.dart';
 import '../../core/presentation/customization/rs_colors.dart';
 import '../../core/presentation/customization/theme/rs_theme_provider.dart';
 
@@ -22,10 +24,12 @@ class _SearchPageState extends State<SearchPage> {
   TextEditingController _searchController = TextEditingController();
   List<SongDomainModel> songs = [];
   List<SongDomainModel> _filteredSongs = [];
+  late int selectedTag;
 
   @override
   void initState() {
     super.initState();
+    selectedTag = 0;
     _searchController.addListener(() {
       setState(() {
         if (_searchController.text.length >= 3)
@@ -78,11 +82,60 @@ class _SearchPageState extends State<SearchPage> {
                               .translate('search_a_song'),
                         ),
                       ),
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Row(
+                          children: [
+                            SearchTag(
+                              onTap: () {
+                                setState(() {
+                                  selectedTag = 0;
+                                });
+                              },
+                              text: 'Titolo',
+                              icon: CupertinoIcons.textformat_abc,
+                              selected: selectedTag == 0,
+                            ),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            SearchTag(
+                              onTap: () {
+                                setState(() {
+                                  selectedTag = 1;
+                                });
+                              },
+                              text: 'Testo',
+                              icon: CupertinoIcons.doc_plaintext,
+                              selected: selectedTag == 1,
+                            ),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            SearchTag(
+                              onTap: () {
+                                setState(() {
+                                  selectedTag = 2;
+                                });
+                              },
+                              text: 'Riferimenti',
+                              icon: CupertinoIcons.book,
+                              selected: selectedTag == 2,
+                            ),
+                          ],
+                        ),
+                      ),
                       if (_filteredSongs.length == 0)
                         SizedBox(
                           height: MediaQuery.of(context).size.height / 5,
                         ),
-                      if (_filteredSongs.length == 0) EmptySearch(),
+                      if (_filteredSongs.length == 0 &&
+                          _searchController.text.length < 3)
+                        NotSearching(),
+
+                      if (_filteredSongs.length == 0 &&
+                          _searchController.text.length >= 3)
+                        EmptySearch(),
                       if (_filteredSongs.length > 0)
                         CupertinoListSection(
                           children: [

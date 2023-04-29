@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:provider/provider.dart';
 import 'package:risuscito/core/presentation/customization/rs_colors.dart';
+import 'package:risuscito/core/presentation/customization/theme/rs_theme_provider.dart';
 
 class SearchTag extends StatelessWidget {
   final String text;
@@ -21,12 +23,19 @@ class SearchTag extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeChange = Provider.of<DarkThemeProvider>(context);
     return CupertinoInkWell(
       child: Center(
         child: AnimatedContainer(
           decoration: BoxDecoration(
-            color: selected ? RSColors.tagBg : Colors.transparent,
-            border: Border.all(color: CupertinoColors.systemGrey),
+            color: selected
+                ? RSColors.primary
+                : themeChange.darkTheme
+                    ? RSColors.bgDarkColor
+                    : RSColors.bgColor,
+            border: Border.all(
+              color: selected ? RSColors.primary : CupertinoColors.systemGrey,
+            ),
             borderRadius: BorderRadius.all(
               Radius.circular(100),
             ),
@@ -35,7 +44,8 @@ class SearchTag extends StatelessWidget {
             children: [
               Icon(
                 icon,
-                color: RSColors.tagInactive,
+                color:
+                    selected ? RSColors.darkText : CupertinoColors.systemGrey,
               ),
               const SizedBox(
                 width: 8,
@@ -43,7 +53,8 @@ class SearchTag extends StatelessWidget {
               Text(
                 text,
                 style: TextStyle(
-                  color: RSColors.tagInactive,
+                  color:
+                      selected ? RSColors.darkText : CupertinoColors.systemGrey,
                 ),
               ),
             ],
