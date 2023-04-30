@@ -39,6 +39,7 @@ class _BiblicalIndexPageState extends State<BiblicalIndexPage> {
                       songs.length,
                       (index) => SongTile(
                         song: songs[index],
+                        forceRef: false,
                       ),
                     ),
                   ],

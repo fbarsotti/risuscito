@@ -40,5 +40,6 @@
   "type": "Digita 3 caratteri",
   "type_full": "Comincia la ricerca digitando almeno 3 caratteri",
   "no_result": "Nessun risultato",
-  "no_result_full": "Prova a cercare qualcos'altro o cambia la modalità di ricerca"
+  "no_result_full": "Prova a cercare qualcos'altro o cambia la modalità di ricerca",
+  "search_in": "Cerca per:"
 }

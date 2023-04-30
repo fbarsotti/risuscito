@@ -41,6 +41,7 @@ dependencies:
   webview_flutter_plus: ^0.3.0+2
   enough_platform_widgets: ^0.7.2
   flutter_slidable: ^3.0.0
+  html: ^0.15.0
 
 dev_dependencies:
   flutter_test:

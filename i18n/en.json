@@ -41,5 +41,6 @@
   "type": "Type 3 characters",
   "type_full": "Start your search by typing at least 3 characters",
   "no_result": "No result",
-  "no_result_full": "Try to search for something else or switch research mode"
+  "no_result_full": "Try to search for something else or switch research mode",
+  "search_in": "Search by:"
 }

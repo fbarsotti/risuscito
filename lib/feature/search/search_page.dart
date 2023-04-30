@@ -26,22 +26,63 @@ class _SearchPageState extends State<SearchPage> {
   List<SongDomainModel> _filteredSongs = [];
   late int selectedTag;
 
+  void _controllerBehaviour() {
+    if (_searchController.text.length >= 3) {
+      if (selectedTag == 0)
+        _filteredSongs = songs
+            .where(
+              (element) => _titlesSearchCondition(
+                element,
+              ),
+            )
+            .toList();
+      if (selectedTag == 1)
+        _filteredSongs = songs
+            .where(
+              (element) => _contentSearchCondition(
+                element,
+              ),
+            )
+            .toList();
+      if (selectedTag == 2)
+        _filteredSongs = songs
+            .where(
+              (element) => _refsSearchCondition(
+                element,
+              ),
+            )
+            .toList();
+    } else
+      _filteredSongs = [];
+  }
+
+  bool _titlesSearchCondition(SongDomainModel element) {
+    return element.title!.toLowerCase().contains(
+          _searchController.text.toLowerCase(),
+        );
+  }
+
+  bool _contentSearchCondition(SongDomainModel element) {
+    return element.content!.toLowerCase().contains(
+          _searchController.text.toLowerCase(),
+        );
+  }
+
+  bool _refsSearchCondition(SongDomainModel element) {
+    return element.biblicalRef != null
+        ? element.biblicalRef!.split(' - ')[0].toLowerCase().contains(
+              _searchController.text.toLowerCase(),
+            )
+        : false;
+  }
+
   @override
   void initState() {
     super.initState();
     selectedTag = 0;
     _searchController.addListener(() {
       setState(() {
-        if (_searchController.text.length >= 3)
-          _filteredSongs = songs
-              .where(
-                (element) => element.title!.toLowerCase().contains(
-                      _searchController.text,
-                    ),
-              )
-              .toList();
-        else
-          _filteredSongs = [];
+        _controllerBehaviour();
       });
     });
   }
@@ -72,62 +113,82 @@ class _SearchPageState extends State<SearchPage> {
                       const SizedBox(
                         height: 16.0,
                       ),
-
+                      // Padding(
+                      //   padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                      // ),
                       Padding(
                         padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-                        child: CupertinoSearchTextField(
-                          padding: EdgeInsets.all(12),
-                          controller: _searchController,
-                          placeholder: AppLocalizations.of(context)!
-                              .translate('search_a_song'),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Row(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SearchTag(
-                              onTap: () {
-                                setState(() {
-                                  selectedTag = 0;
-                                });
-                              },
-                              text: 'Titolo',
-                              icon: CupertinoIcons.textformat_abc,
-                              selected: selectedTag == 0,
+                            CupertinoSearchTextField(
+                              padding: EdgeInsets.all(12),
+                              controller: _searchController,
+                              placeholder: AppLocalizations.of(context)!
+                                  .translate('search_a_song'),
                             ),
                             const SizedBox(
-                              width: 8,
+                              height: 8,
                             ),
-                            SearchTag(
-                              onTap: () {
-                                setState(() {
-                                  selectedTag = 1;
-                                });
-                              },
-                              text: 'Testo',
-                              icon: CupertinoIcons.doc_plaintext,
-                              selected: selectedTag == 1,
+                            Text(
+                              AppLocalizations.of(context)!
+                                  .translate('search_in')!,
+                              style: TextStyle(
+                                color: CupertinoColors.systemGrey,
+                              ),
                             ),
                             const SizedBox(
-                              width: 8,
+                              height: 8,
                             ),
-                            SearchTag(
-                              onTap: () {
-                                setState(() {
-                                  selectedTag = 2;
-                                });
-                              },
-                              text: 'Riferimenti',
-                              icon: CupertinoIcons.book,
-                              selected: selectedTag == 2,
+                            Row(
+                              children: [
+                                SearchTag(
+                                  onTap: () {
+                                    setState(() {
+                                      selectedTag = 0;
+                                      _controllerBehaviour();
+                                    });
+                                  },
+                                  text: 'Titolo',
+                                  icon: CupertinoIcons.textbox,
+                                  selected: selectedTag == 0,
+                                ),
+                                const SizedBox(
+                                  width: 8,
+                                ),
+                                SearchTag(
+                                  onTap: () {
+                                    setState(() {
+                                      selectedTag = 1;
+                                      _controllerBehaviour();
+                                    });
+                                  },
+                                  text: 'Testo',
+                                  icon: CupertinoIcons.doc_plaintext,
+                                  selected: selectedTag == 1,
+                                ),
+                                const SizedBox(
+                                  width: 8,
+                                ),
+                                SearchTag(
+                                  onTap: () {
+                                    setState(() {
+                                      selectedTag = 2;
+                                      _controllerBehaviour();
+                                    });
+                                  },
+                                  text: 'Riferimenti',
+                                  icon: CupertinoIcons.book,
+                                  selected: selectedTag == 2,
+                                ),
+                              ],
                             ),
                           ],
                         ),
                       ),
                       if (_filteredSongs.length == 0)
                         SizedBox(
-                          height: MediaQuery.of(context).size.height / 5,
+                          height: MediaQuery.of(context).size.height / 6,
                         ),
                       if (_filteredSongs.length == 0 &&
                           _searchController.text.length < 3)
@@ -143,6 +204,7 @@ class _SearchPageState extends State<SearchPage> {
                               _filteredSongs.length,
                               (index) => SongTile(
                                 song: _filteredSongs[index],
+                                forceRef: selectedTag == 2,
                               ),
                             ),
                           ],

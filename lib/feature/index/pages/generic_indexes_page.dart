@@ -116,6 +116,7 @@ class _GenericIndexesPageState extends State<GenericIndexesPage> {
                             ),
                             child: SongTile(
                               song: songs[index],
+                              forceRef: false,
                             ),
                           ),
                         ),

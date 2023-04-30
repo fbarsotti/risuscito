@@ -9,6 +9,9 @@ import 'package:risuscito/core/infrastructure/songs/domain/model/song_domain_mod
 import 'package:risuscito/core/infrastructure/songs/domain/repository/songs_repository.dart';
 import 'package:webview_flutter_plus/webview_flutter_plus.dart';
 import 'package:xml/xml.dart';
+import 'package:flutter/material.dart';
+import 'package:html/parser.dart' show parse;
+import 'package:html/dom.dart' as dom;
 
 class SongsRepositoryImpl implements SongsRepository {
   final SongsDatasource localDatasource;
@@ -83,6 +86,7 @@ class SongsRepositoryImpl implements SongsRepository {
               color: Color(
                 int.parse('0xff$color'),
               ),
+              content: _extractBlackFontLines(content),
             ),
           );
         }
@@ -172,6 +176,7 @@ class SongsRepositoryImpl implements SongsRepository {
             color: Color(
               int.parse('0xff$color'),
             ),
+            content: _extractBlackFontLines(content),
           ),
         );
       }
@@ -190,5 +195,33 @@ class SongsRepositoryImpl implements SongsRepository {
       if (source.text == songId) return true;
     }
     return false;
+  }
+
+  String _extractHtmlContent(String htmlString) {
+    dom.Document document = parse(htmlString);
+    String extractedContent = document.body!.text;
+    return extractedContent
+        .replaceAll('\n', ' ')
+        .replaceAll(RegExp(r'\s+'), ' ');
+  }
+
+  String _extractBlackFontLines(String html) {
+    dom.Document document = parse(html);
+    List<dom.Element> preElements = document.querySelectorAll('h3 pre');
+    String blackFontLines = '';
+
+    for (dom.Element preElement in preElements) {
+      List<dom.Element> textElements = preElement.getElementsByTagName('font');
+      for (dom.Element textElement in textElements) {
+        if (textElement.attributes['color'] == '#000000') {
+          String line = textElement.text.trim();
+          if (line.isNotEmpty) {
+            blackFontLines += ' ' + line;
+          }
+        }
+      }
+    }
+    //.replaceAll('\n', ' ').replaceAll(RegExp(r'\s+'), ' ')
+    return blackFontLines;
   }
 }

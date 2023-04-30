@@ -8,10 +8,12 @@ import '../customization/theme/rs_theme_provider.dart';
 
 class SongTile extends StatelessWidget {
   final SongDomainModel song;
+  final bool forceRef;
 
   const SongTile({
     Key? key,
     required this.song,
+    required this.forceRef,
   }) : super(key: key);
 
   @override
@@ -49,7 +51,7 @@ class SongTile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              song.title!,
+              forceRef ? song.biblicalRef! : song.title!,
               textAlign: TextAlign.start,
             ),
           ],
