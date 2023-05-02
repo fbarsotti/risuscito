@@ -55,5 +55,7 @@ flutter:
     - assets/images/
     - assets/data/songs_values/values-it/
     - assets/data/songs_values/values-en/
+    - assets/data/songs_values/values-uk/
     - assets/data/songs_raw/raw-it/
     - assets/data/songs_raw/raw-en/
+    - assets/data/songs_raw/raw-uk/

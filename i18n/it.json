@@ -1,6 +1,7 @@
 {
   "it": "Italiano",
   "en": "Inglese",
+  "uk": "Ucraino",
   "home": "Home",
   "settings": "Impostazioni",
   "generals": "Generali",
@@ -17,6 +18,7 @@
   "personalized_lists": "Liste personalizzate",
   "favourites": "Preferiti",
   "history": "Cronologia",
+  "songs": "Canti",
   "browse_lists": "Naviga tra le liste dei canti",
   "generic_indexes": "Indici generici",
   "alphabetical_index": "Indice alfabetico",

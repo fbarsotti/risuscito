@@ -13,6 +13,8 @@
 
 - Static search bar on search page
 
+- Ukrainian language not working
+
 Ecco alcuni suggerimenti per creare una UI efficace per un'app di ricerca di canti del cammino neocatecumenale:
 
 1. Schermata principale: La schermata principale dovrebbe essere semplice e intuitiva. È possibile includere il logo del cammino neocatecumenale e l'elenco dei canti. È possibile anche includere un campo di ricerca per aiutare gli utenti a trovare rapidamente il canto che stanno cercando.

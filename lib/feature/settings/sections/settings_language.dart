@@ -30,6 +30,11 @@ class _SettingsLanguageState extends State<SettingsLanguage> {
         AppLocalizations.of(context)!.translate('en'),
         Language.en,
       ),
+      RSLanguage(
+        'uk',
+        AppLocalizations.of(context)!.translate('uk'),
+        Language.uk,
+      ),
     ];
     final code = AppLocalizations.of(context)!.locale.languageCode;
     final themeChange = Provider.of<DarkThemeProvider>(context);
@@ -55,8 +60,11 @@ class _SettingsLanguageState extends State<SettingsLanguage> {
                 ? Icon(CupertinoIcons.checkmark_alt)
                 : null,
             onTap: () {
-              BlocProvider.of<LanguageBloc>(context)
-                  .add(LanguageSelected(language.language));
+              BlocProvider.of<LanguageBloc>(context).add(
+                LanguageSelected(
+                  language.language,
+                ),
+              );
               BlocProvider.of<SongsBloc>(context).add(
                 GetLocalizedSongs(
                   languageCode: language.code,

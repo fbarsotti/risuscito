@@ -1,4 +1,4 @@
-enum Language { it, en }
+enum Language { it, en, uk }
 
 class RSLanguage {
   final String code;

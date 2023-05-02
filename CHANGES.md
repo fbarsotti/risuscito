@@ -3,3 +3,5 @@
 
 - [x] Dark Theme
 - [x] Language selection
+- [x] Indexes: generic, numerical, biblical
+- [x] Search by Title, Content, Reference
