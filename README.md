@@ -33,7 +33,7 @@ In the code, you must add in the language_bloc logic at `/path_language_bloc.dar
 <pre>
    ... else if (event.languageCode == Language.uk &&
           defaultLanguageCode != 'uk') {
-        final locale = Locale('uk', 'UK');
+        final locale = Locale('uk', 'UA');
         await sharedPrefService.setLanguage(locale.languageCode);
         emit(LanguageState(locale));
       }
@@ -46,20 +46,30 @@ In the code, you must add in the language_bloc logic at `/path_language_bloc.dar
         Language.languageEnum,
       ),
 </pre>
-... and something else that i can't find yet :)
-
+... and in `/path_to_rs_app.dart`
+<pre>
+  static List<Locale> get supportedLocales {
+    return [
+      Locale('en', 'US'),
+      Locale('it', 'IT'),
+      // add your language
+      Locale('uk', 'UA'),
+    ];
+  }
+</pre>
 ### 2. Files
 Inside `assets/data/` you can find two other folders:
 <pre>
   assets
-  ├── songs_raw
-  │  ├── all_songs_contents
-  ├── songs_values
-     ├── values-en
-        ├── all_songs_values
+  ├──data
+     ├── songs_raw
+     │  ├── all_songs_contents
+     ├── songs_values
+        ├── values-en
+           ├── all_songs_values
 </pre>
 
-- Folder RAW: here you can find all songs HTML files, each file has to have the same name as the other file contents, and the HTML content should remain pretty much the same.
+- Folder RAW: here you can find all songs HTML files, each file must have the same name as the other file contents, and the HTML content should remain pretty much the same.
 - Folder VALUES: **IMPORTANT**: For all files ONLY TAG CONTENTS must be translated, not tag names. You will find as follow these files:
 
 1. **LINK.XML** --> It contains the links to the recordings. For each song, you must put inside each tag the link to the ONLINE recording. If it's not present you can leave the TAG empty (like the UK and EN versions)

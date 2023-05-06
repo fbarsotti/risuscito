@@ -3,6 +3,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
 import 'package:risuscito/core/presentation/customization/rs_colors.dart';
+import 'package:risuscito/feature/settings/sections/help/help_page.dart';
 import 'package:risuscito/feature/settings/sections/settings_language.dart';
 
 import '../../../core/presentation/customization/theme/rs_theme_provider.dart';
@@ -29,12 +30,12 @@ class _SettingsGeneralState extends State<SettingsGeneral> {
   Widget build(BuildContext context) {
     final themeChange = Provider.of<DarkThemeProvider>(context);
     return CupertinoListSection.insetGrouped(
-      header: Text(AppLocalizations.of(context)!.translate("generals")!),
+      header: Text(AppLocalizations.of(context)!.translate('generals')!),
       backgroundColor:
           themeChange.darkTheme ? RSColors.bgDarkColor : RSColors.bgColor,
       children: [
         CupertinoListTile.notched(
-          title: Text(AppLocalizations.of(context)!.translate("dark_theme")!),
+          title: Text(AppLocalizations.of(context)!.translate('dark_theme')!),
           leading: Icon(
             themeChange.darkTheme
                 ? CupertinoIcons.moon_stars
@@ -48,15 +49,23 @@ class _SettingsGeneralState extends State<SettingsGeneral> {
           ),
         ),
         CupertinoListTile.notched(
-          title: Text(AppLocalizations.of(context)!.translate("language")!),
-          leading: Icon(
-            CupertinoIcons.globe,
-          ),
+          title: Text(AppLocalizations.of(context)!.translate('language')!),
+          leading: Icon(CupertinoIcons.globe),
           subtitle: Text(_getCurrentLanguage(context) ?? ''),
           trailing: Icon(CupertinoIcons.forward),
           onTap: () => showCupertinoModalBottomSheet(
             context: context,
             builder: (context) => SettingsLanguage(),
+          ),
+        ),
+        CupertinoListTile.notched(
+          title: Text(AppLocalizations.of(context)!.translate('help')!),
+          leading: Icon(CupertinoIcons.question_circle),
+          trailing: Icon(CupertinoIcons.forward),
+          onTap: () => Navigator.of(context).push(
+            CupertinoPageRoute(
+              builder: (context) => HelpPage(),
+            ),
           ),
         ),
       ],

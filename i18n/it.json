@@ -43,5 +43,12 @@
   "type_full": "Comincia la ricerca digitando almeno 3 caratteri",
   "no_result": "Nessun risultato",
   "no_result_full": "Prova a cercare qualcos'altro o cambia la modalità di ricerca",
-  "search_in": "Cerca per:"
+  "search_in": "Cerca per:",
+  "title": "Titolo",
+  "lyrics": "Testo",
+  "biblical_reference": "Riferimenti",
+  "help": "Aiuto",
+
+  "help_question_one": "Come faccio ad aggiungere un canto ai preferiti?",
+  "help_answer_one": "Per aggiungere un canto ai preferiti, basta scorrere sull'indice il canto verso sinistra per rivelare le opzioni disponibili, tra cui anche l'aggiunta ai preferiti."
 }

@@ -28,6 +28,7 @@ class RSApp extends StatefulWidget {
     return [
       Locale('en', 'US'),
       Locale('it', 'IT'),
+      Locale('uk', 'UA'),
     ];
   }
 
@@ -65,13 +66,6 @@ class RSApp extends StatefulWidget {
         color: RSColors.text,
         darkColor: RSColors.darkText,
       ),
-    );
-  }
-
-  static TextStyle headerTextStyle(bool darkTheme) {
-    return TextStyle(
-      color: darkTheme ? RSColors.darkText : RSColors.text,
-      fontSize: 24,
     );
   }
 

@@ -43,5 +43,12 @@
   "type_full": "Start your search by typing at least 3 characters",
   "no_result": "No result",
   "no_result_full": "Try to search for something else or switch research mode",
-  "search_in": "Search by:"
+  "search_in": "Search by:",
+  "title": "Title",
+  "lyrics": "Lyrics",
+  "biblical_reference": "Reference",
+  "help": "Help",
+
+  "help_question_one": "How do I add a song to favorites?",
+  "help_answer_one": "To add a song to favorites, simply swipe the song to the left on the index to reveal the available options, including adding to favorites."
 }

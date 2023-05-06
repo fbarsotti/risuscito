@@ -22,17 +22,17 @@ class _SettingsLanguageState extends State<SettingsLanguage> {
     List<RSLanguage> _languages = [
       RSLanguage(
         'it',
-        AppLocalizations.of(context)!.translate('it'),
+        'Italiano',
         Language.it,
       ),
       RSLanguage(
         'en',
-        AppLocalizations.of(context)!.translate('en'),
+        'English',
         Language.en,
       ),
       RSLanguage(
         'uk',
-        AppLocalizations.of(context)!.translate('uk'),
+        'Український',
         Language.uk,
       ),
     ];
@@ -54,8 +54,7 @@ class _SettingsLanguageState extends State<SettingsLanguage> {
                 color: RSColors.primary,
               ),
             ),
-            title:
-                Text(AppLocalizations.of(context)!.translate(language.code)!),
+            title: Text(language.name!),
             trailing: code == language.code
                 ? Icon(CupertinoIcons.checkmark_alt)
                 : null,

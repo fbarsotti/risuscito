@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -72,36 +71,6 @@ class SongCard extends StatelessWidget {
             ],
           ),
         ),
-        // child: Row(
-        //   children: [
-        //     Container(
-        //       width: MediaQuery.of(context).size.width / 4,
-        //       decoration: BoxDecoration(
-        //         color: Colors.green[300],
-        //         borderRadius: const BorderRadius.only(
-        //           topLeft: Radius.circular(8.0),
-        //           bottomLeft: Radius.circular(8.0),
-        //         ),
-        //       ),
-        //       child: Center(
-        //         child: Text(
-        //           '98',
-        //           style: TextStyle(
-        //             color: RSColors.primary,
-        //             fontSize: 28,
-        //             fontWeight: FontWeight.bold,
-        //           ),
-        //         ),
-        //       ),
-        //     ),
-        //     Column(
-        //       crossAxisAlignment: CrossAxisAlignment.start,
-        //       children: [
-        //         Text('Cantico dei cantici'),
-        //       ],
-        //     )
-        //   ],
-        // ),
       ),
     );
   }

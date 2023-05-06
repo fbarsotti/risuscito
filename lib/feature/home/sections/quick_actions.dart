@@ -52,6 +52,9 @@ class QuickActions extends StatelessWidget {
                 icon: CupertinoIcons.refresh_circled,
                 iconColor: CupertinoColors.systemBlue,
               ),
+              const SizedBox(
+                width: 8,
+              ),
               // QuickActionButton(
               //   text: 'Impostazioni',
               //   icon: CupertinoIcons.settings,

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
@@ -140,48 +141,61 @@ class _SearchPageState extends State<SearchPage> {
                             const SizedBox(
                               height: 8,
                             ),
-                            Row(
-                              children: [
-                                SearchTag(
-                                  onTap: () {
-                                    setState(() {
-                                      selectedTag = 0;
-                                      _controllerBehaviour();
-                                    });
-                                  },
-                                  text: 'Titolo',
-                                  icon: CupertinoIcons.textbox,
-                                  selected: selectedTag == 0,
-                                ),
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                SearchTag(
-                                  onTap: () {
-                                    setState(() {
-                                      selectedTag = 1;
-                                      _controllerBehaviour();
-                                    });
-                                  },
-                                  text: 'Testo',
-                                  icon: CupertinoIcons.doc_plaintext,
-                                  selected: selectedTag == 1,
-                                ),
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                SearchTag(
-                                  onTap: () {
-                                    setState(() {
-                                      selectedTag = 2;
-                                      _controllerBehaviour();
-                                    });
-                                  },
-                                  text: 'Riferimenti',
-                                  icon: CupertinoIcons.book,
-                                  selected: selectedTag == 2,
-                                ),
-                              ],
+                          ],
+                        ),
+                      ),
+                      Container(
+                        height: 40,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: [
+                            const SizedBox(
+                              width: 16,
+                            ),
+                            SearchTag(
+                              onTap: () {
+                                setState(() {
+                                  selectedTag = 0;
+                                  _controllerBehaviour();
+                                });
+                              },
+                              text: AppLocalizations.of(context)!
+                                  .translate('title')!,
+                              icon: CupertinoIcons.textbox,
+                              selected: selectedTag == 0,
+                            ),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            SearchTag(
+                              onTap: () {
+                                setState(() {
+                                  selectedTag = 1;
+                                  _controllerBehaviour();
+                                });
+                              },
+                              text: AppLocalizations.of(context)!
+                                  .translate('lyrics')!,
+                              icon: CupertinoIcons.doc_plaintext,
+                              selected: selectedTag == 1,
+                            ),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            SearchTag(
+                              onTap: () {
+                                setState(() {
+                                  selectedTag = 2;
+                                  _controllerBehaviour();
+                                });
+                              },
+                              text: AppLocalizations.of(context)!
+                                  .translate('biblical_reference')!,
+                              icon: CupertinoIcons.book,
+                              selected: selectedTag == 2,
+                            ),
+                            const SizedBox(
+                              width: 16,
                             ),
                           ],
                         ),
