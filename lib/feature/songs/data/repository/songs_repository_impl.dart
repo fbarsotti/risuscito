@@ -1,17 +1,16 @@
-import 'dart:io';
 import 'package:flutter/services.dart';
-import 'package:risuscito/core/infrastructure/songs/data/datasource/songs_datasource.dart';
 import 'package:risuscito/core/infrastructure/error/handler.dart';
 import 'package:risuscito/core/infrastructure/error/types/failures.dart';
 import 'package:dartz/dartz.dart';
-import 'package:risuscito/core/infrastructure/songs/domain/model/paged_songs_domain_model.dart';
-import 'package:risuscito/core/infrastructure/songs/domain/model/song_domain_model.dart';
-import 'package:risuscito/core/infrastructure/songs/domain/repository/songs_repository.dart';
+import 'package:risuscito/feature/songs/data/datasource/songs_datasource.dart';
+import 'package:risuscito/feature/songs/domain/repository/songs_repository.dart';
 import 'package:webview_flutter_plus/webview_flutter_plus.dart';
 import 'package:xml/xml.dart';
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart' show parse;
 import 'package:html/dom.dart' as dom;
+import '../../domain/model/paged_songs_domain_model.dart';
+import '../../domain/model/song_domain_model.dart';
 
 class SongsRepositoryImpl implements SongsRepository {
   final SongsDatasource localDatasource;

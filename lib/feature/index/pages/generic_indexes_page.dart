@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:risuscito/core/infrastructure/songs/domain/model/song_domain_model.dart';
-import 'package:risuscito/core/infrastructure/songs/presentation/bloc/songs_bloc.dart';
 import 'package:risuscito/core/presentation/customization/rs_colors.dart';
-import 'package:risuscito/core/presentation/song/song_tile.dart';
+import 'package:risuscito/feature/songs/presentation/sections/song_tile.dart';
 import 'package:risuscito/core/presentation/states/rs_loading_view.dart';
 import 'package:risuscito/core/utils/rs_utils.dart';
+import 'package:risuscito/feature/songs/domain/model/song_domain_model.dart';
+import 'package:risuscito/feature/songs/presentation/bloc/songs_bloc.dart';
 import '../../../../../core/infrastructure/localization/app_localizations.dart';
 import '../../../core/presentation/states/rs_failure_view.dart';
 

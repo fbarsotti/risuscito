@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:risuscito/core/infrastructure/songs/data/repository/songs_repository_impl.dart';
-import 'package:risuscito/core/infrastructure/songs/domain/repository/songs_repository.dart';
-import 'package:risuscito/core/infrastructure/songs/presentation/bloc/songs_bloc.dart';
+import 'package:risuscito/feature/songs/data/repository/songs_repository_impl.dart';
+import 'package:risuscito/feature/songs/domain/repository/songs_repository.dart';
+import 'package:risuscito/feature/songs/presentation/bloc/songs_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final _rs = GetIt.instance;

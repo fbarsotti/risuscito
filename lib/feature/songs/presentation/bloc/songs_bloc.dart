@@ -1,9 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:risuscito/core/infrastructure/error/types/failures.dart';
-import 'package:risuscito/core/infrastructure/songs/domain/model/paged_songs_domain_model.dart';
-import 'package:risuscito/core/infrastructure/songs/domain/model/song_domain_model.dart';
-import 'package:risuscito/core/infrastructure/songs/domain/repository/songs_repository.dart';
+import '../../domain/model/paged_songs_domain_model.dart';
+import '../../domain/repository/songs_repository.dart';
 
 part 'songs_event.dart';
 part 'songs_state.dart';

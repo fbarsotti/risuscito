@@ -8,6 +8,7 @@ import 'package:risuscito/core/infrastructure/localization/app_localizations.dar
 import 'package:risuscito/core/presentation/customization/rs_colors.dart';
 import 'package:risuscito/core/presentation/header_text.dart';
 import 'package:risuscito/core/presentation/quick_action_button.dart';
+import 'package:risuscito/feature/favourites/presentation/favourites_page.dart';
 
 class QuickActions extends StatelessWidget {
   const QuickActions({Key? key}) : super(key: key);
@@ -37,20 +38,26 @@ class QuickActions extends StatelessWidget {
                 width: 8,
               ),
               QuickActionButton(
-                text: AppLocalizations.of(context)!.translate('favourites')!,
-                icon: CupertinoIcons.text_badge_star,
-                iconColor: CupertinoColors.systemYellow,
-              ),
+                  text: AppLocalizations.of(context)!.translate('favourites')!,
+                  icon: CupertinoIcons.text_badge_star,
+                  iconColor: CupertinoColors.systemYellow,
+                  onTap: () => Navigator.of(context).push(
+                        CupertinoPageRoute(
+                          builder: (context) => FavouritesPage(),
+                        ),
+                      )),
               QuickActionButton(
                 text: AppLocalizations.of(context)!
                     .translate('personalized_lists')!,
                 icon: CupertinoIcons.rectangle_stack_badge_person_crop,
                 iconColor: CupertinoColors.systemRed,
+                onTap: null,
               ),
               QuickActionButton(
                 text: AppLocalizations.of(context)!.translate('history')!,
                 icon: CupertinoIcons.refresh_circled,
                 iconColor: CupertinoColors.systemBlue,
+                onTap: null,
               ),
               const SizedBox(
                 width: 8,

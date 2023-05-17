@@ -3,9 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
-import 'package:risuscito/core/infrastructure/songs/domain/model/song_domain_model.dart';
-import 'package:risuscito/core/infrastructure/songs/presentation/bloc/songs_bloc.dart';
-import 'package:risuscito/core/presentation/song/song_tile.dart';
+import 'package:risuscito/feature/songs/presentation/sections/song_tile.dart';
 import 'package:risuscito/core/presentation/states/rs_failure_view.dart';
 import 'package:risuscito/core/presentation/states/rs_loading_view.dart';
 import 'package:risuscito/feature/search/sections/empty_search.dart';
@@ -13,6 +11,8 @@ import 'package:risuscito/feature/search/sections/not_searching.dart';
 import 'package:risuscito/feature/search/sections/search_tag.dart';
 import '../../core/presentation/customization/rs_colors.dart';
 import '../../core/presentation/customization/theme/rs_theme_provider.dart';
+import '../songs/domain/model/song_domain_model.dart';
+import '../songs/presentation/bloc/songs_bloc.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -223,21 +223,6 @@ class _SearchPageState extends State<SearchPage> {
                             ),
                           ],
                         ),
-
-                      // Row(
-                      //   children: [
-                      //     Container(
-                      //       height: 100,
-                      //       width: MediaQuery.of(context).size.width / 2,
-                      //       color: RSColors.white,
-                      //     )
-                      // Container(
-                      //   height: 100,
-                      //   width: MediaQuery.of(context).size.width / 2,
-                      //   color: RSColors.white,
-                      // )
-                      // ],
-                      // )
                     ],
                   );
                 } else
@@ -247,16 +232,6 @@ class _SearchPageState extends State<SearchPage> {
           ),
         ],
       ),
-      // child: Padding(
-      //   padding: const EdgeInsets.all(16.0),
-      //   child: Column(
-      //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      //     children: [
-      //       Text(RSDatesUtils.localizedTimeMessage(context)!),
-      //       CupertinoSearchTextField(),
-      //     ],
-      //   ),
-      // ),
     );
   }
 }

@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:risuscito/core/infrastructure/songs/domain/model/song_domain_model.dart';
-import 'package:risuscito/core/presentation/song/song_page.dart';
-import '../customization/rs_colors.dart';
-import '../customization/theme/rs_theme_provider.dart';
+import 'package:risuscito/feature/songs/presentation/sections/song_page.dart';
+import 'package:risuscito/feature/songs/domain/model/song_domain_model.dart';
+import '../../../../core/presentation/customization/rs_colors.dart';
+import '../../../../core/presentation/customization/theme/rs_theme_provider.dart';
 
 class SongTile extends StatelessWidget {
   final SongDomainModel song;

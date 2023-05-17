@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
 import 'package:risuscito/core/presentation/header_text.dart';
-import 'package:risuscito/core/presentation/song/song_card.dart';
+import 'package:risuscito/feature/songs/presentation/sections/song_card.dart';
 import 'package:risuscito/feature/home/sections/empty_card.dart';
 import '../../../core/presentation/customization/rs_colors.dart';
 import '../../../core/presentation/customization/theme/rs_theme_provider.dart';

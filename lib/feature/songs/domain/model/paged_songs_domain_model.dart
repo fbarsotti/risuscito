@@ -1,4 +1,4 @@
-import 'package:risuscito/core/infrastructure/songs/domain/model/song_domain_model.dart';
+import 'package:risuscito/feature/songs/domain/model/song_domain_model.dart';
 
 class PagedSongsDomainModel {
   List<SongDomainModel>? alphabeticalOrder;

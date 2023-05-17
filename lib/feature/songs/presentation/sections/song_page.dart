@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
-import 'package:risuscito/core/infrastructure/songs/data/datasource/songs_datasource.dart';
 import 'package:risuscito/core/presentation/customization/rs_colors.dart';
 import 'package:risuscito/core/presentation/states/rs_loading_view.dart';
 import 'package:webview_flutter_plus/webview_flutter_plus.dart';
 
-import '../../infrastructure/localization/app_localizations.dart';
+import '../../../../core/infrastructure/localization/app_localizations.dart';
 
 class SongPage extends StatelessWidget {
   final WebViewPlus songWebView;
