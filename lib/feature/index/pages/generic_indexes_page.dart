@@ -1,7 +1,10 @@
+import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:risuscito/core/presentation/customization/rs_colors.dart';
+import 'package:risuscito/core/presentation/rs_snackbar.dart';
+import 'package:risuscito/feature/favourites/presentation/bloc/favourites_bloc.dart';
 import 'package:risuscito/feature/songs/presentation/sections/song_tile.dart';
 import 'package:risuscito/core/presentation/states/rs_loading_view.dart';
 import 'package:risuscito/core/utils/rs_utils.dart';
@@ -45,85 +48,145 @@ class _GenericIndexesPageState extends State<GenericIndexesPage> {
               init = false;
             }
             return SafeArea(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      height: 20,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 20,
                     ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: CupertinoSlidingSegmentedControl(
-                        groupValue: selected,
-                        children: <Index, Widget>{
-                          Index.alphabetical: Container(
-                            height: 40,
-                            width: MediaQuery.of(context).size.width,
-                            child: Center(
-                              child: Text(
-                                AppLocalizations.of(context)!
-                                    .translate('alphabetical_index')!,
-                              ),
-                            ),
-                          ),
-                          Index.numerical: Container(
-                            height: 40,
-                            width: MediaQuery.of(context).size.width,
-                            child: Center(
-                              child: Text(
-                                AppLocalizations.of(context)!
-                                    .translate('numerical_index')!,
-                              ),
-                            ),
-                          ),
-                        },
-                        onValueChanged: (Index? value) {
-                          if (value != null) {
-                            setState(() {
-                              selected = value;
-                              if (value == Index.alphabetical)
-                                songs = state.songs.alphabeticalOrder!;
-                              else
-                                songs = state.songs.numericalOrder!;
-                            });
-                          }
-                        },
-                      ),
-                    ),
-                    CupertinoListSection(
-                      children: [
-                        ...List.generate(
-                          songs.length,
-                          (index) => Slidable(
-                            endActionPane: ActionPane(
-                              motion: DrawerMotion(),
-                              children: [
-                                SlidableAction(
-                                  onPressed: null,
-                                  backgroundColor: CupertinoColors.systemYellow,
-                                  foregroundColor: RSColors.white,
-                                  icon: CupertinoIcons.text_badge_star,
-                                  label: 'Preferiti',
-                                ),
-                                SlidableAction(
-                                  onPressed: null,
-                                  backgroundColor: Color(0xFF0392CF),
-                                  foregroundColor: RSColors.white,
-                                  icon: CupertinoIcons.folder,
-                                  label: 'Save',
-                                ),
-                              ],
-                            ),
-                            child: SongTile(
-                              song: songs[index],
-                              forceRef: false,
+                    child: CupertinoSlidingSegmentedControl(
+                      groupValue: selected,
+                      children: <Index, Widget>{
+                        Index.alphabetical: Container(
+                          height: 40,
+                          width: MediaQuery.of(context).size.width,
+                          child: Center(
+                            child: Text(
+                              AppLocalizations.of(context)!
+                                  .translate('alphabetical_index')!,
                             ),
                           ),
                         ),
-                      ],
+                        Index.numerical: Container(
+                          height: 40,
+                          width: MediaQuery.of(context).size.width,
+                          child: Center(
+                            child: Text(
+                              AppLocalizations.of(context)!
+                                  .translate('numerical_index')!,
+                            ),
+                          ),
+                        ),
+                      },
+                      onValueChanged: (Index? value) {
+                        if (value != null) {
+                          setState(() {
+                            selected = value;
+                            if (value == Index.alphabetical)
+                              songs = state.songs.alphabeticalOrder!;
+                            else
+                              songs = state.songs.numericalOrder!;
+                          });
+                        }
+                      },
                     ),
-                  ],
-                ),
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: songs.length,
+                      itemBuilder: (context, index) => Slidable(
+                        endActionPane: ActionPane(
+                          extentRatio: 0.25,
+                          motion: DrawerMotion(),
+                          children: [
+                            SlidableAction(
+                              onPressed: (context) {
+                                BlocProvider.of<FavouritesBloc>(context).add(
+                                  SaveFavourite(
+                                    languageCode: AppLocalizations.of(context)!
+                                        .locale
+                                        .languageCode,
+                                    songId: songs[index].id!,
+                                  ),
+                                );
+                                AnimatedSnackBar(
+                                  duration: const Duration(seconds: 4),
+                                  builder: ((context) {
+                                    return RSSnackBar(
+                                      content: 'Canto aggiunto ai preferiti!',
+                                      icon: CupertinoIcons.checkmark,
+                                    );
+                                  }),
+                                ).show(context);
+                              },
+                              backgroundColor: CupertinoColors.systemYellow,
+                              foregroundColor: RSColors.white,
+                              icon: CupertinoIcons.text_badge_star,
+                              label: 'Preferiti',
+                            ),
+                            // SlidableAction(
+                            //   onPressed: null,
+                            //   backgroundColor: Color(0xFF0392CF),
+                            //   foregroundColor: RSColors.white,
+                            //   icon: CupertinoIcons.folder,
+                            //   label: 'Save',
+                            // ),
+                          ],
+                        ),
+                        child: SongTile(
+                          song: songs[index],
+                          forceRef: false,
+                          divider: index != songs.length - 1,
+                        ),
+                      ),
+                    ),
+                  ),
+                  // CupertinoListSection(
+                  //   children: [
+                  //     ...List.generate(
+                  //       songs.length,
+                  //       (index) => Slidable(
+                  //         endActionPane: ActionPane(
+                  //           extentRatio: 0.25,
+                  //           motion: DrawerMotion(),
+                  //           children: [
+                  //             SlidableAction(
+                  //               onPressed: (context) {
+                  //                 BlocProvider.of<FavouritesBloc>(context)
+                  //                     .add(
+                  //                   SaveFavourite(
+                  //                     languageCode:
+                  //                         AppLocalizations.of(context)!
+                  //                             .locale
+                  //                             .languageCode,
+                  //                     songId: songs[index].id!,
+                  //                   ),
+                  //                 );
+                  //               },
+                  //               backgroundColor: CupertinoColors.systemYellow,
+                  //               foregroundColor: RSColors.white,
+                  //               icon: CupertinoIcons.text_badge_star,
+                  //               label: 'Preferiti',
+                  //             ),
+                  //             // SlidableAction(
+                  //             //   onPressed: null,
+                  //             //   backgroundColor: Color(0xFF0392CF),
+                  //             //   foregroundColor: RSColors.white,
+                  //             //   icon: CupertinoIcons.folder,
+                  //             //   label: 'Save',
+                  //             // ),
+                  //           ],
+                  //         ),
+                  //         child: SongTile(
+                  //           song: songs[index],
+                  //           forceRef: false,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
+                ],
               ),
             );
           } else

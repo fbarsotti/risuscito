@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
@@ -211,18 +210,30 @@ class _SearchPageState extends State<SearchPage> {
                       if (_filteredSongs.length == 0 &&
                           _searchController.text.length >= 3)
                         EmptySearch(),
+                      // if (_filteredSongs.length > 0)
+                      const SizedBox(
+                        height: 24,
+                      ),
                       if (_filteredSongs.length > 0)
-                        CupertinoListSection(
-                          children: [
-                            ...List.generate(
-                              _filteredSongs.length,
-                              (index) => SongTile(
-                                song: _filteredSongs[index],
-                                forceRef: selectedTag == 2,
-                              ),
-                            ),
-                          ],
+                        ...List.generate(
+                          _filteredSongs.length,
+                          (index) => SongTile(
+                            song: _filteredSongs[index],
+                            forceRef: selectedTag == 2,
+                            divider: index != _filteredSongs.length - 1,
+                          ),
                         ),
+                      // CupertinoListSection(
+                      //   children: [
+                      //     ...List.generate(
+                      //       _filteredSongs.length,
+                      //       (index) => SongTile(
+                      //         song: _filteredSongs[index],
+                      //         forceRef: selectedTag == 2,
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
                     ],
                   );
                 } else

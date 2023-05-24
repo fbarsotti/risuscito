@@ -1,5 +1,11 @@
-
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:risuscito/core/presentation/empty_page_message.dart';
+import 'package:risuscito/core/presentation/states/rs_failure_view.dart';
+import 'package:risuscito/core/presentation/states/rs_loading_view.dart';
+import 'package:risuscito/feature/songs/presentation/sections/song_tile.dart';
+
+import 'bloc/favourites_bloc.dart';
 
 class FavouritesPage extends StatelessWidget {
   const FavouritesPage({Key? key}) : super(key: key);
@@ -12,33 +18,46 @@ class FavouritesPage extends StatelessWidget {
         previousPageTitle: 'Home',
       ),
       child: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Center(
-              child: Container(
-                child: Column(
-                  children: [
-                    Icon(
-                      CupertinoIcons.text_badge_star,
-                      size: 80,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-                      child: Column(
-                        children: [
-                          Text('Nessun preferito'),
-                          Text(
-                            'Non ci sono ancora canti tra i preferiti. Aggiungine un paio!',
+        child: BlocBuilder<FavouritesBloc, FavouritesState>(
+          builder: (context, state) {
+            if (state is FavouritesLoaded) {
+              if (state.songs.isEmpty)
+                return Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: Container(
+                          child: EmptyPageMessage(
+                            icon: CupertinoIcons.text_badge_star,
+                            title: 'Nessun preferito',
+                            subtitle:
+                                'Qui potrai trovare tutti i tuoi canti preferiti. Aggiungine qualcuno!',
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
+                    ],
+                  ),
+                );
+              else {
+                final favSongs = state.songs;
+                print(favSongs.length);
+                return AnimatedList(
+                  initialItemCount: favSongs.length,
+                  itemBuilder: (context, index, animation) {
+                    return SongTile(
+                      song: favSongs[index],
+                      forceRef: false,
+                      divider: index != favSongs.length - 1,
+                    );
+                  },
+                );
+              }
+            } else if (state is FavouritesFailure)
+              return RSFailureView(failure: state.failure);
+            else
+              return RSLoadingView();
+          },
         ),
       ),
     );

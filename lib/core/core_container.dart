@@ -2,43 +2,46 @@ import 'package:connectivity/connectivity.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:risuscito/feature/favourites/favourites_container.dart';
 import 'package:risuscito/feature/songs/data/datasource/songs_datasource.dart';
 import 'package:risuscito/feature/songs/songs_container.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'data/remote/rs_dio_client.dart';
 import 'infrastructure/network_info.dart';
 
-final _rs = GetIt.instance;
+final rs = GetIt.instance;
 
 class CoreContainer {
   static Future<void> init() async {
     // wait for all modules
 
-    _rs.registerLazySingleton<Connectivity>(
+    rs.registerLazySingleton<Connectivity>(
       () => Connectivity(),
     );
 
-    _rs.registerLazySingleton<NetworkInfo>(
-      () => NetworkInfoImpl(connectivity: _rs()),
+    rs.registerLazySingleton<NetworkInfo>(
+      () => NetworkInfoImpl(connectivity: rs()),
     );
 
-    _rs.registerLazySingleton(
+    rs.registerLazySingleton(
       () => SongsDatasource(
-        sharedPreferences: _rs(),
+        sharedPreferences: rs(),
       ),
     );
 
     final sharedPreferences = await SharedPreferences.getInstance();
-    _rs.registerLazySingleton(() => sharedPreferences);
+    rs.registerLazySingleton(() => sharedPreferences);
 
-    _rs.registerLazySingleton<Dio>(RSDioClient.createDio);
+    rs.registerLazySingleton<Dio>(RSDioClient.createDio);
 
     await SongsContainer.init();
+    await FavouritesContainer.init();
   }
 
   static List<BlocProvider> getBlocProviders() {
     return [
       ...SongsContainer.getBlocProviders(),
+      ...FavouritesContainer.getBlocProviders(),
     ];
   }
 }

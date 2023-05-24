@@ -4,6 +4,7 @@
   "uk": "Ukrainian",
   "home": "Home",
   "settings": "Settings",
+  "advanced": "Advanced",
   "generals": "Generals",
   "dark_theme": "Dark theme",
   "language": "Language",
@@ -48,6 +49,8 @@
   "lyrics": "Lyrics",
   "biblical_reference": "Reference",
   "help": "Help",
+  "always_on": "Display Always On",
+  "always_on_description": "Screen awake on the song",
 
   "help_question_one": "How do I add a song to favorites?",
   "help_answer_one": "To add a song to favorites, simply swipe the song to the left on the index to reveal the available options, including adding to favorites."

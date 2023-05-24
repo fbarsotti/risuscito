@@ -32,19 +32,25 @@ class _BiblicalIndexPageState extends State<BiblicalIndexPage> {
           if (state is SongsLoaded) {
             songs = state.songs.biblicalOrder!;
             return SafeArea(
-              child: SingleChildScrollView(
-                child: CupertinoListSection(
-                  children: [
-                    ...List.generate(
-                      songs.length,
-                      (index) => SongTile(
-                        song: songs[index],
-                        forceRef: false,
-                      ),
-                    ),
-                  ],
+              child: ListView.builder(
+                itemCount: songs.length,
+                itemBuilder: (context, index) => SongTile(
+                  song: songs[index],
+                  forceRef: false,
+                  divider: index != songs.length - 1,
                 ),
               ),
+              // child: CupertinoListSection(
+              //   children: [
+              //     ...List.generate(
+              //       songs.length,
+              //       (index) => SongTile(
+              //         song: songs[index],
+              //         forceRef: false,
+              //       ),
+              //     ),
+              //   ],
+              // ),
             );
           } else
             return RSLoadingView();

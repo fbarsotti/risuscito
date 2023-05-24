@@ -196,13 +196,13 @@ class SongsRepositoryImpl implements SongsRepository {
     return false;
   }
 
-  String _extractHtmlContent(String htmlString) {
-    dom.Document document = parse(htmlString);
-    String extractedContent = document.body!.text;
-    return extractedContent
-        .replaceAll('\n', ' ')
-        .replaceAll(RegExp(r'\s+'), ' ');
-  }
+  // String _extractHtmlContent(String htmlString) {
+  //   dom.Document document = parse(htmlString);
+  //   String extractedContent = document.body!.text;
+  //   return extractedContent
+  //       .replaceAll('\n', ' ')
+  //       .replaceAll(RegExp(r'\s+'), ' ');
+  // }
 
   String _extractBlackFontLines(String html) {
     dom.Document document = parse(html);

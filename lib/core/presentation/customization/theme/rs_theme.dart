@@ -1,8 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../core_container.dart';
-
 final _rs = GetIt.instance;
 
 class DarkThemePreference {

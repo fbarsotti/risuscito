@@ -9,64 +9,83 @@ import '../../../../core/presentation/customization/theme/rs_theme_provider.dart
 class SongTile extends StatelessWidget {
   final SongDomainModel song;
   final bool forceRef;
+  final bool divider;
 
   const SongTile({
     Key? key,
     required this.song,
     required this.forceRef,
+    required this.divider,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final themeChange = Provider.of<DarkThemeProvider>(context);
-    return CupertinoListTile(
-      leadingSize: 40,
-      leading: themeChange.darkTheme || song.color != Color(0xffFFFFFF)
-          ? CircleAvatar(
-              backgroundColor: song.color,
-              child: Text(
-                song.number!,
-                style: TextStyle(
-                  color: RSColors.primary,
-                ),
+    return Container(
+      color: themeChange.darkTheme ? RSColors.cardColorDark : RSColors.white,
+      child: Column(
+        children: [
+          CupertinoListTile(
+            // backgroundColor:
+            //     themeChange.darkTheme ? RSColors.cardColorDark : RSColors.white,
+            leadingSize: 40,
+            leading: themeChange.darkTheme || song.color != Color(0xffFFFFFF)
+                ? CircleAvatar(
+                    backgroundColor: song.color,
+                    child: Text(
+                      song.number!,
+                      style: TextStyle(
+                        color: RSColors.primary,
+                      ),
+                    ),
+                  )
+                : CircleAvatar(
+                    backgroundColor: CupertinoColors.black,
+                    child: CircleAvatar(
+                      backgroundColor: song.color,
+                      child: Text(
+                        song.number!,
+                        style: TextStyle(
+                          color: RSColors.primary,
+                        ),
+                      ),
+                    ),
+                  ),
+            trailing: const CupertinoListTileChevron(),
+            title: Container(
+              height: 70,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    forceRef ? song.biblicalRef! : song.title!,
+                    textAlign: TextAlign.start,
+                  ),
+                ],
               ),
-            )
-          : CircleAvatar(
-              backgroundColor: CupertinoColors.black,
-              child: CircleAvatar(
-                backgroundColor: song.color,
-                child: Text(
-                  song.number!,
-                  style: TextStyle(
-                    color: RSColors.primary,
+            ),
+            onTap: () {
+              Navigator.of(context, rootNavigator: true).push(
+                CupertinoPageRoute(
+                  builder: (context) => SongPage(
+                    songWebView: song.songWebView!,
+                    color: song.color!,
                   ),
                 ),
-              ),
-            ),
-      trailing: const CupertinoListTileChevron(),
-      title: Container(
-        height: 70,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              forceRef ? song.biblicalRef! : song.title!,
-              textAlign: TextAlign.start,
-            ),
-          ],
-        ),
-      ),
-      onTap: () {
-        Navigator.of(context, rootNavigator: true).push(
-          CupertinoPageRoute(
-            builder: (context) => SongPage(
-              songWebView: song.songWebView!,
-              color: song.color!,
-            ),
+              );
+            },
           ),
-        );
-      },
+          if (divider)
+            Divider(
+              height: 1,
+              color: themeChange.darkTheme
+                  ? RSColors.dividerDark
+                  : RSColors.dividerLight,
+              indent: 70,
+            )
+        ],
+      ),
     );
   }
 }

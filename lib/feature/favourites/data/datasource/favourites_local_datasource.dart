@@ -16,7 +16,7 @@ class FavouritesLocalDatasource {
   Future<void> saveFavourite(String songId) async {
     List<String>? favSongs = sharedPreferences!.getStringList(_favouritesKey);
     if (favSongs == null) favSongs = [];
-    favSongs.add(songId);
+    if (!(favSongs.contains(songId))) favSongs.add(songId);
     await sharedPreferences!.setStringList(_favouritesKey, favSongs);
   }
 

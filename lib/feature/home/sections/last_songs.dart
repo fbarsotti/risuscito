@@ -1,19 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
 import 'package:risuscito/core/presentation/header_text.dart';
-import 'package:risuscito/feature/songs/presentation/sections/song_card.dart';
 import 'package:risuscito/feature/home/sections/empty_card.dart';
-import '../../../core/presentation/customization/rs_colors.dart';
-import '../../../core/presentation/customization/theme/rs_theme_provider.dart';
 
 class LastSongs extends StatelessWidget {
   const LastSongs({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final themeChange = Provider.of<DarkThemeProvider>(context);
+    // final themeChange = Provider.of<DarkThemeProvider>(context);
     return Container(
       width: MediaQuery.of(context).size.width,
       child: Column(

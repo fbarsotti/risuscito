@@ -13,8 +13,8 @@ class FavouritesRepositoryImpl implements FavouritesRepository {
   final FavouritesLocalDatasource favouritesLocalDatasource;
   final SongsDatasource localDatasource;
 
-  FavouritesRepositoryImpl(
-    this.localDatasource, {
+  FavouritesRepositoryImpl({
+    required this.localDatasource,
     required this.favouritesLocalDatasource,
   });
 
@@ -105,5 +105,14 @@ class FavouritesRepositoryImpl implements FavouritesRepository {
       if (source.text == songId) return true;
     }
     return false;
+  }
+
+  @override
+  Future<Either<Failure, List<SongDomainModel>>> saveFavourite(
+    String languageCode,
+    String songId,
+  ) async {
+    await favouritesLocalDatasource.saveFavourite(songId);
+    return await getFavourites(languageCode);
   }
 }

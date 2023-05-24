@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
+import 'package:risuscito/feature/settings/sections/settings_advanced.dart';
 import 'package:risuscito/feature/settings/sections/settings_general.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -20,6 +21,7 @@ class _SettingsPageState extends State<SettingsPage> {
       child: ListView(
         children: [
           SettingsGeneral(),
+          SettingsAdvanced(),
         ],
       ),
     );

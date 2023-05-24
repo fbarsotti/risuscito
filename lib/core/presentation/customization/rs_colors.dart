@@ -27,6 +27,9 @@ class RSColors {
   static Color get cardColorLight => CupertinoColors.white;
   static Color get cardColorDark => CupertinoColors.darkBackgroundGray;
 
+  static Color get dividerLight => Color.fromARGB(255, 184, 184, 184);
+  static Color get dividerDark => Color.fromARGB(255, 76, 76, 76);
+
   static Color get text => const Color(0xff000000);
   static Color get darkText => const Color(0xffffffff);
 

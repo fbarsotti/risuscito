@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:risuscito/core/presentation/customization/theme/rs_theme_provider.dart';
-import '../feature/home/home_page.dart';
 import 'core_container.dart';
 import 'data/remote/rs_dio_client.dart';
 import 'infrastructure/localization/app_localizations.dart';
