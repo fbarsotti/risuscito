@@ -2,10 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:risuscito/core/infrastructure/error/handler.dart';
 import 'package:risuscito/core/infrastructure/error/types/failures.dart';
 import 'package:dartz/dartz.dart';
+import 'package:risuscito/core/infrastructure/error/types/successes.dart';
 import 'package:risuscito/feature/favourites/data/datasource/favourites_local_datasource.dart';
 import 'package:risuscito/feature/favourites/domain/repository/favourites_repository.dart';
 import 'package:risuscito/feature/songs/data/datasource/songs_datasource.dart';
 import 'package:risuscito/feature/songs/domain/model/song_domain_model.dart';
+import 'package:risuscito/feature/songs/presentation/sections/song_tile.dart';
 import 'package:webview_flutter_plus/webview_flutter_plus.dart';
 import 'package:xml/xml.dart';
 
@@ -114,5 +116,17 @@ class FavouritesRepositoryImpl implements FavouritesRepository {
   ) async {
     await favouritesLocalDatasource.saveFavourite(songId);
     return await getFavourites(languageCode);
+  }
+
+  @override
+  Future<Either<Failure, Success>> removeFavourite(
+    String songId,
+  ) async {
+    try {
+      await favouritesLocalDatasource.removeFavourite(songId);
+      return Right(Success());
+    } catch (e, s) {
+      return Left(handleError(e, s));
+    }
   }
 }

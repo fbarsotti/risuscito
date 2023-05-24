@@ -44,6 +44,7 @@ dependencies:
   html: ^0.15.0
   wakelock: ^0.6.2
   animated_snack_bar: ^0.3.1
+  flutter_swipe_action_cell: ^3.1.0
 
 dev_dependencies:
   flutter_test:

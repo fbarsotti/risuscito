@@ -123,7 +123,8 @@ class _GenericIndexesPageState extends State<GenericIndexesPage> {
                               backgroundColor: CupertinoColors.systemYellow,
                               foregroundColor: RSColors.white,
                               icon: CupertinoIcons.text_badge_star,
-                              label: 'Preferiti',
+                              label: AppLocalizations.of(context)!
+                                  .translate('favourites'),
                             ),
                             // SlidableAction(
                             //   onPressed: null,

@@ -23,10 +23,8 @@ class SaveFavourite extends FavouritesEvent {
 
 class RemoveFavourite extends FavouritesEvent {
   final String songId;
-  final Key listKey;
 
   RemoveFavourite({
     required this.songId,
-    required this.listKey,
   });
 }

@@ -51,6 +51,7 @@
   "help": "Aiuto",
   "always_on": "Display Always On",
   "always_on_description": "Schermo attivo sul canto",
+  "remove": "Rimuovi",
 
   "help_question_one": "Come faccio ad aggiungere un canto ai preferiti?",
   "help_answer_one": "Per aggiungere un canto ai preferiti, basta scorrere sull'indice il canto verso sinistra per rivelare le opzioni disponibili, tra cui anche l'aggiunta ai preferiti."
