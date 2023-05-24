@@ -60,6 +60,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
                       key: ObjectKey(favSongs[index]),
                       trailingActions: <SwipeAction>[
                         SwipeAction(
+                          color: CupertinoColors.systemRed,
                           icon: Icon(
                             CupertinoIcons.trash,
                             color: CupertinoColors.white,
@@ -80,7 +81,6 @@ class _FavouritesPageState extends State<FavouritesPage> {
                               favSongs.removeAt(index);
                             });
                           },
-                          color: CupertinoColors.systemRed,
                         ),
                       ],
                       child: SongTile(

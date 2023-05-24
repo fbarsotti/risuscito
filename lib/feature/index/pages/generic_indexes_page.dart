@@ -1,7 +1,7 @@
-import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_swipe_action_cell/core/cell.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:risuscito/core/presentation/customization/rs_colors.dart';
 import 'package:risuscito/core/presentation/rs_snackbar.dart';
 import 'package:risuscito/feature/favourites/presentation/bloc/favourites_bloc.dart';
@@ -95,46 +95,38 @@ class _GenericIndexesPageState extends State<GenericIndexesPage> {
                   Expanded(
                     child: ListView.builder(
                       itemCount: songs.length,
-                      itemBuilder: (context, index) => Slidable(
-                        endActionPane: ActionPane(
-                          extentRatio: 0.25,
-                          motion: DrawerMotion(),
-                          children: [
-                            SlidableAction(
-                              onPressed: (context) {
-                                BlocProvider.of<FavouritesBloc>(context).add(
-                                  SaveFavourite(
-                                    languageCode: AppLocalizations.of(context)!
-                                        .locale
-                                        .languageCode,
-                                    songId: songs[index].id!,
-                                  ),
-                                );
-                                AnimatedSnackBar(
-                                  duration: const Duration(seconds: 4),
-                                  builder: ((context) {
-                                    return RSSnackBar(
-                                      content: 'Canto aggiunto ai preferiti!',
-                                      icon: CupertinoIcons.checkmark,
-                                    );
-                                  }),
-                                ).show(context);
-                              },
-                              backgroundColor: CupertinoColors.systemYellow,
-                              foregroundColor: RSColors.white,
-                              icon: CupertinoIcons.text_badge_star,
-                              label: AppLocalizations.of(context)!
-                                  .translate('favourites'),
+                      itemBuilder: (context, index) => SwipeActionCell(
+                        key: ObjectKey(songs[index]),
+                        trailingActions: [
+                          SwipeAction(
+                            color: CupertinoColors.systemYellow,
+                            icon: Icon(
+                              CupertinoIcons.text_badge_star,
+                              color: CupertinoColors.white,
                             ),
-                            // SlidableAction(
-                            //   onPressed: null,
-                            //   backgroundColor: Color(0xFF0392CF),
-                            //   foregroundColor: RSColors.white,
-                            //   icon: CupertinoIcons.folder,
-                            //   label: 'Save',
-                            // ),
-                          ],
-                        ),
+                            onTap: (CompletionHandler handler) async {
+                              handler(false);
+                              BlocProvider.of<FavouritesBloc>(context).add(
+                                SaveFavourite(
+                                  languageCode: AppLocalizations.of(context)!
+                                      .locale
+                                      .languageCode,
+                                  songId: songs[index].id!,
+                                ),
+                              );
+                              Fluttertoast.showToast(
+                                  msg: AppLocalizations.of(context)!
+                                      .translate('favourite_added')!,
+                                  toastLength: Toast.LENGTH_LONG,
+                                  gravity: ToastGravity.TOP,
+                                  timeInSecForIosWeb: 2,
+                                  backgroundColor:
+                                      RSColors.cardColorDark.withOpacity(0.95),
+                                  textColor: CupertinoColors.white,
+                                  fontSize: 16.0);
+                            },
+                          )
+                        ],
                         child: SongTile(
                           song: songs[index],
                           forceRef: false,
