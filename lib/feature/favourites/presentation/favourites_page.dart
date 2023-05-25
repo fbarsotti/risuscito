@@ -52,12 +52,13 @@ class _FavouritesPageState extends State<FavouritesPage> {
               else {
                 final favSongs = state.songs;
                 print(favSongs.length);
-                return AnimatedList(
+                return ListView.builder(
                   key: myListKey,
-                  initialItemCount: favSongs.length,
-                  itemBuilder: (context, index, animation) {
+                  itemCount: favSongs.length,
+                  itemBuilder: (context, index) {
+                    print('index $index');
                     return SwipeActionCell(
-                      key: ObjectKey(favSongs[index]),
+                      key: ObjectKey(1),
                       trailingActions: <SwipeAction>[
                         SwipeAction(
                           color: CupertinoColors.systemRed,
@@ -74,11 +75,12 @@ class _FavouritesPageState extends State<FavouritesPage> {
                             BlocProvider.of<FavouritesBloc>(context).add(
                               RemoveFavourite(
                                 songId: favSongs[index].id!,
+                                reload: false,
                               ),
                             );
 
                             setState(() {
-                              favSongs.removeAt(index);
+                              favSongs.remove(favSongs[index]);
                             });
                           },
                         ),

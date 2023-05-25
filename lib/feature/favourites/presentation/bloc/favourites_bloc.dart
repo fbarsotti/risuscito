@@ -35,10 +35,20 @@ class FavouritesBloc extends Bloc<FavouritesEvent, FavouritesState> {
       );
     });
     on<RemoveFavourite>((event, emit) async {
+      if (event.reload) emit(FavouritesLoading());
       final result = await favouritesRepository.removeFavourite(
         event.songId,
       );
-
+      if (event.reload) {
+        final favSongsResult =
+            await favouritesRepository.getFavourites(event.languageCode!);
+        favSongsResult.fold(
+          (failure) => null,
+          (favSongs) => emit(
+            FavouritesLoaded(songs: favSongs),
+          ),
+        );
+      }
       result.fold(
         (failure) => emit(FavouritesFailure(failure: failure)),
         (success) {},

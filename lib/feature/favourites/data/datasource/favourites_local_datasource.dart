@@ -2,7 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class FavouritesLocalDatasource {
   final SharedPreferences? sharedPreferences;
-  static const String _favouritesKey = 'favorites';
+  static const String _favouritesKey = 'favourites';
 
   FavouritesLocalDatasource({
     required this.sharedPreferences,

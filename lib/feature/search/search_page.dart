@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_swipe_action_cell/core/cell.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:risuscito/core/core_container.dart';
 import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
 import 'package:risuscito/feature/songs/presentation/sections/song_tile.dart';
 import 'package:risuscito/core/presentation/states/rs_failure_view.dart';
@@ -8,8 +11,10 @@ import 'package:risuscito/core/presentation/states/rs_loading_view.dart';
 import 'package:risuscito/feature/search/sections/empty_search.dart';
 import 'package:risuscito/feature/search/sections/not_searching.dart';
 import 'package:risuscito/feature/search/sections/search_tag.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/presentation/customization/rs_colors.dart';
 import '../../core/presentation/customization/theme/rs_theme_provider.dart';
+import '../favourites/presentation/bloc/favourites_bloc.dart';
 import '../songs/domain/model/song_domain_model.dart';
 import '../songs/presentation/bloc/songs_bloc.dart';
 
@@ -24,6 +29,7 @@ class _SearchPageState extends State<SearchPage> {
   TextEditingController _searchController = TextEditingController();
   List<SongDomainModel> songs = [];
   List<SongDomainModel> _filteredSongs = [];
+  SharedPreferences prefs = rs();
   late int selectedTag;
 
   void _controllerBehaviour() {
@@ -89,6 +95,7 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
+    final favSongIds = prefs.getStringList('favourites') ?? [];
     final themeChange = Provider.of<DarkThemeProvider>(context);
     return CupertinoPageScaffold(
       child: CustomScrollView(
@@ -217,12 +224,74 @@ class _SearchPageState extends State<SearchPage> {
                       if (_filteredSongs.length > 0)
                         ...List.generate(
                           _filteredSongs.length,
-                          (index) => SongTile(
-                            song: _filteredSongs[index],
-                            forceRef: selectedTag == 2,
-                            divider: index != _filteredSongs.length - 1,
+                          (index) => SwipeActionCell(
+                            key: ObjectKey(songs[index]),
+                            trailingActions: [
+                              SwipeAction(
+                                color: favSongIds.contains(songs[index].id!)
+                                    ? CupertinoColors.systemRed
+                                    : CupertinoColors.systemYellow,
+                                icon: Icon(
+                                  favSongIds.contains(songs[index].id!)
+                                      ? CupertinoIcons.trash
+                                      : CupertinoIcons.text_badge_star,
+                                  color: CupertinoColors.white,
+                                ),
+                                onTap: (CompletionHandler handler) async {
+                                  handler(false);
+                                  if (favSongIds.contains(songs[index].id!)) {
+                                    BlocProvider.of<FavouritesBloc>(context)
+                                        .add(
+                                      RemoveFavourite(
+                                        songId: songs[index].id!,
+                                        reload: true,
+                                        languageCode:
+                                            AppLocalizations.of(context)!
+                                                .locale
+                                                .languageCode,
+                                      ),
+                                    );
+                                  } else
+                                    BlocProvider.of<FavouritesBloc>(context)
+                                        .add(
+                                      SaveFavourite(
+                                        languageCode:
+                                            AppLocalizations.of(context)!
+                                                .locale
+                                                .languageCode,
+                                        songId: songs[index].id!,
+                                      ),
+                                    );
+                                  Fluttertoast.showToast(
+                                    msg: favSongIds.contains(songs[index].id!)
+                                        ? AppLocalizations.of(context)!
+                                            .translate('favourite_removed')!
+                                        : AppLocalizations.of(context)!
+                                            .translate('favourite_added')!,
+                                    toastLength: Toast.LENGTH_LONG,
+                                    gravity: ToastGravity.TOP,
+                                    timeInSecForIosWeb: 2,
+                                    backgroundColor: RSColors.cardColorDark
+                                        .withOpacity(0.95),
+                                    textColor: CupertinoColors.white,
+                                    fontSize: 16.0,
+                                  );
+                                  setState(() {});
+                                },
+                              )
+                            ],
+                            child: SongTile(
+                              song: songs[index],
+                              forceRef: selectedTag == 2,
+                              divider: index != songs.length - 1,
+                            ),
                           ),
                         ),
+                      // (index) => SongTile(
+                      //   song: _filteredSongs[index],
+                      //   forceRef: selectedTag == 2,
+                      //   divider: index != _filteredSongs.length - 1,
+                      // ),
                       // CupertinoListSection(
                       //   children: [
                       //     ...List.generate(

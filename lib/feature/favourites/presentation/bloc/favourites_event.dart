@@ -23,8 +23,12 @@ class SaveFavourite extends FavouritesEvent {
 
 class RemoveFavourite extends FavouritesEvent {
   final String songId;
+  final bool reload;
+  final String? languageCode;
 
   RemoveFavourite({
     required this.songId,
+    required this.reload,
+    this.languageCode,
   });
 }
