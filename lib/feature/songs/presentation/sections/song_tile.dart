@@ -69,6 +69,7 @@ class SongTile extends StatelessWidget {
               Navigator.of(context, rootNavigator: true).push(
                 CupertinoPageRoute(
                   builder: (context) => SongPage(
+                    url: song.url,
                     songWebView: song.songWebView!,
                     color: song.color!,
                   ),

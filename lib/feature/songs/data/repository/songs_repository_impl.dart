@@ -82,6 +82,7 @@ class SongsRepositoryImpl implements SongsRepository {
                   controller.loadString(content);
                 },
               ),
+              url: await _getSongUrl(languageCode, id),
               color: Color(
                 int.parse('0xff$color'),
               ),
@@ -172,6 +173,7 @@ class SongsRepositoryImpl implements SongsRepository {
                 controller.loadString(content);
               },
             ),
+            url: await _getSongUrl(languageCode, id),
             color: Color(
               int.parse('0xff$color'),
             ),
@@ -196,13 +198,19 @@ class SongsRepositoryImpl implements SongsRepository {
     return false;
   }
 
-  // String _extractHtmlContent(String htmlString) {
-  //   dom.Document document = parse(htmlString);
-  //   String extractedContent = document.body!.text;
-  //   return extractedContent
-  //       .replaceAll('\n', ' ')
-  //       .replaceAll(RegExp(r'\s+'), ' ');
-  // }
+  Future<String?> _getSongUrl(String languageCode, String songId) async {
+    final sourcesContent =
+        await localDatasource.getLocalizedSongLinks(languageCode);
+    final sourcesDocument = XmlDocument.parse(sourcesContent);
+    final sourcesNode = sourcesDocument.findElements('resources').first;
+    final sources = sourcesNode.findElements('string');
+
+    for (final source in sources) {
+      if (source.getAttribute('name')!.replaceAll('_link', '').toLowerCase() ==
+          songId) return source.text;
+    }
+    return null;
+  }
 
   String _extractBlackFontLines(String html) {
     dom.Document document = parse(html);

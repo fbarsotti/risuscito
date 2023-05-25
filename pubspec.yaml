@@ -45,6 +45,7 @@ dependencies:
   wakelock: ^0.6.2
   flutter_swipe_action_cell: ^3.1.0
   fluttertoast: ^8.2.2
+  audioplayers: ^4.0.1
 
 dev_dependencies:
   flutter_test:

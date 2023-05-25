@@ -54,6 +54,8 @@
   "remove": "Remove",
   "favourite_added": "Song added to favourites!",
   "favourite_removed": "Song removed from favourites.",
+  "no_favourites": "No favourites",
+  "no_favourites_full": "Here you can have your favourite songs. Add some!",
 
   "help_question_one": "How do I add a song to favorites?",
   "help_answer_one": "To add a song to favorites, simply swipe the song to the left on the index to reveal the available options, including adding to favorites."

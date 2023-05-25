@@ -24,8 +24,8 @@ class _FavouritesPageState extends State<FavouritesPage> {
     final myListKey = GlobalKey<AnimatedListState>();
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
-        middle: Text('Preferiti'),
-        previousPageTitle: 'Home',
+        middle: Text(AppLocalizations.of(context)!.translate('favourites')!),
+        previousPageTitle: AppLocalizations.of(context)!.translate('home'),
       ),
       child: SafeArea(
         child: BlocBuilder<FavouritesBloc, FavouritesState>(
@@ -51,12 +51,10 @@ class _FavouritesPageState extends State<FavouritesPage> {
                 );
               else {
                 final favSongs = state.songs;
-                print(favSongs.length);
                 return ListView.builder(
                   key: myListKey,
                   itemCount: favSongs.length,
                   itemBuilder: (context, index) {
-                    print('index $index');
                     return SwipeActionCell(
                       key: ObjectKey(1),
                       trailingActions: <SwipeAction>[

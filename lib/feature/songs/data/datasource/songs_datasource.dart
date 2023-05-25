@@ -67,4 +67,13 @@ class SongsDatasource {
     // return await rootBundle.loadString(
     //     'assets/data/songs_values/values-$languageCode/sorgenti.xml');
   }
+
+  Future<String> getLocalizedSongLinks(
+    String languageCode,
+  ) async {
+    return await _getFileContent(
+        'assets/data/songs_values/values-$languageCode/', 'link');
+    // return await rootBundle.loadString(
+    //     'assets/data/songs_values/values-$languageCode/sorgenti.xml');
+  }
 }

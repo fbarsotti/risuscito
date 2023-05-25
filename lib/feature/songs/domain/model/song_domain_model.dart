@@ -7,6 +7,7 @@ class SongDomainModel {
   String? biblicalRef;
   String? number;
   String? content;
+  String? url;
   Color? color;
   WebViewPlus? songWebView;
 
@@ -16,6 +17,7 @@ class SongDomainModel {
     this.biblicalRef,
     this.number,
     this.content,
+    this.url,
     this.color,
     this.songWebView,
   });

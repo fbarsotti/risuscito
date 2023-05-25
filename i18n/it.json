@@ -54,6 +54,8 @@
   "remove": "Rimuovi",
   "favourite_added": "Canto aggiunto ai preferiti!",
   "favourite_removed": "Canto rimosso dai preferiti.",
+  "no_favourites": "Nessun preferito",
+  "no_favourites_full": "Qui potrai trovare tutti i tuoi canti preferiti. Aggiungine qualcuno!",
 
   "help_question_one": "Come faccio ad aggiungere un canto ai preferiti?",
   "help_answer_one": "Per aggiungere un canto ai preferiti, basta scorrere sull'indice il canto verso sinistra per rivelare le opzioni disponibili, tra cui anche l'aggiunta ai preferiti."

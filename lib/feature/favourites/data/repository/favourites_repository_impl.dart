@@ -80,6 +80,7 @@ class FavouritesRepositoryImpl implements FavouritesRepository {
                     controller.loadString(content);
                   },
                 ),
+                url: await _getSongUrl(languageCode, id),
                 color: Color(
                   int.parse('0xff$color'),
                 ),
@@ -107,6 +108,20 @@ class FavouritesRepositoryImpl implements FavouritesRepository {
       if (source.text == songId) return true;
     }
     return false;
+  }
+
+  Future<String?> _getSongUrl(String languageCode, String songId) async {
+    final sourcesContent =
+        await localDatasource.getLocalizedSongLinks(languageCode);
+    final sourcesDocument = XmlDocument.parse(sourcesContent);
+    final sourcesNode = sourcesDocument.findElements('resources').first;
+    final sources = sourcesNode.findElements('string');
+
+    for (final source in sources) {
+      if (source.getAttribute('name')!.replaceAll('_link', '').toLowerCase() ==
+          songId) return source.text;
+    }
+    return null;
   }
 
   @override
