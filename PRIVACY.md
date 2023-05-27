@@ -1,4 +1,4 @@
-# **Privacy Policy per Risuscitò - Canti del cammino**
+# **Privacy Policy per Risuscitò - Canti del Cammino**
 
  
 
