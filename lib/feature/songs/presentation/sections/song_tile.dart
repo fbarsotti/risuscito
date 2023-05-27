@@ -66,6 +66,7 @@ class SongTile extends StatelessWidget {
               ),
             ),
             onTap: () {
+              FocusScope.of(context).unfocus();
               Navigator.of(context, rootNavigator: true).push(
                 CupertinoPageRoute(
                   builder: (context) => SongPage(
