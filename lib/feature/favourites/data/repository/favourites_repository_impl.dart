@@ -7,8 +7,7 @@ import 'package:risuscito/feature/favourites/data/datasource/favourites_local_da
 import 'package:risuscito/feature/favourites/domain/repository/favourites_repository.dart';
 import 'package:risuscito/feature/songs/data/datasource/songs_datasource.dart';
 import 'package:risuscito/feature/songs/domain/model/song_domain_model.dart';
-import 'package:risuscito/feature/songs/presentation/sections/song_tile.dart';
-import 'package:webview_flutter_plus/webview_flutter_plus.dart';
+// import 'package:webview_flutter_plus/webview_flutter_plus.dart';
 import 'package:xml/xml.dart';
 
 class FavouritesRepositoryImpl implements FavouritesRepository {
@@ -73,13 +72,14 @@ class FavouritesRepositoryImpl implements FavouritesRepository {
                     )
                     .first
                     .text,
-                songWebView: WebViewPlus(
-                  javascriptMode: JavascriptMode.unrestricted,
-                  backgroundColor: Color(int.parse('0xff$color')),
-                  onWebViewCreated: (controller) {
-                    controller.loadString(content);
-                  },
-                ),
+                htmlContent: content,
+                // songWebView: WebViewPlus(
+                //   javascriptMode: JavascriptMode.unrestricted,
+                //   backgroundColor: Color(int.parse('0xff$color')),
+                //   onWebViewCreated: (controller) {
+                //     controller.loadString(content);
+                //   },
+                // ),
                 url: await _getSongUrl(languageCode, id),
                 color: Color(
                   int.parse('0xff$color'),

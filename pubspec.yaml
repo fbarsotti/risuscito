@@ -38,7 +38,8 @@ dependencies:
       ref: main
       path: modal_bottom_sheet
   xml: ^6.2.2
-  webview_flutter_plus: ^0.3.0+2
+  # webview_flutter_plus: ^0.3.0+2
+  webview_flutter: ^4.2.1 
   enough_platform_widgets: ^0.7.2
   flutter_slidable: ^3.0.0
   html: ^0.15.0

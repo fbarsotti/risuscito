@@ -52,7 +52,7 @@ class _BiblicalIndexPageState extends State<BiblicalIndexPage> {
                       icon: Icon(
                         favSongIds.contains(songs[index].id!)
                             ? CupertinoIcons.trash
-                            : CupertinoIcons.text_badge_star,
+                            : CupertinoIcons.star_fill,
                         color: CupertinoColors.white,
                       ),
                       onTap: (CompletionHandler handler) async {

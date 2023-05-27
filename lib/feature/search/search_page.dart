@@ -30,10 +30,10 @@ class _SearchPageState extends State<SearchPage> {
   List<SongDomainModel> songs = [];
   List<SongDomainModel> _filteredSongs = [];
   SharedPreferences prefs = rs();
-  late int selectedTag;
+  int selectedTag = 0;
 
   void _controllerBehaviour() {
-    if (_searchController.text.length >= 3) {
+    if (_searchController.text.length >= 3 && selectedTag != 2) {
       if (selectedTag == 0)
         _filteredSongs = songs
             .where(
@@ -50,15 +50,15 @@ class _SearchPageState extends State<SearchPage> {
               ),
             )
             .toList();
-      if (selectedTag == 2)
-        _filteredSongs = songs
-            .where(
-              (element) => _refsSearchCondition(
-                element,
-              ),
-            )
-            .toList();
-    } else
+    } else if (_searchController.text.length > 0 && selectedTag == 2)
+      _filteredSongs = songs
+          .where(
+            (element) => _refsSearchCondition(
+              element,
+            ),
+          )
+          .toList();
+    else
       _filteredSongs = [];
   }
 
@@ -76,7 +76,7 @@ class _SearchPageState extends State<SearchPage> {
 
   bool _refsSearchCondition(SongDomainModel element) {
     return element.biblicalRef != null
-        ? element.biblicalRef!.toLowerCase().contains(
+        ? element.biblicalRef!.split(' - ')[0].toLowerCase().contains(
               _searchController.text.toLowerCase(),
             )
         : false;
@@ -110,6 +110,7 @@ class _SearchPageState extends State<SearchPage> {
           ),
           SliverToBoxAdapter(
             child: SafeArea(
+              top: false,
               child: BlocBuilder<SongsBloc, SongsState>(
                 builder: (context, state) {
                   if (state is SongsFailure)
@@ -214,7 +215,9 @@ class _SearchPageState extends State<SearchPage> {
                           ),
                         if (_filteredSongs.length == 0 &&
                             _searchController.text.length < 3)
-                          NotSearching(),
+                          NotSearching(
+                            selectedTag: selectedTag,
+                          ),
 
                         if (_filteredSongs.length == 0 &&
                             _searchController.text.length >= 3)
@@ -236,7 +239,7 @@ class _SearchPageState extends State<SearchPage> {
                                   icon: Icon(
                                     favSongIds.contains(songs[index].id!)
                                         ? CupertinoIcons.trash
-                                        : CupertinoIcons.text_badge_star,
+                                        : CupertinoIcons.star_fill,
                                     color: CupertinoColors.white,
                                   ),
                                   onTap: (CompletionHandler handler) async {
@@ -245,7 +248,7 @@ class _SearchPageState extends State<SearchPage> {
                                       BlocProvider.of<FavouritesBloc>(context)
                                           .add(
                                         RemoveFavourite(
-                                          songId: songs[index].id!,
+                                          songId: _filteredSongs[index].id!,
                                           reload: true,
                                           languageCode:
                                               AppLocalizations.of(context)!
@@ -261,7 +264,7 @@ class _SearchPageState extends State<SearchPage> {
                                               AppLocalizations.of(context)!
                                                   .locale
                                                   .languageCode,
-                                          songId: songs[index].id!,
+                                          songId: _filteredSongs[index].id!,
                                         ),
                                       );
                                     Fluttertoast.showToast(

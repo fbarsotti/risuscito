@@ -103,7 +103,7 @@ class _GenericIndexesPageState extends State<GenericIndexesPage> {
                             icon: Icon(
                               favSongIds.contains(songs[index].id!)
                                   ? CupertinoIcons.trash
-                                  : CupertinoIcons.text_badge_star,
+                                  : CupertinoIcons.star_fill,
                               color: CupertinoColors.white,
                             ),
                             onTap: (CompletionHandler handler) async {

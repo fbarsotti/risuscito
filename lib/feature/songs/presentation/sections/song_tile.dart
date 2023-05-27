@@ -70,7 +70,9 @@ class SongTile extends StatelessWidget {
                 CupertinoPageRoute(
                   builder: (context) => SongPage(
                     url: song.url,
-                    songWebView: song.songWebView!,
+                    // songWebView: song.songWebView!,
+                    htmlContent: song.htmlContent!,
+
                     color: song.color!,
                   ),
                 ),

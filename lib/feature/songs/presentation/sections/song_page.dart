@@ -1,25 +1,25 @@
 import 'dart:async';
-
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:provider/provider.dart';
 import 'package:risuscito/core/core_container.dart';
 import 'package:risuscito/core/presentation/customization/rs_colors.dart';
-import 'package:risuscito/core/presentation/customization/theme/rs_theme_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wakelock/wakelock.dart';
-import 'package:webview_flutter_plus/webview_flutter_plus.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+// import 'package:webview_flutter_plus/webview_flutter_plus.dart';
 import '../../../../core/infrastructure/localization/app_localizations.dart';
 
 class SongPage extends StatefulWidget {
   final String? url;
-  final WebViewPlus songWebView;
+  final String htmlContent;
+  // final WebViewPlus songWebView;
   final Color color;
 
   SongPage({
     Key? key,
     required this.url,
-    required this.songWebView,
+    required this.htmlContent,
+    // required this.songWebView,
     required this.color,
   }) : super(key: key);
 
@@ -39,7 +39,7 @@ class _SongPageState extends State<SongPage> {
   @override
   void initState() {
     super.initState();
-
+    _sliderValue = 0.0;
     SharedPreferences prefs = rs();
     if (prefs.getBool('always_on_display') ?? true)
       Wakelock.enable();
@@ -58,9 +58,13 @@ class _SongPageState extends State<SongPage> {
     _positionSubscription =
         _audioPlayer.onPositionChanged.listen((Duration position) {
       setState(() {
-        if (!_isDraggingSlider)
+        if (!_isDraggingSlider) {
           _sliderValue =
               position.inSeconds.toDouble() / _duration.inSeconds.toDouble();
+          if (_sliderValue.isNaN) {
+            _sliderValue = 0.0;
+          }
+        }
       });
     });
   }
@@ -71,6 +75,14 @@ class _SongPageState extends State<SongPage> {
     _audioPlayer.stop();
     _audioPlayer.dispose();
     super.dispose();
+  }
+
+  Future<void> loadRecording() async {
+    try {
+      return _audioPlayer.setSourceUrl(widget.url!);
+    } catch (e, s) {
+      print('Catched $e');
+    }
   }
 
   void playRecording() async {
@@ -116,12 +128,19 @@ class _SongPageState extends State<SongPage> {
                 // height: 1024,
                 color: widget.color,
                 padding: EdgeInsets.only(left: 16, right: 16, bottom: 24),
-                child: widget.songWebView,
+                // child: widget.songWebView,
+                child: WebViewWidget(
+                  controller: WebViewController()
+                    ..loadHtmlString(
+                      widget.htmlContent,
+                    )
+                    ..setBackgroundColor(widget.color),
+                ),
               ),
             ),
             if (widget.url != null && widget.url!.isNotEmpty)
               FutureBuilder(
-                future: _audioPlayer.setSourceUrl(widget.url!),
+                future: loadRecording(),
                 builder: (context, snapshot) {
                   return Container(
                     // height: 150,
@@ -136,7 +155,7 @@ class _SongPageState extends State<SongPage> {
                       child: Row(children: [
                         Expanded(
                           child: CupertinoSlider(
-                            value: _sliderValue.isNaN ? 0 : _sliderValue,
+                            value: snapshot.hasData ? _sliderValue : 0.0,
                             onChanged: (value) {
                               setState(() {
                                 _sliderValue = value;

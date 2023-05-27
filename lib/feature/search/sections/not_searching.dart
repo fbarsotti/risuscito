@@ -3,7 +3,11 @@ import 'package:risuscito/core/infrastructure/localization/app_localizations.dar
 import 'package:risuscito/core/presentation/header_text.dart';
 
 class NotSearching extends StatelessWidget {
-  const NotSearching({Key? key}) : super(key: key);
+  final int selectedTag;
+  const NotSearching({
+    Key? key,
+    required this.selectedTag,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +21,9 @@ class NotSearching extends StatelessWidget {
         //   height: 16,
         // ),
         HeaderText(
-          text: AppLocalizations.of(context)!.translate('type')!,
+          text: selectedTag != 2
+              ? AppLocalizations.of(context)!.translate('type')!
+              : AppLocalizations.of(context)!.translate('type_1')!,
           textAlign: TextAlign.center,
         ),
         const SizedBox(
@@ -26,7 +32,9 @@ class NotSearching extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 16.0, right: 16.0),
           child: Text(
-            AppLocalizations.of(context)!.translate('type_full')!,
+            selectedTag != 2
+                ? AppLocalizations.of(context)!.translate('type_full')!
+                : AppLocalizations.of(context)!.translate('type_1_full')!,
             textAlign: TextAlign.center,
             style: TextStyle(
               color: CupertinoColors.inactiveGray,
