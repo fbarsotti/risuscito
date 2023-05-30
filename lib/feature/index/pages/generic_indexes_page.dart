@@ -41,6 +41,7 @@ class _GenericIndexesPageState extends State<GenericIndexesPage> {
           if (state is SongsFailure)
             return RSFailureView(failure: state.failure);
           if (state is SongsLoaded) {
+            if (state.forceReload) init = true;
             if (init) {
               songs = state.songs.alphabeticalOrder!;
               init = false;

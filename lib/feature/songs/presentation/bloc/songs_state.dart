@@ -9,9 +9,11 @@ class SongsLoading extends SongsState {}
 
 class SongsLoaded extends SongsState {
   final PagedSongsDomainModel songs;
+  final bool forceReload;
 
   SongsLoaded({
     required this.songs,
+    required this.forceReload,
   });
 }
 

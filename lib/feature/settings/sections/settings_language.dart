@@ -67,6 +67,7 @@ class _SettingsLanguageState extends State<SettingsLanguage> {
               BlocProvider.of<SongsBloc>(context).add(
                 GetLocalizedSongs(
                   languageCode: language.code,
+                  forceReload: true,
                 ),
               );
               Navigator.pop(context);

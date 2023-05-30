@@ -21,7 +21,12 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
 
       result.fold(
         (failure) => emit(SongsFailure(failure: failure)),
-        (songs) => emit(SongsLoaded(songs: songs)),
+        (songs) => emit(
+          SongsLoaded(
+            songs: songs,
+            forceReload: event.forceReload ?? false,
+          ),
+        ),
       );
     });
   }
