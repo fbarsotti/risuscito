@@ -80,7 +80,7 @@ class _SongPageState extends State<SongPage> {
   Future<void> loadRecording() async {
     try {
       return _audioPlayer.setSourceUrl(widget.url!);
-    } catch (e, s) {
+    } catch (e) {
       print('Catched $e');
     }
   }

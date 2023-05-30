@@ -233,18 +233,21 @@ class _SearchPageState extends State<SearchPage> {
                               key: ObjectKey(songs[index]),
                               trailingActions: [
                                 SwipeAction(
-                                  color: favSongIds.contains(songs[index].id!)
+                                  color: favSongIds
+                                          .contains(_filteredSongs[index].id!)
                                       ? CupertinoColors.systemRed
                                       : CupertinoColors.systemYellow,
                                   icon: Icon(
-                                    favSongIds.contains(songs[index].id!)
+                                    favSongIds
+                                            .contains(_filteredSongs[index].id!)
                                         ? CupertinoIcons.trash
                                         : CupertinoIcons.star_fill,
                                     color: CupertinoColors.white,
                                   ),
                                   onTap: (CompletionHandler handler) async {
                                     handler(false);
-                                    if (favSongIds.contains(songs[index].id!)) {
+                                    if (favSongIds
+                                        .contains(_filteredSongs[index].id!)) {
                                       BlocProvider.of<FavouritesBloc>(context)
                                           .add(
                                         RemoveFavourite(
@@ -268,7 +271,8 @@ class _SearchPageState extends State<SearchPage> {
                                         ),
                                       );
                                     Fluttertoast.showToast(
-                                      msg: favSongIds.contains(songs[index].id!)
+                                      msg: favSongIds.contains(
+                                              _filteredSongs[index].id!)
                                           ? AppLocalizations.of(context)!
                                               .translate('favourite_removed')!
                                           : AppLocalizations.of(context)!

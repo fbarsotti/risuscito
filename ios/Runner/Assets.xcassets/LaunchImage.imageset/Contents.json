@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "risuscito_canti_smaller.png",
+      "filename" : "risuscito_canti (3).png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "risuscito_canti_small.png",
+      "filename" : "risuscito_canti (2).png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "risuscito_canti_medium.png",
+      "filename" : "risuscito_canti (1).png",
       "idiom" : "universal",
       "scale" : "3x"
     }
