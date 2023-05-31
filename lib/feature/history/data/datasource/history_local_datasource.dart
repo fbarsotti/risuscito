@@ -16,7 +16,11 @@ class HistoryLocalDatasource {
   Future<void> saveInHistory(String songId) async {
     List<String>? history = sharedPreferences!.getStringList(_historyKey);
     if (history == null) history = [];
-    if (!(history.contains(songId))) history.add(songId);
+    if (history.length <= 10) {
+      if ((history.contains(songId))) history.remove(songId);
+      history.insert(0, songId);
+    }
+
     await sharedPreferences!.setStringList(_historyKey, history);
   }
 
@@ -24,5 +28,9 @@ class HistoryLocalDatasource {
     List<String>? history = sharedPreferences!.getStringList(_historyKey);
     history!.remove(songId);
     await sharedPreferences!.setStringList(_historyKey, history);
+  }
+
+  Future<void> deleteHistory() async {
+    await sharedPreferences!.setStringList(_historyKey, []);
   }
 }

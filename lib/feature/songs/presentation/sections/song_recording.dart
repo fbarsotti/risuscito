@@ -11,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wakelock/wakelock.dart';
 
 class SongRecording extends StatefulWidget {
-  final String url;
+  final String? url;
   const SongRecording({
     Key? key,
     required this.url,
@@ -39,28 +39,30 @@ class _SongRecordingState extends State<SongRecording> {
       Wakelock.enable();
     else
       Wakelock.disable();
-    _audioPlayer.onPlayerComplete.listen((event) {
-      setState(() {
-        _isPlaying = false;
+    if (widget.url != null && widget.url!.isNotEmpty) {
+      _audioPlayer.onPlayerComplete.listen((event) {
+        setState(() {
+          _isPlaying = false;
+        });
       });
-    });
-    _audioPlayer.onDurationChanged.listen((Duration duration) {
-      setState(() {
-        _duration = duration;
+      _audioPlayer.onDurationChanged.listen((Duration duration) {
+        setState(() {
+          _duration = duration;
+        });
       });
-    });
-    _positionSubscription =
-        _audioPlayer.onPositionChanged.listen((Duration position) {
-      setState(() {
-        if (!_isDraggingSlider) {
-          _sliderValue =
-              position.inSeconds.toDouble() / _duration.inSeconds.toDouble();
-          if (_sliderValue.isNaN) {
-            _sliderValue = 0.0;
+      _positionSubscription =
+          _audioPlayer.onPositionChanged.listen((Duration position) {
+        setState(() {
+          if (!_isDraggingSlider) {
+            _sliderValue =
+                position.inSeconds.toDouble() / _duration.inSeconds.toDouble();
+            if (_sliderValue.isNaN) {
+              _sliderValue = 0.0;
+            }
           }
-        }
+        });
       });
-    });
+    }
   }
 
   @override
@@ -74,7 +76,7 @@ class _SongRecordingState extends State<SongRecording> {
 
   Future<void> loadRecording() async {
     try {
-      return _audioPlayer.setSourceUrl(widget.url);
+      return _audioPlayer.setSourceUrl(widget.url!);
     } catch (e) {
       print('Catched $e');
     }
@@ -102,85 +104,90 @@ class _SongRecordingState extends State<SongRecording> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: loadRecording(),
-      builder: (context, snapshot) {
-        return Container(
-          // height: 150,
-          color: CupertinoColors.systemFill,
-          child: Padding(
-            padding: const EdgeInsets.only(
-              left: 16,
-              right: 16,
-              top: 16,
-              bottom: 64,
-            ),
-            child: Row(children: [
-              Expanded(
-                child: CupertinoSlider(
-                  value: snapshot.hasData ? _sliderValue : 0.0,
-                  onChanged: (value) {
-                    setState(() {
-                      _sliderValue = value;
-                      _isDraggingSlider = true;
-                      if (_isPlaying) {
-                        _audioPlayer.pause();
-                        _isPlaying = false;
-                      }
-                    });
-                    // seekToPosition(
-                    //   Duration(
-                    //     seconds:
-                    //         (value * _duration.inSeconds).toInt(),
-                    //   ),
-                    // );
-                  },
-                  onChangeEnd: (double value) {
-                    seekToPosition(
-                      Duration(
-                        seconds: (value * _duration.inSeconds).toInt(),
-                      ),
-                    );
-                    setState(() {
-                      _sliderValue = value;
-                      _isDraggingSlider = false;
-                      if (!_isPlaying && _wasPlaying) {
-                        _audioPlayer.resume();
-                        _isPlaying = true;
-                      }
-                    });
-                  },
-                ),
+    if (widget.url == null || widget.url!.isEmpty)
+      return Container();
+    else
+      return FutureBuilder(
+        future: loadRecording(),
+        builder: (context, snapshot) {
+          return Container(
+            // height: 150,
+            color: CupertinoColors.systemFill,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                left: 16,
+                right: 16,
+                top: 16,
+                bottom: 64,
               ),
-              const SizedBox(
-                width: 8,
-              ),
-              CupertinoButton(
-                color: RSColors.primary,
-                borderRadius: BorderRadius.circular(100),
-                padding: EdgeInsets.all(16),
-                child: snapshot.hasData
-                    ? Icon(
-                        _isPlaying ? CupertinoIcons.pause : CupertinoIcons.play,
-                        color: RSColors.white,
-                      )
-                    : CupertinoActivityIndicator(
-                        color: RSColors.white,
-                      ),
-                onPressed: snapshot.hasData
-                    ? () {
+              child: Row(children: [
+                Expanded(
+                  child: CupertinoSlider(
+                    value: snapshot.hasData ? _sliderValue : 0.0,
+                    onChanged: (value) {
+                      setState(() {
+                        _sliderValue = value;
+                        _isDraggingSlider = true;
                         if (_isPlaying) {
-                          pauseRecording();
-                        } else {
-                          playRecording();
+                          _audioPlayer.pause();
+                          _isPlaying = false;
                         }
-                      }
-                    : null,
-              )
-            ]),
-          ),
-        );
-      },
-    );
+                      });
+                      // seekToPosition(
+                      //   Duration(
+                      //     seconds:
+                      //         (value * _duration.inSeconds).toInt(),
+                      //   ),
+                      // );
+                    },
+                    onChangeEnd: (double value) {
+                      seekToPosition(
+                        Duration(
+                          seconds: (value * _duration.inSeconds).toInt(),
+                        ),
+                      );
+                      setState(() {
+                        _sliderValue = value;
+                        _isDraggingSlider = false;
+                        if (!_isPlaying && _wasPlaying) {
+                          _audioPlayer.resume();
+                          _isPlaying = true;
+                        }
+                      });
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  width: 8,
+                ),
+                CupertinoButton(
+                  color: RSColors.primary,
+                  borderRadius: BorderRadius.circular(100),
+                  padding: EdgeInsets.all(16),
+                  child: snapshot.hasData
+                      ? Icon(
+                          _isPlaying
+                              ? CupertinoIcons.pause
+                              : CupertinoIcons.play,
+                          color: RSColors.white,
+                        )
+                      : CupertinoActivityIndicator(
+                          color: RSColors.white,
+                        ),
+                  onPressed: snapshot.hasData
+                      ? () {
+                          if (_isPlaying) {
+                            pauseRecording();
+                          } else {
+                            playRecording();
+                          }
+                        }
+                      : null,
+                )
+              ]),
+            ),
+          );
+        },
+      );
   }
 }

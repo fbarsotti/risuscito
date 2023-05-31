@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
+import 'package:risuscito/feature/history/presentation/bloc/history_bloc.dart';
 import 'package:risuscito/feature/songs/presentation/sections/song_page.dart';
 import 'package:risuscito/feature/songs/domain/model/song_domain_model.dart';
 import '../../../../core/presentation/customization/rs_colors.dart';
@@ -67,13 +70,18 @@ class SongTile extends StatelessWidget {
             ),
             onTap: () {
               FocusScope.of(context).unfocus();
+              BlocProvider.of<HistoryBloc>(context).add(
+                SaveInHistory(
+                  languageCode:
+                      AppLocalizations.of(context)!.locale.languageCode,
+                  songId: song.id!,
+                ),
+              );
               Navigator.of(context, rootNavigator: true).push(
                 CupertinoPageRoute(
                   builder: (context) => SongPage(
                     url: song.url,
-                    // songWebView: song.songWebView!,
                     htmlContent: song.htmlContent!,
-
                     color: song.color!,
                   ),
                 ),

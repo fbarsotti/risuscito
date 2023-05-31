@@ -5,6 +5,8 @@ import 'package:risuscito/core/presentation/header_text.dart';
 import 'package:risuscito/core/presentation/quick_action_button.dart';
 import 'package:risuscito/feature/favourites/presentation/bloc/favourites_bloc.dart';
 import 'package:risuscito/feature/favourites/presentation/favourites_page.dart';
+import 'package:risuscito/feature/history/presentation/bloc/history_bloc.dart';
+import 'package:risuscito/feature/history/presentation/history_page.dart';
 
 class QuickActions extends StatelessWidget {
   const QuickActions({Key? key}) : super(key: key);
@@ -62,7 +64,19 @@ class QuickActions extends StatelessWidget {
                 text: AppLocalizations.of(context)!.translate('history')!,
                 icon: CupertinoIcons.refresh_circled,
                 iconColor: CupertinoColors.systemBlue,
-                onTap: null,
+                onTap: () {
+                  BlocProvider.of<HistoryBloc>(context).add(
+                    GetLocalizedHistory(
+                      languageCode:
+                          AppLocalizations.of(context)!.locale.languageCode,
+                    ),
+                  );
+                  Navigator.of(context).push(
+                    CupertinoPageRoute(
+                      builder: (context) => HistoryPage(),
+                    ),
+                  );
+                },
               ),
               const SizedBox(
                 width: 8,

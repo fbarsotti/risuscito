@@ -27,6 +27,8 @@
   "numerical_index": "Numerical index",
   "show_error": "Show error",
   "ok": "Ok",
+  "continue": "Continue",
+  "cancel": "Cancel",
   "refresh": "Refresh",
   "bug_report_alert": "Report",
   "generic_failure": "Error",
@@ -58,6 +60,9 @@
   "favourite_removed": "Song removed from favourites.",
   "no_favourites": "No favourites",
   "no_favourites_full": "Here you can have your favourite songs. Add some!",
+  "history_empty": "Empty history",
+  "history_empty_full": "Here you can find the history of the latest song seen.",
+  "history_delete": "You're about to delete the history. Do you want to continue?",
 
   "help_question_one": "How do I add a song to favorites?",
   "help_answer_one": "To add a song to favorites, simply swipe the song to the left on the index to reveal the available options, including adding to favorites."

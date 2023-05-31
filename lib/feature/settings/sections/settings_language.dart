@@ -5,6 +5,7 @@ import 'package:risuscito/core/infrastructure/localization/app_localizations.dar
 import 'package:risuscito/core/infrastructure/localization/bloc/language_bloc.dart';
 import 'package:risuscito/core/infrastructure/localization/languages.dart';
 import 'package:risuscito/core/presentation/customization/rs_colors.dart';
+import 'package:risuscito/feature/history/presentation/bloc/history_bloc.dart';
 
 import '../../../core/presentation/customization/theme/rs_theme_provider.dart';
 import '../../songs/presentation/bloc/songs_bloc.dart';
@@ -68,6 +69,11 @@ class _SettingsLanguageState extends State<SettingsLanguage> {
                 GetLocalizedSongs(
                   languageCode: language.code,
                   forceReload: true,
+                ),
+              );
+              BlocProvider.of<HistoryBloc>(context).add(
+                GetLocalizedHistory(
+                  languageCode: language.code,
                 ),
               );
               Navigator.pop(context);

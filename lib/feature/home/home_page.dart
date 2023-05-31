@@ -55,20 +55,6 @@ class _HomePageState extends State<HomePage> {
                   padding: const EdgeInsets.all(16.0),
                   child: LastSongs(),
                 ),
-                // CircleAvatar(
-                //   radius: 140,
-                //   backgroundColor: RSColors.primary,
-                //   child: CircleAvatar(
-                //     radius: 135,
-                //     backgroundColor: themeChange.darkTheme
-                //         ? RSColors.bgDarkColor
-                //         : RSColors.bgLightColor,
-                //     child: Image.asset(
-                //       'assets/images/risuscito_logo_primary.png',
-                //       scale: 3,
-                //     ),
-                //   ),
-                // ),
                 const SizedBox(
                   height: 100,
                 ),

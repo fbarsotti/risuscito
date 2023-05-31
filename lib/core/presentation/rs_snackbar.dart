@@ -52,9 +52,8 @@ class RSSnackBar extends StatelessWidget {
             Text(
               content,
               style: TextStyle(
-                color: themeChange.darkTheme
-                    ? RSColors.darkText
-                    : RSColors.lightText,
+                color:
+                    themeChange.darkTheme ? RSColors.darkText : RSColors.text,
               ),
             ),
           ],

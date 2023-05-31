@@ -27,6 +27,8 @@
   "numerical_index": "Indice numerico",
   "show_error": "Mostra errore",
   "ok": "Ok",
+  "continue": "Continua",
+  "cancel": "Annulla",
   "refresh": "Ricarica",
   "bug_report_alert": "Segnala",
   "generic_failure": "Errore",
@@ -58,6 +60,9 @@
   "favourite_removed": "Canto rimosso dai preferiti.",
   "no_favourites": "Nessun preferito",
   "no_favourites_full": "Qui potrai trovare tutti i tuoi canti preferiti. Aggiungine qualcuno!",
+  "history_empty": "Cronologia vuota",
+  "history_empty_full": "Qui potrai trovare la cronologia dei canti visti.",
+  "history_delete": "Stai per cancellare la cronologia. Vuoi continuare?",
 
   "help_question_one": "Come faccio ad aggiungere un canto ai preferiti?",
   "help_answer_one": "Per aggiungere un canto ai preferiti, basta scorrere sull'indice il canto verso sinistra per rivelare le opzioni disponibili, tra cui anche l'aggiunta ai preferiti."

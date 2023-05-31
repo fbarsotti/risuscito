@@ -38,9 +38,10 @@ class _FavouritesPageState extends State<FavouritesPage> {
                         child: Container(
                           child: EmptyPageMessage(
                             icon: CupertinoIcons.text_badge_star,
-                            title: 'Nessun preferito',
-                            subtitle:
-                                'Qui potrai trovare tutti i tuoi canti preferiti. Aggiungine qualcuno!',
+                            title: AppLocalizations.of(context)!
+                                .translate('no_favourites')!,
+                            subtitle: AppLocalizations.of(context)!
+                                .translate('no_favourites_full')!,
                           ),
                         ),
                       ),
@@ -54,7 +55,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
                   itemCount: favSongs.length,
                   itemBuilder: (context, index) {
                     return SwipeActionCell(
-                      key: ObjectKey(1),
+                      key: ObjectKey(index),
                       trailingActions: <SwipeAction>[
                         SwipeAction(
                           color: CupertinoColors.systemRed,

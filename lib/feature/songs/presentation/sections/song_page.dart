@@ -57,7 +57,7 @@ class SongPage extends StatelessWidget {
                 ),
               ),
             ),
-            if (url != null && url!.isNotEmpty) SongRecording(url: url!),
+            SongRecording(url: url),
           ],
         ),
       ),
