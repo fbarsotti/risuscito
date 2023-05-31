@@ -16,7 +16,7 @@ dependencies:
   connectivity: ^3.0.3
   dartz: ^0.10.1
   cupertino_icons: ^1.0.0
-  dio: ^4.0.6
+  dio: ^5.0.0
   f_logs: ^2.0.1
   flutter_bloc: ^7.0.0
   flutter_email_sender: ^5.0.0

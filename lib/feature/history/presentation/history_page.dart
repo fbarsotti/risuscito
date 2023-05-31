@@ -34,7 +34,7 @@ class _HistoryPageState extends State<HistoryPage> {
               builder: (context) => CupertinoActionSheet(
                 title: Text(
                   AppLocalizations.of(context)!.translate('history_delete')!,
-                  style: TextStyle(fontSize: 18),
+                  style: TextStyle(fontSize: 16),
                 ),
                 actions: [
                   CupertinoActionSheetAction(
