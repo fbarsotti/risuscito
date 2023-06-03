@@ -1,7 +1,6 @@
 import 'dart:io';
-
-import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:risuscito/core/data/remote/rs_api_config.dart';
@@ -22,7 +21,7 @@ class RSDioClient {
 
     // certificate to solve problems with android simulator
     if (kDebugMode && Platform.isAndroid) {
-      (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+      (dio.httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate =
           (client) {
         client.badCertificateCallback = (cert, host, port) => true;
         return client;

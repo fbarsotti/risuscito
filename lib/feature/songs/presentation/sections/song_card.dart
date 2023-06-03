@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
@@ -41,11 +42,28 @@ class SongCard extends StatelessWidget {
       child: Container(
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-          color: song.color!.value != Color(0xffffffff).value
-              ? song.color
-              : themeChange.darkTheme
-                  ? RSColors.cardColorDark
-                  : RSColors.cardColorLight,
+          // gradient: LinearGradient(
+          //   // begin: Alignment.topCenter,
+          //   // end: Alignment.bottomRight,
+          //   transform: GradientRotation(1.2),
+          //   stops: [
+          //     0.5,
+          //     0.9,
+          //     0.99,
+          //   ],
+          //   colors: [
+          //     themeChange.darkTheme
+          //         ? RSColors.cardColorDark
+          //         : RSColors.cardColorLight,
+          //     song.color!.withOpacity(0.01),
+          //     song.color!.withOpacity(0.2),
+          //   ],
+          // ),
+          // color: song.color!.value != Color(0xffffffff).value
+          //     ? song.color
+          color: themeChange.darkTheme
+              ? RSColors.cardColorDark
+              : RSColors.cardColorLight,
           borderRadius: const BorderRadius.all(Radius.circular(8.0)),
         ),
         child: Padding(
@@ -55,6 +73,23 @@ class SongCard extends StatelessWidget {
             children: [
               Row(
                 children: [
+                  // if (song.color! != Color(0xffffffff) || themeChange.darkTheme)
+                  //   CircleAvatar(
+                  //     radius: 10,
+                  //     backgroundColor: song.color!,
+                  //   ),
+                  // if (song.color == Color(0xffffffff) && !themeChange.darkTheme)
+                  //   CircleAvatar(
+                  //     radius: 10,
+                  //     backgroundColor: RSColors.black,
+                  //     child: CircleAvatar(
+                  //       radius: 9.8,
+                  //       backgroundColor: song.color!,
+                  //     ),
+                  //   ),
+                  // const SizedBox(
+                  //   width: 8,
+                  // ),
                   Text(
                     AppLocalizations.of(context)!.translate('song')! +
                         ' ${song.number}',
@@ -78,11 +113,8 @@ class SongCard extends StatelessWidget {
               Text(
                 song.title!,
                 style: TextStyle(
-                  color: song.color!.value != Color(0xffffffff).value
-                      ? RSColors.text
-                      : themeChange.darkTheme
-                          ? RSColors.darkText
-                          : RSColors.text,
+                  color:
+                      themeChange.darkTheme ? RSColors.darkText : RSColors.text,
                   fontSize: 22,
                   fontWeight: FontWeight.w700,
                 ),

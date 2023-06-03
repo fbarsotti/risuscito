@@ -28,6 +28,7 @@ class RSApp extends StatefulWidget {
       Locale('en', 'US'),
       Locale('it', 'IT'),
       Locale('uk', 'UA'),
+      Locale('tr', 'TR'),
     ];
   }
 
@@ -138,22 +139,6 @@ class _RSAppState extends State<RSApp> {
                   ),
                   home: widget.child,
                 );
-                // return MaterialApp(
-                //   title: 'Studio Lab',
-                //   navigatorKey: navigatorKey,
-                //   supportedLocales: RSApp.supportedLocales,
-                //   localizationsDelegates: RSApp.localizationsDelegates,
-                //   locale: languageState.locale,
-                //   debugShowCheckedModeBanner: false,
-                //   theme: ThemeData(
-                //     fontFamily: 'Montserrat',
-                //     scaffoldBackgroundColor: Color(0xffffffff),
-                //     primaryColor: RSColors.primary,
-                //     primarySwatch: Colors.teal,
-                //     visualDensity: VisualDensity.adaptivePlatformDensity,
-                //   ),
-                //   home: HomePage(),
-                // );
               },
             );
           },

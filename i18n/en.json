@@ -2,6 +2,7 @@
   "it": "Italian",
   "en": "English",
   "uk": "Ukrainian",
+  "tr": "Turkish",
   "home": "Home",
   "settings": "Settings",
   "advanced": "Advanced",
@@ -63,6 +64,11 @@
   "history_empty": "Empty history",
   "history_empty_full": "Here you can find the history of the latest song seen.",
   "history_delete": "You're about to delete the history. Do you want to continue?",
+  "update_available": "Update available!",
+  "update_available_full": "There's a new update available! You can download it right away",
+  "update": "Update",
+  "no_songs": "No songs available",
+  "no_songs_full": "There are no songs available in this section.",
 
   "help_question_one": "How do I add a song to favorites?",
   "help_answer_one": "To add a song to favorites, simply swipe the song to the left on the index to reveal the available options, including adding to favorites."

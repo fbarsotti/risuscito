@@ -214,13 +214,19 @@ class _SearchPageState extends State<SearchPage> {
                             height: MediaQuery.of(context).size.height / 6,
                           ),
                         if (_filteredSongs.length == 0 &&
-                            _searchController.text.length < 3)
+                            ((selectedTag != 2 &&
+                                    _searchController.text.length < 3) ||
+                                (selectedTag == 2 &&
+                                    _searchController.text.length == 0)))
                           NotSearching(
                             selectedTag: selectedTag,
                           ),
 
                         if (_filteredSongs.length == 0 &&
-                            _searchController.text.length >= 3)
+                            ((selectedTag != 2 &&
+                                    _searchController.text.length >= 3) ||
+                                (selectedTag == 2 &&
+                                    _searchController.text.length > 0)))
                           EmptySearch(),
                         // if (_filteredSongs.length > 0)
                         const SizedBox(

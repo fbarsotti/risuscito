@@ -36,6 +36,11 @@ class _SettingsLanguageState extends State<SettingsLanguage> {
         'Український',
         Language.uk,
       ),
+      RSLanguage(
+        'tr',
+        'Türkçe',
+        Language.tr,
+      ),
     ];
     final code = AppLocalizations.of(context)!.locale.languageCode;
     final themeChange = Provider.of<DarkThemeProvider>(context);

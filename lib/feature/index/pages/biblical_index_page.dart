@@ -4,6 +4,7 @@ import 'package:flutter_swipe_action_cell/core/cell.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:risuscito/core/core_container.dart';
 import 'package:risuscito/core/presentation/customization/rs_colors.dart';
+import 'package:risuscito/core/presentation/empty_page_message.dart';
 import 'package:risuscito/feature/favourites/presentation/bloc/favourites_bloc.dart';
 import 'package:risuscito/feature/songs/presentation/sections/song_tile.dart';
 import 'package:risuscito/core/presentation/states/rs_loading_view.dart';
@@ -39,80 +40,102 @@ class _BiblicalIndexPageState extends State<BiblicalIndexPage> {
             return RSFailureView(failure: state.failure);
           if (state is SongsLoaded) {
             songs = state.songs.biblicalOrder!;
-            return SafeArea(
-              child: ListView.builder(
-                itemCount: songs.length,
-                itemBuilder: (context, index) => SwipeActionCell(
-                  key: ObjectKey(songs[index]),
-                  trailingActions: [
-                    SwipeAction(
-                      color: favSongIds.contains(songs[index].id!)
-                          ? CupertinoColors.systemRed
-                          : CupertinoColors.systemYellow,
-                      icon: Icon(
-                        favSongIds.contains(songs[index].id!)
-                            ? CupertinoIcons.trash
-                            : CupertinoIcons.star_fill,
-                        color: CupertinoColors.white,
+            if (songs.length == 0)
+              return SafeArea(
+                child: Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: Container(
+                          child: EmptyPageMessage(
+                            icon: CupertinoIcons.book,
+                            title: AppLocalizations.of(context)!
+                                .translate('no_songs')!,
+                            subtitle: AppLocalizations.of(context)!
+                                .translate('no_songs_full')!,
+                          ),
+                        ),
                       ),
-                      onTap: (CompletionHandler handler) async {
-                        handler(false);
-                        if (favSongIds.contains(songs[index].id!)) {
-                          BlocProvider.of<FavouritesBloc>(context).add(
-                            RemoveFavourite(
-                              songId: songs[index].id!,
-                              reload: true,
-                              languageCode: AppLocalizations.of(context)!
-                                  .locale
-                                  .languageCode,
-                            ),
-                          );
-                        } else
-                          BlocProvider.of<FavouritesBloc>(context).add(
-                            SaveFavourite(
-                              languageCode: AppLocalizations.of(context)!
-                                  .locale
-                                  .languageCode,
-                              songId: songs[index].id!,
-                            ),
-                          );
-                        Fluttertoast.showToast(
-                          msg: favSongIds.contains(songs[index].id!)
-                              ? AppLocalizations.of(context)!
-                                  .translate('favourite_removed')!
-                              : AppLocalizations.of(context)!
-                                  .translate('favourite_added')!,
-                          toastLength: Toast.LENGTH_LONG,
-                          gravity: ToastGravity.TOP,
-                          timeInSecForIosWeb: 2,
-                          backgroundColor:
-                              RSColors.cardColorDark.withOpacity(0.95),
-                          textColor: CupertinoColors.white,
-                          fontSize: 16.0,
-                        );
-                        setState(() {});
-                      },
-                    )
-                  ],
-                  child: SongTile(
-                    song: songs[index],
-                    forceRef: false,
-                    divider: index != songs.length - 1,
+                    ],
                   ),
                 ),
-              ),
-              // child: CupertinoListSection(
-              //   children: [
-              //     ...List.generate(
-              //       songs.length,
-              //       (index) => SongTile(
-              //         song: songs[index],
-              //         forceRef: false,
-              //       ),
-              //     ),
-              //   ],
-              // ),
-            );
+              );
+            else
+              return SafeArea(
+                child: ListView.builder(
+                  itemCount: songs.length,
+                  itemBuilder: (context, index) => SwipeActionCell(
+                    key: ObjectKey(songs[index]),
+                    trailingActions: [
+                      SwipeAction(
+                        color: favSongIds.contains(songs[index].id!)
+                            ? CupertinoColors.systemRed
+                            : CupertinoColors.systemYellow,
+                        icon: Icon(
+                          favSongIds.contains(songs[index].id!)
+                              ? CupertinoIcons.trash
+                              : CupertinoIcons.star_fill,
+                          color: CupertinoColors.white,
+                        ),
+                        onTap: (CompletionHandler handler) async {
+                          handler(false);
+                          if (favSongIds.contains(songs[index].id!)) {
+                            BlocProvider.of<FavouritesBloc>(context).add(
+                              RemoveFavourite(
+                                songId: songs[index].id!,
+                                reload: true,
+                                languageCode: AppLocalizations.of(context)!
+                                    .locale
+                                    .languageCode,
+                              ),
+                            );
+                          } else
+                            BlocProvider.of<FavouritesBloc>(context).add(
+                              SaveFavourite(
+                                languageCode: AppLocalizations.of(context)!
+                                    .locale
+                                    .languageCode,
+                                songId: songs[index].id!,
+                              ),
+                            );
+                          Fluttertoast.showToast(
+                            msg: favSongIds.contains(songs[index].id!)
+                                ? AppLocalizations.of(context)!
+                                    .translate('favourite_removed')!
+                                : AppLocalizations.of(context)!
+                                    .translate('favourite_added')!,
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.TOP,
+                            timeInSecForIosWeb: 2,
+                            backgroundColor:
+                                RSColors.cardColorDark.withOpacity(0.95),
+                            textColor: CupertinoColors.white,
+                            fontSize: 16.0,
+                          );
+                          setState(() {});
+                        },
+                      )
+                    ],
+                    child: SongTile(
+                      song: songs[index],
+                      forceRef: false,
+                      divider: index != songs.length - 1,
+                    ),
+                  ),
+                ),
+                // child: CupertinoListSection(
+                //   children: [
+                //     ...List.generate(
+                //       songs.length,
+                //       (index) => SongTile(
+                //         song: songs[index],
+                //         forceRef: false,
+                //       ),
+                //     ),
+                //   ],
+                // ),
+              );
           } else
             return RSLoadingView();
         },

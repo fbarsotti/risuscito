@@ -2,6 +2,7 @@
   "it": "Italiano",
   "en": "Inglese",
   "uk": "Ucraino",
+  "tr": "Turco",
   "home": "Home",
   "settings": "Impostazioni",
   "generals": "Generali",
@@ -63,6 +64,11 @@
   "history_empty": "Cronologia vuota",
   "history_empty_full": "Qui potrai trovare la cronologia dei canti visti.",
   "history_delete": "Stai per cancellare la cronologia. Vuoi continuare?",
+  "update_available": "Aggiornamento disponibile!",
+  "update_available_full": "È disponibile un nuovo aggiornamento! Puoi scaricarlo subito.",
+  "update": "Aggiorna",
+  "no_songs": "Nessun canto disponibile",
+  "no_songs_full": "Non è presente nessun canto in questa sezione.",
 
   "help_question_one": "Come faccio ad aggiungere un canto ai preferiti?",
   "help_answer_one": "Per aggiungere un canto ai preferiti, basta scorrere sull'indice il canto verso sinistra per rivelare le opzioni disponibili, tra cui anche l'aggiunta ai preferiti."

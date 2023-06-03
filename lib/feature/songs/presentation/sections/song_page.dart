@@ -46,7 +46,7 @@ class SongPage extends StatelessWidget {
               child: Container(
                 // height: 1024,
                 color: color,
-                padding: EdgeInsets.only(left: 16, right: 16, bottom: 24),
+                // padding: EdgeInsets.only(left: 16, right: 16, bottom: 24),
                 // child: widget.songWebView,
                 child: WebViewWidget(
                   controller: WebViewController()

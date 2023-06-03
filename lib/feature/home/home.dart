@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:new_version_plus/new_version_plus.dart';
 import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
 import 'package:risuscito/feature/home/home_page.dart';
 import 'package:risuscito/feature/index/indexes_page.dart';
@@ -18,6 +19,29 @@ class _HomeState extends State<Home> {
     HomePage(),
     IndexesPage(),
   ];
+
+  Future<void> checkAppVersion() async {
+    final newVersionPlus =
+        NewVersionPlus(iOSId: 'com.fbarsotti.risuscito', androidId: '');
+    final value = await newVersionPlus.getVersionStatus();
+    if (value!.canUpdate)
+      newVersionPlus.showUpdateDialog(
+        context: context,
+        versionStatus: value,
+        dialogTitle:
+            AppLocalizations.of(context)!.translate('update_available')!,
+        dialogText:
+            AppLocalizations.of(context)!.translate('update_available_full')!,
+        updateButtonText: AppLocalizations.of(context)!.translate('update')!,
+        dismissButtonText: AppLocalizations.of(context)!.translate('cancel')!,
+      );
+  }
+
+  @override
+  void initState() {
+    checkAppVersion();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -60,6 +60,11 @@ class LanguageBloc extends Bloc<LanguageEvent, LanguageState> {
         final locale = Locale('uk', 'UA');
         await sharedPrefService.setLanguage(locale.languageCode);
         emit(LanguageState(locale));
+      } else if (event.languageCode == Language.tr &&
+          defaultLanguageCode != 'tr') {
+        final locale = Locale('tr', 'TR');
+        await sharedPrefService.setLanguage(locale.languageCode);
+        emit(LanguageState(locale));
       }
     });
   }
