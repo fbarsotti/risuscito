@@ -69,6 +69,12 @@
   "update": "Aggiorna",
   "no_songs": "Nessun canto disponibile",
   "no_songs_full": "Non è presente nessun canto in questa sezione.",
+  "onboarding_welcome": "Benvenuto in Risuscitò!",
+  "onboarding_features": "Funzionalità:",
+  "onboarding_songs": "Quest'app permette di visualizzare ovunque ti trovi i canti del cammino. Se connesso a internet e se disponibile per il canto, puoi ascoltare anche la registrazione.",
+  "onboarding_search": "Oltre a visualizzare i canti, puoi cercarli facilmente! Hai la possibilità di cercare tra i titoli, nel testo e tra i riferimenti biblici.",
+  "onboarding_favourites": "Scorrendo verso sinistra il canto nei vari indici, puoi aggiungerlo ai preferiti. Lì puoi raggruppare tutti i canti che desideri mettere da parte.",
+  
 
   "help_question_one": "Come faccio ad aggiungere un canto ai preferiti?",
   "help_answer_one": "Per aggiungere un canto ai preferiti, basta scorrere sull'indice il canto verso sinistra per rivelare le opzioni disponibili, tra cui anche l'aggiunta ai preferiti."

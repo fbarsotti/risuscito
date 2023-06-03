@@ -69,6 +69,11 @@
   "update": "Update",
   "no_songs": "No songs available",
   "no_songs_full": "There are no songs available in this section.",
+  "onboarding_welcome": "Welcome to He Rose from Death!",
+  "onboarding_features": "Features:",
+  "onboarding_songs": "This app allows you to view the songs of the way wherever you are. If connected to the internet and if available for the song, you can also listen to the recording.",
+  "onboarding_search": "In addition to viewing the songs, you can easily search for them! You have the ability to search through titles, lyrics, and biblical references.",
+  "onboarding_favourites": "By swiping the song to the left in the various indexes, you can add it to favorites. There you can gather all the songs you want to keep aside.",
 
   "help_question_one": "How do I add a song to favorites?",
   "help_answer_one": "To add a song to favorites, simply swipe the song to the left on the index to reveal the available options, including adding to favorites."

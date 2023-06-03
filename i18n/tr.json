@@ -70,6 +70,11 @@
   "update": "Güncelle",
   "no_songs": "Hiç şarkı yok",
   "no_songs_full": "Bu bölümde hiç şarkı yok.",
+  "onboarding_welcome": "Dirildi'ya hoş geldiniz!",
+  "onboarding_features": "Özellikler:",
+  "onboarding_songs": "Bu uygulama, yolculuğun şarkılarını nerede olursanız olun görüntülemenizi sağlar. İnternet bağlantısı varsa ve şarkı için mevcutsa, kaydı dinleyebilirsiniz.",
+  "onboarding_search": "Şarkıları görüntülemenin yanı sıra, kolayca arama yapabilirsiniz! Başlıklar, sözler ve kitabi referanslar arasında arama yapma yeteneğiniz bulunmaktadır.",
+  "onboarding_favourites": "Çeşitli dizinlerde şarkıyı sola kaydırarak favorilere ekleyebilirsiniz. Orada biriktirmek istediğiniz tüm şarkıları toplayabilirsiniz.",
   
   "help_question_one": "Bir şarkıyı favorilere nasıl eklerim?",
   "help_answer_one": "Bir şarkıyı favorilere eklemek için, şarkıyı indekste sola kaydırarak mevcut seçenekleri açabilir ve favorilere ekleme seçeneğini seçebilirsiniz."

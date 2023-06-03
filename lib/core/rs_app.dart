@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:risuscito/core/presentation/customization/theme/rs_theme_provider.dart';
+import '../feature/onboarding/onboarding_page.dart';
 import 'core_container.dart';
 import 'data/remote/rs_dio_client.dart';
 import 'infrastructure/localization/app_localizations.dart';
@@ -13,10 +14,12 @@ import 'infrastructure/localization/bloc/language_bloc.dart';
 import 'presentation/customization/rs_colors.dart';
 
 class RSApp extends StatefulWidget {
+  final bool onboarding;
   final Widget child;
 
   const RSApp({
     Key? key,
+    required this.onboarding,
     required this.child,
   }) : super(key: key);
 
@@ -137,7 +140,12 @@ class _RSAppState extends State<RSApp> {
                       primaryColor: RSColors.primary,
                     ),
                   ),
-                  home: widget.child,
+                  initialRoute: widget.onboarding ? '/onboarding' : '/',
+                  routes: {
+                    '/': (context) => widget.child,
+                    '/onboarding': (context) => OnBoardingPage(),
+                  },
+                  // home: widget.child,
                 );
               },
             );
