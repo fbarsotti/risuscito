@@ -50,6 +50,9 @@ dependencies:
   new_version_plus: ^0.0.9
   cupertino_onboarding: ^1.1.1
 
+dependency_overrides:
+  intl: ^0.18.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
