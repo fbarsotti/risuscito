@@ -7,6 +7,7 @@ import 'package:risuscito/feature/favourites/presentation/bloc/favourites_bloc.d
 import 'package:risuscito/feature/favourites/presentation/favourites_page.dart';
 import 'package:risuscito/feature/history/presentation/bloc/history_bloc.dart';
 import 'package:risuscito/feature/history/presentation/history_page.dart';
+import 'package:risuscito/feature/lists/presentation/lists_page.dart';
 
 class QuickActions extends StatelessWidget {
   const QuickActions({Key? key}) : super(key: key);
@@ -58,7 +59,13 @@ class QuickActions extends StatelessWidget {
                     .translate('personalized_lists')!,
                 icon: CupertinoIcons.rectangle_stack_badge_person_crop,
                 iconColor: CupertinoColors.systemRed,
-                onTap: null,
+                onTap: () {
+                  Navigator.of(context).push(
+                    CupertinoPageRoute(
+                      builder: (context) => ListsPage(),
+                    ),
+                  );
+                },
               ),
               QuickActionButton(
                 text: AppLocalizations.of(context)!.translate('history')!,
