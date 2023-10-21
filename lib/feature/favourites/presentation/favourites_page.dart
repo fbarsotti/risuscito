@@ -7,6 +7,7 @@ import 'package:risuscito/core/presentation/states/rs_failure_view.dart';
 import 'package:risuscito/core/presentation/states/rs_loading_view.dart';
 import 'package:risuscito/feature/songs/presentation/sections/song_tile.dart';
 
+import '../../songs/domain/model/song_domain_model.dart';
 import 'bloc/favourites_bloc.dart';
 
 class FavouritesPage extends StatefulWidget {
@@ -17,9 +18,11 @@ class FavouritesPage extends StatefulWidget {
 }
 
 class _FavouritesPageState extends State<FavouritesPage> {
+  late List<SongDomainModel> favSongs;
+  final myListKey = GlobalKey<AnimatedListState>();
+
   @override
   Widget build(BuildContext context) {
-    final myListKey = GlobalKey<AnimatedListState>();
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         middle: Text(AppLocalizations.of(context)!.translate('favourites')!),
@@ -29,7 +32,8 @@ class _FavouritesPageState extends State<FavouritesPage> {
         child: BlocBuilder<FavouritesBloc, FavouritesState>(
           builder: (context, state) {
             if (state is FavouritesLoaded) {
-              if (state.songs.isEmpty)
+              favSongs = state.songs;
+              if (favSongs.isEmpty)
                 return Container(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -49,7 +53,6 @@ class _FavouritesPageState extends State<FavouritesPage> {
                   ),
                 );
               else {
-                final favSongs = state.songs;
                 return ListView.builder(
                   key: myListKey,
                   itemCount: favSongs.length,
@@ -88,59 +91,6 @@ class _FavouritesPageState extends State<FavouritesPage> {
                         divider: index != favSongs.length - 1,
                       ),
                     );
-                    // return SizeTransition(
-                    //   sizeFactor: animation,
-                    //   child: Slidable(
-                    //     endActionPane: ActionPane(
-                    //       extentRatio: 0.25,
-                    //       motion: DrawerMotion(),
-                    //       children: [
-                    //         SlidableAction(
-                    //           onPressed: (context) {
-                    //             BlocProvider.of<FavouritesBloc>(context).add(
-                    //               RemoveFavourite(
-                    //                 languageCode: AppLocalizations.of(context)!
-                    //                     .locale
-                    //                     .languageCode,
-                    //                 songId: favSongs[index].id!,
-                    //                 index: index,
-                    //                 listKey: myListKey,
-                    //               ),
-                    //             );
-                    //             myListKey.currentState!.removeItem(
-                    //               index,
-                    //               (context, animation) => SizeTransition(
-                    //                 sizeFactor: animation,
-                    //                 child: SongTile(
-                    //                   song: favSongs[index],
-                    //                   forceRef: false,
-                    //                   divider: index != favSongs.length - 1,
-                    //                 ),
-                    //               ),
-                    //             );
-                    //           },
-                    //           backgroundColor: CupertinoColors.systemRed,
-                    //           foregroundColor: RSColors.white,
-                    //           icon: CupertinoIcons.trash,
-                    //           label: AppLocalizations.of(context)!
-                    //               .translate('remove'),
-                    //         ),
-                    //         // SlidableAction(
-                    //         //   onPressed: null,
-                    //         //   backgroundColor: Color(0xFF0392CF),
-                    //         //   foregroundColor: RSColors.white,
-                    //         //   icon: CupertinoIcons.folder,
-                    //         //   label: 'Save',
-                    //         // ),
-                    //       ],
-                    //     ),
-                    //     child: SongTile(
-                    //       song: favSongs[index],
-                    //       forceRef: false,
-                    //       divider: index != favSongs.length - 1,
-                    //     ),
-                    //   ),
-                    // );
                   },
                 );
               }

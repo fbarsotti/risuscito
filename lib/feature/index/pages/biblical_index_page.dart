@@ -40,7 +40,7 @@ class _BiblicalIndexPageState extends State<BiblicalIndexPage> {
             return RSFailureView(failure: state.failure);
           if (state is SongsLoaded) {
             songs = state.songs.biblicalOrder!;
-            if (songs.length == 0)
+            if (songs.isEmpty)
               return SafeArea(
                 child: Container(
                   child: Column(
