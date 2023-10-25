@@ -46,6 +46,6 @@ Potremmo aggiornare la nostra Privacy Policy di tanto in tanto. Ti consigliamo d
 
  
 
-Se hai domande o dubbi sulla nostra Privacy Policy, non esitare a contattarci all'indirizzo email [inserisci l'indirizzo email di contatto].
+Se hai domande o dubbi sulla nostra Privacy Policy, non esitare a contattarci all'indirizzo email francescobarsotti02@gmail.com .
 
  
