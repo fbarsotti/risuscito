@@ -28,21 +28,12 @@ class HelpPage extends StatelessWidget {
             const SizedBox(
               height: 16,
             ),
-            // HelpCard(
-            //   question:
-            //       AppLocalizations.of(context)!.translate('help_question_one')!,
-            //   answer:
-            //       AppLocalizations.of(context)!.translate('help_answer_one')!,
-            // ),
-            // const SizedBox(
-            //   height: 16,
-            // ),
-            // HelpCard(
-            //   question:
-            //       AppLocalizations.of(context)!.translate('help_question_one')!,
-            //   answer:
-            //       AppLocalizations.of(context)!.translate('help_answer_one')!,
-            // ),
+            HelpCard(
+              question:
+                  AppLocalizations.of(context)!.translate('help_question_two')!,
+              answer:
+                  AppLocalizations.of(context)!.translate('help_answer_two')!,
+            ),
           ],
         ),
       ),

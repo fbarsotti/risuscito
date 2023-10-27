@@ -77,5 +77,7 @@
   "onboarding_favourites": "Çeşitli dizinlerde şarkıyı sola kaydırarak favorilere ekleyebilirsiniz. Orada biriktirmek istediğiniz tüm şarkıları toplayabilirsiniz.",
   
   "help_question_one": "Bir şarkıyı favorilere nasıl eklerim?",
-  "help_answer_one": "Bir şarkıyı favorilere eklemek için, şarkıyı indekste sola kaydırarak mevcut seçenekleri açabilir ve favorilere ekleme seçeneğini seçebilirsiniz."
+  "help_answer_one": "Bir şarkıyı favorilere eklemek için, şarkıyı indekste sola kaydırarak mevcut seçenekleri açabilir ve favorilere ekleme seçeneğini seçebilirsiniz.",
+  "help_question_two": "Ekran Her Zaman Açık ne işe yarar?",
+  "help_answer_two": "Ekran Her Zaman Açık, siz bir şarkıyı görüntülerken ekranın açık kalmasını sağlayan bir özelliktir. Ekranın şarkı sayfasında açık kalmasını tercih ediyorsanız ayarlardan bu özelliği açabilirsiniz."
   }

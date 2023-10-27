@@ -54,7 +54,7 @@
   "lyrics": "Lyrics",
   "biblical_reference": "Reference",
   "help": "Help",
-  "always_on": "Display Always On",
+  "always_on": "Always On Display",
   "always_on_description": "Screen awake on the song",
   "remove": "Remove",
   "favourite_added": "Song added to favourites!",
@@ -76,5 +76,7 @@
   "onboarding_favourites": "By swiping the song to the left in the various indexes, you can add it to favorites. There you can gather all the songs you want to keep aside.",
 
   "help_question_one": "How do I add a song to favorites?",
-  "help_answer_one": "To add a song to favorites, simply swipe the song to the left on the index to reveal the available options, including adding to favorites."
+  "help_answer_one": "To add a song to favorites, simply swipe the song to the left on the index to reveal the available options, including adding to favorites.",
+  "help_question_two": "What is Always On Display for?",
+  "help_answer_two": "Always On Display is a feature that allows the screen to stay awake while you are viewing a song. You can turn it on in settings if you prefer the display to stay awake on the song page."
 }

@@ -31,7 +31,7 @@ class _SongRecordingState extends State<SongRecording> {
     super.initState();
     _sliderValue = 0.0;
     SharedPreferences prefs = rs();
-    if (prefs.getBool('always_on_display') ?? true)
+    if (prefs.getBool('always_on') ?? true)
       Wakelock.enable();
     else
       Wakelock.disable();

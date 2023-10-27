@@ -77,5 +77,7 @@
   
 
   "help_question_one": "Come faccio ad aggiungere un canto ai preferiti?",
-  "help_answer_one": "Per aggiungere un canto ai preferiti, basta scorrere sull'indice il canto verso sinistra per rivelare le opzioni disponibili, tra cui anche l'aggiunta ai preferiti."
+  "help_answer_one": "Per aggiungere un canto ai preferiti, basta scorrere sull'indice il canto verso sinistra per rivelare le opzioni disponibili, tra cui anche l'aggiunta ai preferiti.",
+  "help_question_two": "A cosa serve Display Always On?",
+  "help_answer_two": "Display Always On è una funzionalità che permette allo schermo di rimanere acceso mentre stai visualizzando un canto. Puoi attivarla nelle impostazioni se preferisci che il display rimanga acceso nella pagina del canto."
 }
