@@ -11,7 +11,7 @@ import 'package:risuscito/feature/songs/presentation/sections/song_page.dart';
 class SongCard extends StatelessWidget {
   final SongDomainModel song;
 
-  const SongCard({
+  SongCard({
     Key? key,
     required this.song,
   }) : super(key: key);
@@ -19,109 +19,118 @@ class SongCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeChange = Provider.of<DarkThemeProvider>(context);
-    return CupertinoButton(
-      pressedOpacity: themeChange.darkTheme ? 0.8 : 0.4,
-      padding: EdgeInsets.zero,
-      onPressed: () {
-        BlocProvider.of<HistoryBloc>(context).add(
-          SaveInHistory(
-            languageCode: AppLocalizations.of(context)!.locale.languageCode,
-            songId: song.id!,
-          ),
-        );
-        Navigator.of(context, rootNavigator: true).push(
-          CupertinoPageRoute(
-            builder: (context) => SongPage(
-                url: song.url,
-                htmlContent: song.htmlContent!,
-                color: song.color!),
+    // final DecorationTween _tween = DecorationTween(
+    //   begin: BoxDecoration(
+    //     color: themeChange.darkTheme
+    //         ? RSColors.cardColorDark
+    //         : RSColors.cardColorLight,
+    //     borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+    //   ),
+    //   end: BoxDecoration(
+    //     color: themeChange.darkTheme
+    //         ? RSColors.cardColorDark
+    //         : RSColors.cardColorLight,
+    //     borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+    //   ),
+    // );
+
+    // Animation<Decoration> _boxDecorationAnimation(Animation<double> animation) {
+    //   return _tween.animate(
+    //     CurvedAnimation(
+    //       parent: animation,
+    //       curve: Interval(
+    //         0.0,
+    //         CupertinoContextMenu.animationOpensAt,
+    //       ),
+    //     ),
+    //   );
+    // }
+
+    return CupertinoContextMenu.builder(
+      actions: [
+        CupertinoContextMenuAction(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          isDefaultAction: true,
+          trailingIcon: CupertinoIcons.doc_on_clipboard_fill,
+          child: const Text('Copy'),
+        ),
+      ],
+      builder: (context, animation) {
+        // final Animation<Decoration> boxDecorationAnimation =
+        //     _boxDecorationAnimation(animation);
+        return CupertinoButton(
+          pressedOpacity: themeChange.darkTheme ? 0.8 : 0.4,
+          padding: EdgeInsets.zero,
+          onPressed: () {
+            BlocProvider.of<HistoryBloc>(context).add(
+              SaveInHistory(
+                languageCode: AppLocalizations.of(context)!.locale.languageCode,
+                songId: song.id!,
+              ),
+            );
+            Navigator.of(context, rootNavigator: true).push(
+              CupertinoPageRoute(
+                builder: (context) => SongPage(
+                    url: song.url,
+                    htmlContent: song.htmlContent!,
+                    color: song.color!),
+              ),
+            );
+          },
+          child: Container(
+            // decoration: boxDecorationAnimation.value,
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+              color: themeChange.darkTheme
+                  ? RSColors.cardColorDark
+                  : RSColors.cardColorLight,
+              borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)!.translate('song')! +
+                            ' ${song.number}',
+                        style: TextStyle(
+                          color: RSColors.primary,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      Spacer(),
+                      Icon(
+                        CupertinoIcons.chevron_right,
+                        color: RSColors.primary,
+                        size: 20,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    song.title!,
+                    style: TextStyle(
+                      color: themeChange.darkTheme
+                          ? RSColors.darkText
+                          : RSColors.text,
+                      fontSize: 22,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  )
+                ],
+              ),
+            ),
           ),
         );
       },
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          // gradient: LinearGradient(
-          //   // begin: Alignment.topCenter,
-          //   // end: Alignment.bottomRight,
-          //   transform: GradientRotation(1.2),
-          //   stops: [
-          //     0.5,
-          //     0.9,
-          //     0.99,
-          //   ],
-          //   colors: [
-          //     themeChange.darkTheme
-          //         ? RSColors.cardColorDark
-          //         : RSColors.cardColorLight,
-          //     song.color!.withOpacity(0.01),
-          //     song.color!.withOpacity(0.2),
-          //   ],
-          // ),
-          // color: song.color!.value != Color(0xffffffff).value
-          //     ? song.color
-          color: themeChange.darkTheme
-              ? RSColors.cardColorDark
-              : RSColors.cardColorLight,
-          borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  // if (song.color! != Color(0xffffffff) || themeChange.darkTheme)
-                  //   CircleAvatar(
-                  //     radius: 10,
-                  //     backgroundColor: song.color!,
-                  //   ),
-                  // if (song.color == Color(0xffffffff) && !themeChange.darkTheme)
-                  //   CircleAvatar(
-                  //     radius: 10,
-                  //     backgroundColor: RSColors.black,
-                  //     child: CircleAvatar(
-                  //       radius: 9.8,
-                  //       backgroundColor: song.color!,
-                  //     ),
-                  //   ),
-                  // const SizedBox(
-                  //   width: 8,
-                  // ),
-                  Text(
-                    AppLocalizations.of(context)!.translate('song')! +
-                        ' ${song.number}',
-                    style: TextStyle(
-                      color: RSColors.primary,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                  Spacer(),
-                  Icon(
-                    CupertinoIcons.chevron_right,
-                    color: RSColors.primary,
-                    size: 20,
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Text(
-                song.title!,
-                style: TextStyle(
-                  color:
-                      themeChange.darkTheme ? RSColors.darkText : RSColors.text,
-                  fontSize: 22,
-                  fontWeight: FontWeight.w700,
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
     );
   }
 }
