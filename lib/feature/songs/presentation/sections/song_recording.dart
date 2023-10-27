@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:risuscito/core/core_container.dart';
@@ -19,7 +18,7 @@ class SongRecording extends StatefulWidget {
 }
 
 class _SongRecordingState extends State<SongRecording> {
-  AudioPlayer _audioPlayer = AudioPlayer();
+  late AudioPlayer _audioPlayer;
   Duration _duration = Duration();
   StreamSubscription<Duration>? _positionSubscription;
   bool _isPlaying = false;
@@ -37,6 +36,20 @@ class _SongRecordingState extends State<SongRecording> {
     else
       Wakelock.disable();
     if (widget.url != null && widget.url!.isNotEmpty) {
+      _audioPlayer = AudioPlayer()
+        ..setReleaseMode(ReleaseMode.stop)
+        ..setAudioContext(
+          AudioContext(
+            iOS: AudioContextIOS(
+              category: AVAudioSessionCategory.playAndRecord,
+              options: [
+                AVAudioSessionOptions.defaultToSpeaker,
+                AVAudioSessionOptions
+                    .allowBluetooth, // slow html opening when headphones are connected???
+              ],
+            ),
+          ),
+        );
       _audioPlayer.onPlayerComplete.listen((event) {
         setState(() {
           _isPlaying = false;
@@ -65,17 +78,21 @@ class _SongRecordingState extends State<SongRecording> {
   @override
   void dispose() {
     _positionSubscription?.cancel();
-    _audioPlayer.stop();
-    _audioPlayer.dispose();
+    if (widget.url != null && widget.url!.isNotEmpty) {
+      _audioPlayer.stop();
+      _audioPlayer.dispose();
+    }
     Wakelock.disable();
     super.dispose();
   }
 
-  Future<void> loadRecording() async {
+  Future<bool> loadRecording() async {
     try {
-      return _audioPlayer.setSourceUrl(widget.url!);
+      await _audioPlayer.setSourceUrl(widget.url!);
+      return true;
     } catch (e) {
       print('Catched $e');
+      return false;
     }
   }
 

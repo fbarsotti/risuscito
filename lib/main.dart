@@ -9,12 +9,11 @@ import 'core/infrastructure/log/bloc_logger.dart';
 import 'core/infrastructure/log/logger.dart';
 
 void main() async {
-  await RSApp.init();
-  Bloc.observer = LoggerBlocDelegate();
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  bool? onboarding = prefs.getBool('onboarding') ?? true;
-
-  runZonedGuarded(() {
+  runZonedGuarded(() async {
+    await RSApp.init();
+    Bloc.observer = LoggerBlocDelegate();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? onboarding = prefs.getBool('onboarding') ?? true;
     runApp(
       RSApp(
         onboarding: onboarding,
