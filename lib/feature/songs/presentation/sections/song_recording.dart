@@ -20,7 +20,7 @@ class SongRecording extends StatefulWidget {
 class _SongRecordingState extends State<SongRecording> {
   late AudioPlayer _audioPlayer;
   Duration _duration = Duration();
-  StreamSubscription<Duration>? _positionSubscription;
+  late StreamSubscription<Duration> _positionSubscription;
   bool _isPlaying = false;
   bool _wasPlaying = false; // not reproducing audio
   bool _isDraggingSlider = false;
@@ -77,8 +77,8 @@ class _SongRecordingState extends State<SongRecording> {
 
   @override
   void dispose() {
-    _positionSubscription?.cancel();
     if (widget.url != null && widget.url!.isNotEmpty) {
+      _positionSubscription.cancel();
       _audioPlayer.stop();
       _audioPlayer.dispose();
     }
