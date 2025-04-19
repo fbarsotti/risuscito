@@ -75,6 +75,10 @@
   "onboarding_songs": "Bu uygulama, yolculuğun şarkılarını nerede olursanız olun görüntülemenizi sağlar. İnternet bağlantısı varsa ve şarkı için mevcutsa, kaydı dinleyebilirsiniz.",
   "onboarding_search": "Şarkıları görüntülemenin yanı sıra, kolayca arama yapabilirsiniz! Başlıklar, sözler ve kitabi referanslar arasında arama yapma yeteneğiniz bulunmaktadır.",
   "onboarding_favourites": "Çeşitli dizinlerde şarkıyı sola kaydırarak favorilere ekleyebilirsiniz. Orada biriktirmek istediğiniz tüm şarkıları toplayabilirsiniz.",
+  "remove_from_favourites": "Favorilerden kaldır",
+  "add_to_favourites": "Favorilere ekle",
+  "original_key": "Orijinal ton",
+
   
   "help_question_one": "Bir şarkıyı favorilere nasıl eklerim?",
   "help_answer_one": "Bir şarkıyı favorilere eklemek için, şarkıyı indekste sola kaydırarak mevcut seçenekleri açabilir ve favorilere ekleme seçeneğini seçebilirsiniz.",

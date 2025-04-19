@@ -1,11 +1,14 @@
+// lib/feature/songs/presentation/song_page.dart
+
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/services.dart';
 import 'package:risuscito/core/presentation/customization/rs_colors.dart';
 import 'package:risuscito/feature/favourites/presentation/bloc/favourites_bloc.dart';
 import 'package:risuscito/feature/songs/presentation/sections/song_recording.dart';
+import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import '../../../../core/infrastructure/localization/app_localizations.dart';
+import 'package:risuscito/core/utils/chord_transposer.dart';
 
 class SongPage extends StatefulWidget {
   final String? url;
@@ -27,28 +30,41 @@ class SongPage extends StatefulWidget {
 
 class _SongPageState extends State<SongPage> {
   late final WebViewController _controller;
+  int transposeOffset = 0;
+  bool _editingTranspose = false;
 
   @override
   void initState() {
-    _controller = WebViewController();
     super.initState();
+    _controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(widget.color);
+    _loadAndDisplay();
   }
 
-  Future<bool> loadHtml() async {
-    try {
-      final assetPath = "assets/data/songs_raw/raw-it/${widget.songId}";
-      final rawHtml = await rootBundle.loadString(assetPath);
+  @override
+  void dispose() {
+    _controller.clearCache();
+    _controller.clearLocalStorage();
+    super.dispose();
+  }
 
-      _controller
-        ..setJavaScriptMode(JavaScriptMode.unrestricted)
-        ..setBackgroundColor(widget.color)
-        ..loadHtmlString(rawHtml);
+  Future<void> _loadAndDisplay() async {
+    final assetPath = "assets/data/songs_raw/raw-it/${widget.songId}";
+    final offset =
+        await loadTransposeOffset(widget.songId); // 🔁 recupero aggiornato
+    final html = await loadAndTransposeHtml(assetPath, widget.songId);
 
-      return true;
-    } catch (e) {
-      print('❌ Errore nel caricamento HTML: $e');
-      return false;
-    }
+    setState(() {
+      transposeOffset = offset; // 🔁 aggiorno lo stato
+      _controller.loadHtmlString(html);
+    });
+  }
+
+  Future<void> _updateTranspose(int delta) async {
+    setState(() => transposeOffset += delta);
+    await saveTransposeOffset(transposeOffset, widget.songId);
+    _loadAndDisplay();
   }
 
   @override
@@ -62,9 +78,7 @@ class _SongPageState extends State<SongPage> {
         previousPageTitle: AppLocalizations.of(context)!.translate('back')!,
         middle: Text(
           AppLocalizations.of(context)!.translate('song')!,
-          style: TextStyle(
-            color: RSColors.black,
-          ),
+          style: TextStyle(color: RSColors.black),
         ),
         trailing: BlocBuilder<FavouritesBloc, FavouritesState>(
           builder: (context, state) {
@@ -73,26 +87,63 @@ class _SongPageState extends State<SongPage> {
 
             return CupertinoButton(
               padding: EdgeInsets.zero,
+              child: Icon(
+                _editingTranspose
+                    ? CupertinoIcons.check_mark
+                    : CupertinoIcons.ellipsis_vertical,
+              ),
               onPressed: () {
-                final bloc = context.read<FavouritesBloc>();
-
-                if (isFav) {
-                  bloc.add(RemoveFavourite(
-                    songId: widget.songId,
-                    reload: true,
-                    languageCode: langCode,
-                  ));
+                if (_editingTranspose) {
+                  // Conferma modifiche → chiudi modalità modifica
+                  setState(() => _editingTranspose = false);
                 } else {
-                  bloc.add(SaveFavourite(
-                    songId: widget.songId,
-                    languageCode: langCode,
-                  ));
+                  // Mostra menu con opzioni
+                  showCupertinoModalPopup(
+                    context: context,
+                    builder: (context) => CupertinoActionSheet(
+                      actions: [
+                        CupertinoActionSheetAction(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            final bloc = context.read<FavouritesBloc>();
+                            if (isFav) {
+                              bloc.add(RemoveFavourite(
+                                songId: widget.songId,
+                                reload: true,
+                                languageCode: langCode,
+                              ));
+                            } else {
+                              bloc.add(SaveFavourite(
+                                songId: widget.songId,
+                                languageCode: langCode,
+                              ));
+                            }
+                          },
+                          isDestructiveAction: isFav,
+                          child: Text(
+                            isFav
+                                ? AppLocalizations.of(context)!
+                                    .translate('remove_from_favourites')!
+                                : AppLocalizations.of(context)!
+                                    .translate('add_to_favourites')!,
+                          ),
+                        ),
+                        CupertinoActionSheetAction(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            setState(() => _editingTranspose = true);
+                          },
+                          child: const Text('Modifica'),
+                        ),
+                      ],
+                      cancelButton: CupertinoActionSheetAction(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('Annulla'),
+                      ),
+                    ),
+                  );
                 }
               },
-              child: Icon(
-                isFav ? CupertinoIcons.star_fill : CupertinoIcons.star,
-                color: isFav ? RSColors.primary : RSColors.black,
-              ),
             );
           },
         ),
@@ -101,25 +152,41 @@ class _SongPageState extends State<SongPage> {
         bottom: false,
         child: Column(
           children: [
-            Expanded(
-              child: FutureBuilder(
-                future: loadHtml(),
-                builder: (context, snapshot) {
-                  return !snapshot.hasData
-                      ? Center(
-                          child: CupertinoActivityIndicator(
-                            color: RSColors.red,
-                          ),
-                        )
-                      : Container(
-                          color: widget.color,
-                          child: WebViewWidget(
-                            controller: _controller,
-                          ),
-                        );
-                },
+            if (_editingTranspose)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const SizedBox(width: 40),
+                        CupertinoButton(
+                          child: const Text("-1"),
+                          onPressed: () => _updateTranspose(-1),
+                        ),
+                        Spacer(),
+                        Text(
+                          transposeOffset == 0
+                              ? AppLocalizations.of(context)!
+                                  .translate('original_key')!
+                              : "${transposeOffset > 0 ? '+' : ''}$transposeOffset",
+                          style: TextStyle(
+                              color: RSColors.black,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Spacer(),
+                        CupertinoButton(
+                          child: const Text("+1"),
+                          onPressed: () => _updateTranspose(1),
+                        ),
+                        const SizedBox(width: 40),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
+            Expanded(child: WebViewWidget(controller: _controller)),
             SongRecording(url: widget.url),
           ],
         ),
