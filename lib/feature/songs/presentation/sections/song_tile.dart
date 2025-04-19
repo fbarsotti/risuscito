@@ -77,15 +77,18 @@ class SongTile extends StatelessWidget {
                   songId: song.id!,
                 ),
               );
+              // print("----> PUSH STARTED:" + DateTime.now().toString());
               Navigator.of(context, rootNavigator: true).push(
                 CupertinoPageRoute(
                   builder: (context) => SongPage(
                     url: song.url,
                     htmlContent: song.htmlContent!,
+                    songId: song.id!,
                     color: song.color!,
                   ),
                 ),
               );
+              // print("----> PUSH FINISHED:" + DateTime.now().toString());
             },
           ),
           if (divider)

@@ -32,9 +32,11 @@ class SongCard extends StatelessWidget {
         Navigator.of(context, rootNavigator: true).push(
           CupertinoPageRoute(
             builder: (context) => SongPage(
-                url: song.url,
-                htmlContent: song.htmlContent!,
-                color: song.color!),
+              url: song.url,
+              htmlContent: song.htmlContent!,
+              songId: song.id!,
+              color: song.color!,
+            ),
           ),
         );
       },

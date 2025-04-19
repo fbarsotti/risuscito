@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:risuscito/core/core_container.dart';
 import 'package:risuscito/core/presentation/customization/rs_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:wakelock/wakelock.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 class SongRecording extends StatefulWidget {
   final String? url;
@@ -28,28 +28,29 @@ class _SongRecordingState extends State<SongRecording> {
 
   @override
   void initState() {
+    // print("----> INIT STATE START:" + DateTime.now().toString());
     super.initState();
     _sliderValue = 0.0;
     SharedPreferences prefs = rs();
     if (prefs.getBool('always_on') ?? true)
-      Wakelock.enable();
+      WakelockPlus.enable();
     else
-      Wakelock.disable();
+      WakelockPlus.disable();
     if (widget.url != null && widget.url!.isNotEmpty) {
-      _audioPlayer = AudioPlayer()
-        ..setReleaseMode(ReleaseMode.stop)
-        ..setAudioContext(
-          AudioContext(
-            iOS: AudioContextIOS(
-              category: AVAudioSessionCategory.playAndRecord,
-              options: [
-                AVAudioSessionOptions.defaultToSpeaker,
-                AVAudioSessionOptions
-                    .allowBluetooth, // slow html opening when headphones are connected???
-              ],
-            ),
+      _audioPlayer = AudioPlayer();
+      _audioPlayer.setReleaseMode(ReleaseMode.stop);
+      _audioPlayer.setAudioContext(
+        AudioContext(
+          iOS: AudioContextIOS(
+            category: AVAudioSessionCategory.playAndRecord,
+            options: {
+              AVAudioSessionOptions.defaultToSpeaker,
+              AVAudioSessionOptions
+                  .allowBluetooth, // slow html opening when headphones are connected???
+            },
           ),
-        );
+        ),
+      );
       _audioPlayer.onPlayerComplete.listen((event) {
         setState(() {
           _isPlaying = false;
@@ -73,6 +74,7 @@ class _SongRecordingState extends State<SongRecording> {
         });
       });
     }
+    // print("----> INIT STATE FINISH:" + DateTime.now().toString());
   }
 
   @override
@@ -82,7 +84,7 @@ class _SongRecordingState extends State<SongRecording> {
       _audioPlayer.stop();
       _audioPlayer.dispose();
     }
-    Wakelock.disable();
+    WakelockPlus.disable();
     super.dispose();
   }
 

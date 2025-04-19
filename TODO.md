@@ -7,6 +7,8 @@
 
 - [x] Speed up performance: "Local Server has been stopped." when exiting song page
 
+- [] Speed up performance: song page opening super slow when headphones are connected
+
 - [] Static search bar on search page
 
 - [x] Ukrainian language not working
