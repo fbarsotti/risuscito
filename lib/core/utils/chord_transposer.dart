@@ -98,7 +98,23 @@ String transposeHtmlChords(String html, int semitones) {
     final rawText = match.group(2)!;
     final transposed = rawText.replaceAllMapped(RegExp(r'(\s+|\S+)'), (m) {
       final token = m.group(0)!;
-      return token.trim().isEmpty ? token : transposeChord(token, semitones);
+      if (token.trim().isEmpty) return token;
+
+      // Estrai prefisso non alfabetico e suffisso (es. parentesi, virgole)
+      final match =
+          RegExp(r'^([^\w♯#♭b]*)([A-Za-zàèéìòù#♯b♭]+.*?)([^\w♯#♭b]*)$')
+              .firstMatch(token);
+
+      if (match != null) {
+        final prefix = match.group(1)!;
+        final core = match.group(2)!;
+        final suffix = match.group(3)!;
+        final transposedChord = transposeChord(core, semitones);
+        return '$prefix$transposedChord$suffix';
+      }
+
+      // Se non matcha il pattern, restituiscilo com'è
+      return token;
     });
 
     final color = semitones == 0 ? "#A13F3C" : "#0080FF";

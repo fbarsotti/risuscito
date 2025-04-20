@@ -7,6 +7,7 @@ import 'package:risuscito/core/presentation/customization/rs_colors.dart';
 import 'package:risuscito/feature/favourites/presentation/bloc/favourites_bloc.dart';
 import 'package:risuscito/feature/songs/presentation/sections/song_recording.dart';
 import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
+import 'package:risuscito/feature/songs/presentation/sections/song_transposer.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:risuscito/core/utils/chord_transposer.dart';
 
@@ -153,38 +154,9 @@ class _SongPageState extends State<SongPage> {
         child: Column(
           children: [
             if (_editingTranspose)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const SizedBox(width: 40),
-                        CupertinoButton(
-                          child: const Text("-1"),
-                          onPressed: () => _updateTranspose(-1),
-                        ),
-                        Spacer(),
-                        Text(
-                          transposeOffset == 0
-                              ? AppLocalizations.of(context)!
-                                  .translate('original_key')!
-                              : "${transposeOffset > 0 ? '+' : ''}$transposeOffset",
-                          style: TextStyle(
-                              color: RSColors.black,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        Spacer(),
-                        CupertinoButton(
-                          child: const Text("+1"),
-                          onPressed: () => _updateTranspose(1),
-                        ),
-                        const SizedBox(width: 40),
-                      ],
-                    ),
-                  ],
-                ),
+              SongTransposer(
+                transposeOffset: transposeOffset,
+                onTranspose: (delta) => _updateTranspose(delta),
               ),
             Expanded(child: WebViewWidget(controller: _controller)),
             SongRecording(url: widget.url),
