@@ -2,12 +2,12 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter/services.dart';
 import 'package:risuscito/core/presentation/customization/rs_colors.dart';
 import 'package:risuscito/feature/favourites/presentation/bloc/favourites_bloc.dart';
+import 'package:risuscito/feature/songs/presentation/sections/edit/barre_selector_button.dart';
 import 'package:risuscito/feature/songs/presentation/sections/song_recording.dart';
 import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
-import 'package:risuscito/feature/songs/presentation/sections/song_transposer.dart';
+import 'package:risuscito/feature/songs/presentation/sections/edit/song_transposer.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:risuscito/core/utils/chord_transposer.dart';
 
@@ -32,6 +32,7 @@ class SongPage extends StatefulWidget {
 class _SongPageState extends State<SongPage> {
   late final WebViewController _controller;
   int transposeOffset = 0;
+  int? barreOffset = 0;
   bool _editingTranspose = false;
 
   @override
@@ -52,15 +53,35 @@ class _SongPageState extends State<SongPage> {
 
   Future<void> _loadAndDisplay() async {
     final assetPath = "assets/data/songs_raw/raw-it/${widget.songId}";
-    final offset =
-        await loadTransposeOffset(widget.songId); // 🔁 recupero aggiornato
-    final html = await loadAndTransposeHtml(assetPath, widget.songId);
+    final offset = await loadTransposeOffset(widget.songId);
+    final barre = await loadBarreOffset(widget.songId);
+
+    final html = await processSongHtml(assetPath, widget.songId);
 
     setState(() {
-      transposeOffset = offset; // 🔁 aggiorno lo stato
+      transposeOffset = offset;
+      barreOffset = barre;
       _controller.loadHtmlString(html);
     });
   }
+
+  // Future<void> _loadAndDisplay() async {
+  //   final assetPath = "assets/data/songs_raw/raw-it/${widget.songId}";
+  //   final offset =
+  //       await loadTransposeOffset(widget.songId); // 🔁 recupero aggiornato
+  //   final html = await loadAndTransposeHtml(assetPath, widget.songId);
+  //   final barre = await loadBarreOffset(widget.songId);
+  //   setState(() {
+  //     transposeOffset = offset;
+  //     barreOffset = barre;
+  //     _controller.loadHtmlString(withBarre); // usa processSongHtml()
+  //   });
+
+  //   // setState(() {
+  //   //   transposeOffset = offset; // 🔁 aggiorno lo stato
+  //   //   _controller.loadHtmlString(html);
+  //   // });
+  // }
 
   Future<void> _updateTranspose(int delta) async {
     setState(() => transposeOffset += delta);
@@ -157,6 +178,21 @@ class _SongPageState extends State<SongPage> {
               SongTransposer(
                 transposeOffset: transposeOffset,
                 onTranspose: (delta) => _updateTranspose(delta),
+              ),
+            if (_editingTranspose)
+              BarreSelectorButton(
+                barreOffset: barreOffset,
+                onChanged: (newOffset) async {
+                  setState(() => barreOffset = newOffset);
+                  await saveBarreOffset(newOffset, widget.songId);
+                  _loadAndDisplay(); // ricarica HTML aggiornato
+                },
+                onReset: () async {
+                  setState(() => barreOffset = null); // UI reset
+                  await clearBarreOffset(
+                      widget.songId); // elimina del tutto la preferenza
+                  _loadAndDisplay();
+                },
               ),
             Expanded(child: WebViewWidget(controller: _controller)),
             SongRecording(url: widget.url),

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:risuscito/core/presentation/customization/rs_colors.dart';
 import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
 
@@ -15,7 +16,9 @@ class SongTransposer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.only(
+        top: 8.0,
+      ),
       child: Column(
         children: [
           Row(
@@ -48,6 +51,11 @@ class SongTransposer extends StatelessWidget {
             child: const Text("Reset"),
             sizeStyle: CupertinoButtonSize.small,
             onPressed: () => onTranspose(-transposeOffset),
+          ),
+          const SizedBox(height: 8),
+          Divider(
+            height: 1,
+            color: RSColors.lightText,
           ),
         ],
       ),
