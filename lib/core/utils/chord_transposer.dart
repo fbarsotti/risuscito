@@ -11,20 +11,20 @@ const barreTextColor = '#A13F3C'; // colore testo "Barré"
 const highlightBackground = '#FFFACD';
 
 const highlightBackgroundRGB = '161,63,60'; // RGB di #FFFACD
-const highlightBackgroundOpacity = 0.1; // 30% di opacità
+const highlightBackgroundOpacity = 0.1; // 10% di opacità
 
 const _sharpScale = [
   'C',
   'C#',
   'D',
-  'D#',
+  'Eb',
   'E',
   'F',
   'F#',
   'G',
   'G#',
   'A',
-  'A#',
+  'Bb',
   'B'
 ];
 
@@ -40,14 +40,14 @@ const _italianToEnglish = {
   'Do': 'C',
   'Do#': 'C#',
   'Re': 'D',
-  'Re#': 'D#',
+  'Mib': 'Eb',
   'Mi': 'E',
   'Fa': 'F',
   'Fa#': 'F#',
   'Sol': 'G',
   'Sol#': 'G#',
   'La': 'A',
-  'La#': 'A#',
+  'Sib': 'Bb',
   'Si': 'B',
 };
 
@@ -55,14 +55,14 @@ const _englishToItalian = {
   'C': 'Do',
   'C#': 'Do#',
   'D': 'Re',
-  'D#': 'Re#',
+  'Eb': 'Mib',
   'E': 'Mi',
   'F': 'Fa',
   'F#': 'Fa#',
   'G': 'Sol',
   'G#': 'Sol#',
   'A': 'La',
-  'A#': 'La#',
+  'Bb': 'Sib',
   'B': 'Si',
 };
 
