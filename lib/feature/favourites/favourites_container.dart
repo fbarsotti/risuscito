@@ -18,6 +18,7 @@ class FavouritesContainer {
       () => FavouritesRepositoryImpl(
         localDatasource: _rs(),
         favouritesLocalDatasource: _rs(),
+        songParser: _rs(),
       ),
     );
   }
