@@ -1,10 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-import 'package:risuscito/core/core_container.dart';
-import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
 import 'package:risuscito/core/presentation/customization/rs_colors.dart';
 import 'package:risuscito/feature/settings/sections/debug/debug_page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/presentation/customization/theme/rs_theme_provider.dart';
 
