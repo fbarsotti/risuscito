@@ -6,7 +6,7 @@ class ListDomainModel {
   final String description;
   final DateTime createdAt;
   final DateTime updatedAt;
-  final List<SongDomainModel> songs;
+  final List<SongDomainModel>? songs;
 
   ListDomainModel({
     required this.songs,

@@ -23,7 +23,8 @@
 
 - [] Shareable lists
 
-- [] Changing chords
+- [x] Changing chords
+  - [] translation is not working tho
 
 - [] Remove duplicated code on:
   - [] Language (settings and onboarding)

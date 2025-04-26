@@ -30,12 +30,44 @@ class ListsRepositoryImpl implements ListsRepository {
             description: list.description,
             createdAt: DateTime.parse(list.createdAt),
             updatedAt: DateTime.parse(list.updatedAt),
-            songs: await songParser.parseSongs(list.songs, languageCode),
+            songs: await songParser.parseSongs(
+              list.songs,
+              languageCode,
+            ),
           );
         }),
       );
 
       return Right(domainModelLists);
+    } catch (e, s) {
+      return Left(handleError(e, s));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<ListDomainModel>>> createList(
+    String name,
+    String description,
+    String languageCode,
+  ) async {
+    try {
+      listsLocalDatasource.createList(name, description, languageCode);
+
+      return await getAllLists(languageCode);
+    } catch (e, s) {
+      return Left(handleError(e, s));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<ListDomainModel>>> addSongToList(
+    String listId,
+    String songId,
+    String languageCode,
+  ) async {
+    try {
+      listsLocalDatasource.addSongToList(listId, songId);
+      return await getAllLists(languageCode);
     } catch (e, s) {
       return Left(handleError(e, s));
     }
