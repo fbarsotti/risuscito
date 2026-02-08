@@ -53,10 +53,21 @@ class SongsRepositoryImpl implements SongsRepository {
       final pagesNode = pagesDocument.findElements('resources').first;
       final pages = pagesNode.findElements('string');
 
+      // Parse sorgenti.xml and link.xml once instead of per-song
+      final existingSongIds = await _loadExistingSongIds(languageCode);
+      final songUrls = await _loadSongUrls(languageCode);
+
+      // Build pages lookup map for O(1) access
+      final Map<String, String> pagesMap = {};
+      for (final page in pages) {
+        final key = page.getAttribute('name')!.replaceAll('_page', '').toLowerCase();
+        pagesMap[key] = page.text;
+      }
+
       for (final title in titles) {
         final id =
             title.getAttribute('name')!.replaceAll('_title', '').toLowerCase();
-        final exists = await _checkIfSongExists(languageCode, id);
+        final exists = existingSongIds.contains(id);
         if (exists) {
           final content =
               await localDatasource.getLocalizedSongPath(languageCode, id);
@@ -65,26 +76,9 @@ class SongsRepositoryImpl implements SongsRepository {
             SongDomainModel(
               id: id,
               title: title.text,
-              number: pages
-                  .where(
-                    (element) =>
-                        element
-                            .getAttribute('name')!
-                            .replaceAll('_page', '')
-                            .toLowerCase() ==
-                        id,
-                  )
-                  .first
-                  .text,
+              number: pagesMap[id] ?? '',
               htmlContent: content,
-              // songWebView: WebViewPlus(
-              //   javascriptMode: JavascriptMode.unrestricted,
-              //   backgroundColor: Color(int.parse('0xff$color')),
-              //   onWebViewCreated: (controller) {
-              //     controller.loadString(content);
-              //   },
-              // ),
-              url: await _getSongUrl(languageCode, id),
+              url: songUrls[id],
               color: Color(
                 int.parse('0xff$color'),
               ),
@@ -94,7 +88,10 @@ class SongsRepositoryImpl implements SongsRepository {
         }
       }
 
-      final biblicalOrder = await getLocalizedSongsBiblical(languageCode);
+      final biblicalOrder = await getLocalizedSongsBiblical(
+        languageCode,
+        existingSongIds: existingSongIds,
+      );
       for (final biblicalRef in biblicalOrder) {
         songs[songs.indexWhere((element) => element.id == biblicalRef.id)]
             .biblicalRef = biblicalRef.title;
@@ -122,8 +119,9 @@ class SongsRepositoryImpl implements SongsRepository {
   }
 
   Future<List<SongDomainModel>> getLocalizedSongsBiblical(
-    String languageCode,
-  ) async {
+    String languageCode, {
+    Set<String>? existingSongIds,
+  }) async {
     List<SongDomainModel> songs = [];
 
     final pagesContent =
@@ -140,22 +138,29 @@ class SongsRepositoryImpl implements SongsRepository {
     final biblicalNode = biblicalDocument.findElements('resources').first;
     final biblicalRefs = biblicalNode.findElements('string');
 
+    // Reuse pre-loaded set or load once
+    existingSongIds ??= await _loadExistingSongIds(languageCode);
+
+    // Build pages lookup map for O(1) access
+    final Map<String, String> pagesMap = {};
+    for (final page in pages) {
+      final key = page.getAttribute('name')!.replaceAll('_page', '').toLowerCase();
+      pagesMap[key] = page.text;
+    }
+
+    // Load song URLs once
+    final songUrls = await _loadSongUrls(languageCode);
+
     for (final biblicalRef in biblicalRefs) {
       var id = biblicalRef
           .getAttribute('name')!
           .replaceAll('_biblico', '')
           .toLowerCase();
-      final exists = await _checkIfSongExists(languageCode, id);
+      final exists = existingSongIds.contains(id);
       if (exists) {
-        if (id.contains('_ii') &&
-            pages
-                .where((element) =>
-                    element
-                        .getAttribute('name')!
-                        .replaceAll('_page', '')
-                        .toLowerCase() ==
-                    id)
-                .isEmpty) id = id.split('_ii')[0];
+        if (id.contains('_ii') && !pagesMap.containsKey(id)) {
+          id = id.split('_ii')[0];
+        }
         final content =
             await localDatasource.getLocalizedSongPath(languageCode, id);
         final color = content.split('BGCOLOR="#')[1].substring(0, 6);
@@ -163,26 +168,9 @@ class SongsRepositoryImpl implements SongsRepository {
           SongDomainModel(
             id: id,
             title: biblicalRef.text,
-            number: pages
-                .where(
-                  (element) =>
-                      element
-                          .getAttribute('name')!
-                          .replaceAll('_page', '')
-                          .toLowerCase() ==
-                      id,
-                )
-                .first
-                .text,
+            number: pagesMap[id] ?? '',
             htmlContent: content,
-            // songWebView: WebViewPlus(
-            //   javascriptMode: JavascriptMode.unrestricted,
-            //   backgroundColor: Color(int.parse('0xff$color')),
-            //   onWebViewCreated: (controller) {
-            //     controller.loadString(content);
-            //   },
-            // ),
-            url: await _getSongUrl(languageCode, id),
+            url: songUrls[id],
             color: Color(
               int.parse('0xff$color'),
             ),
@@ -251,31 +239,28 @@ class SongsRepositoryImpl implements SongsRepository {
     return result;
   }
 
-  Future<bool> _checkIfSongExists(String languageCode, String songId) async {
+  Future<Set<String>> _loadExistingSongIds(String languageCode) async {
     final sourcesContent =
         await localDatasource.getLocalizedSongSources(languageCode);
     final sourcesDocument = XmlDocument.parse(sourcesContent);
     final sourcesNode = sourcesDocument.findElements('resources').first;
     final sources = sourcesNode.findElements('string');
-
-    for (final source in sources) {
-      if (source.text == songId) return true;
-    }
-    return false;
+    return sources.map((source) => source.text).toSet();
   }
 
-  Future<String?> _getSongUrl(String languageCode, String songId) async {
+  Future<Map<String, String>> _loadSongUrls(String languageCode) async {
     final sourcesContent =
         await localDatasource.getLocalizedSongLinks(languageCode);
     final sourcesDocument = XmlDocument.parse(sourcesContent);
     final sourcesNode = sourcesDocument.findElements('resources').first;
     final sources = sourcesNode.findElements('string');
 
+    final Map<String, String> urls = {};
     for (final source in sources) {
-      if (source.getAttribute('name')!.replaceAll('_link', '').toLowerCase() ==
-          songId) return source.text;
+      final key = source.getAttribute('name')!.replaceAll('_link', '').toLowerCase();
+      urls[key] = source.text;
     }
-    return null;
+    return urls;
   }
 
   String _toTitleCase(String text) {

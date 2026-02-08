@@ -118,9 +118,15 @@ Future<String> processSongHtml(
   required String barreLabel,
   required String noBarreLabel,
 }) async {
-  final html = await rootBundle.loadString(assetPath);
-  final transpose = await loadTransposeOffset(songId);
-  final barre = await loadBarreOffset(songId);
+  final results = await Future.wait([
+    rootBundle.loadString(assetPath),
+    loadTransposeOffset(songId),
+    loadBarreOffset(songId),
+  ]);
+
+  final html = results[0] as String;
+  final transpose = results[1] as int;
+  final barre = results[2] as int?;
 
   final withChords = transposeHtmlChords(html, transpose);
   final withBarre = applyBarreToHtml(
@@ -131,6 +137,24 @@ Future<String> processSongHtml(
   );
 
   return withBarre;
+}
+
+/// Optimized version that accepts pre-loaded HTML and offsets,
+/// avoiding redundant asset reads and SharedPreferences lookups.
+String processSongHtmlDirect(
+  String html, {
+  required int transposeOffset,
+  required int? barreOffset,
+  required String barreLabel,
+  required String noBarreLabel,
+}) {
+  final withChords = transposeHtmlChords(html, transposeOffset);
+  return applyBarreToHtml(
+    withChords,
+    barreOffset,
+    barreLabel: barreLabel,
+    noBarreLabel: noBarreLabel,
+  );
 }
 
 String transposeHtmlChords(String html, int semitones) {

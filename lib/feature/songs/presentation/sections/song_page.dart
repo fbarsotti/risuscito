@@ -36,13 +36,19 @@ class _SongPageState extends State<SongPage> {
   int transposeOffset = 0;
   int? barreOffset = 0;
   bool _editingTranspose = false;
+  bool _pageReady = false;
 
   @override
   void initState() {
     super.initState();
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setBackgroundColor(widget.color);
+      ..setBackgroundColor(widget.color)
+      ..setNavigationDelegate(NavigationDelegate(
+        onPageFinished: (_) {
+          if (mounted) setState(() => _pageReady = true);
+        },
+      ));
     _loadAndDisplay();
   }
 
@@ -64,22 +70,30 @@ class _SongPageState extends State<SongPage> {
   }
 
   Future<void> _loadAndDisplay() async {
-    final assetPath = "assets/data/songs_raw/raw-${widget.languageCode}/${widget.songId}";
-    final offset = await loadTransposeOffset(widget.songId);
-    final barre = await loadBarreOffset(widget.songId);
+    final results = await Future.wait([
+      loadTransposeOffset(widget.songId),
+      loadBarreOffset(widget.songId),
+    ]);
 
-    final html = await processSongHtml(
-      assetPath,
-      widget.songId,
+    final offset = results[0]!;
+    final barre = results[1];
+
+    final html = processSongHtmlDirect(
+      widget.htmlContent,
+      transposeOffset: offset,
+      barreOffset: barre,
       barreLabel: _barreAtFretLabel(),
       noBarreLabel: _barreWithoutLabel(),
     );
 
-    setState(() {
-      transposeOffset = offset;
-      barreOffset = barre;
-      _controller.loadHtmlString(html);
-    });
+    if (mounted) {
+      setState(() {
+        _pageReady = false;
+        transposeOffset = offset;
+        barreOffset = barre;
+        _controller.loadHtmlString(html);
+      });
+    }
   }
 
   Future<void> _updateTranspose(int delta) async {
@@ -193,7 +207,13 @@ class _SongPageState extends State<SongPage> {
                   _loadAndDisplay();
                 },
               ),
-            Expanded(child: WebViewWidget(controller: _controller)),
+            Expanded(
+              child: AnimatedOpacity(
+                opacity: _pageReady ? 1.0 : 0.0,
+                duration: const Duration(milliseconds: 200),
+                child: WebViewWidget(controller: _controller),
+              ),
+            ),
             SongRecording(url: widget.url),
           ],
         ),
