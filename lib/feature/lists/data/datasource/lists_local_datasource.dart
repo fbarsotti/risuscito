@@ -62,7 +62,28 @@ class ListsLocalDatasource {
       // Aggiungi la canzone alla lista
       list.songs.add(songId);
       final updatedListData = list.toJson();
-      sharedPreferences!.setString(listId, updatedListData.toString());
+      sharedPreferences!.setString(listId, jsonEncode(updatedListData));
+    }
+  }
+
+  void removeSongFromList(String listId, String songId) {
+    final String? listData = sharedPreferences!.getString(listId);
+    if (listData != null) {
+      final list =
+          ListDataModel.fromJson(jsonDecode(listData) as Map<String, dynamic>);
+      list.songs.remove(songId);
+      final updatedListData = list.toJson();
+      sharedPreferences!.setString(listId, jsonEncode(updatedListData));
+    }
+  }
+
+  void deleteList(String listId) {
+    sharedPreferences!.remove(listId);
+    final raw = sharedPreferences!.getString(_allListIdsKey);
+    if (raw != null) {
+      final ids = List<String>.from(jsonDecode(raw));
+      ids.remove(listId);
+      sharedPreferences!.setString(_allListIdsKey, jsonEncode(ids));
     }
   }
 

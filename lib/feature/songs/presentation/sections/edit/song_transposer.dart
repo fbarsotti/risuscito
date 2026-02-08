@@ -48,7 +48,7 @@ class SongTransposer extends StatelessWidget {
             ],
           ),
           CupertinoButton(
-            child: const Text("Reset"),
+            child: Text(AppLocalizations.of(context)!.translate('reset') ?? 'Reset'),
             sizeStyle: CupertinoButtonSize.small,
             onPressed: () => onTranspose(-transposeOffset),
           ),

@@ -72,4 +72,31 @@ class ListsRepositoryImpl implements ListsRepository {
       return Left(handleError(e, s));
     }
   }
+
+  @override
+  Future<Either<Failure, List<ListDomainModel>>> deleteList(
+    String listId,
+    String languageCode,
+  ) async {
+    try {
+      listsLocalDatasource.deleteList(listId);
+      return await getAllLists(languageCode);
+    } catch (e, s) {
+      return Left(handleError(e, s));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<ListDomainModel>>> removeSongFromList(
+    String listId,
+    String songId,
+    String languageCode,
+  ) async {
+    try {
+      listsLocalDatasource.removeSongFromList(listId, songId);
+      return await getAllLists(languageCode);
+    } catch (e, s) {
+      return Left(handleError(e, s));
+    }
+  }
 }

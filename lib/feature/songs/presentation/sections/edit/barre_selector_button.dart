@@ -37,13 +37,17 @@ class BarreSelectorButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final title = l10n.translate('barre') ?? 'Barré';
+    final barreAtFret = l10n.translate('barre_at_fret') ?? 'Barré al %s tasto';
+    final barreWithout = l10n.translate('barre_without') ?? 'Senza barré';
+    final barreOriginal = l10n.translate('barre_original') ?? 'Barré originale';
+    final resetLabel = l10n.translate('reset') ?? 'Reset';
+    final cancelLabel = l10n.translate('cancel') ?? 'Annulla';
 
     final text = barreOffset == null
-        ? '$title originale' // nessuna preferenza salvata
+        ? barreOriginal
         : barreOffset == 0
-            ? 'Senza barré'
-            : '$title al ${_toRoman(barreOffset!)} tasto';
+            ? barreWithout
+            : barreAtFret.replaceAll('%s', _toRoman(barreOffset!));
 
     return Column(
       children: [
@@ -53,10 +57,10 @@ class BarreSelectorButton extends StatelessWidget {
             showCupertinoModalPopup(
               context: context,
               builder: (_) => CupertinoActionSheet(
-                title: Text(title),
                 actions: List.generate(13, (i) {
-                  final label =
-                      i == 0 ? 'Senza barré' : '$title al ${_toRoman(i)} tasto';
+                  final label = i == 0
+                      ? barreWithout
+                      : barreAtFret.replaceAll('%s', _toRoman(i));
                   return CupertinoActionSheetAction(
                     onPressed: () {
                       Navigator.pop(context);
@@ -68,14 +72,14 @@ class BarreSelectorButton extends StatelessWidget {
                 cancelButton: CupertinoActionSheetAction(
                   onPressed: () => Navigator.pop(context),
                   isDefaultAction: true,
-                  child: const Text('Annulla'),
+                  child: Text(cancelLabel),
                 ),
               ),
             );
           },
         ),
         CupertinoButton(
-          child: const Text('Reset'),
+          child: Text(resetLabel),
           sizeStyle: CupertinoButtonSize.small,
           onPressed: onReset,
         ),

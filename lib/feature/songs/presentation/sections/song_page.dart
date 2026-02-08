@@ -16,6 +16,7 @@ class SongPage extends StatefulWidget {
   final String htmlContent;
   final String songId;
   final Color color;
+  final String languageCode;
 
   SongPage({
     Key? key,
@@ -23,6 +24,7 @@ class SongPage extends StatefulWidget {
     required this.htmlContent,
     required this.songId,
     required this.color,
+    required this.languageCode,
   }) : super(key: key);
 
   @override
@@ -51,12 +53,27 @@ class _SongPageState extends State<SongPage> {
     super.dispose();
   }
 
+  String _barreAtFretLabel() {
+    final l10n = AppLocalizations.of(context);
+    return l10n?.translate('barre_at_fret') ?? 'Barré al %s tasto';
+  }
+
+  String _barreWithoutLabel() {
+    final l10n = AppLocalizations.of(context);
+    return l10n?.translate('barre_without') ?? 'Senza barré';
+  }
+
   Future<void> _loadAndDisplay() async {
-    final assetPath = "assets/data/songs_raw/raw-it/${widget.songId}";
+    final assetPath = "assets/data/songs_raw/raw-${widget.languageCode}/${widget.songId}";
     final offset = await loadTransposeOffset(widget.songId);
     final barre = await loadBarreOffset(widget.songId);
 
-    final html = await processSongHtml(assetPath, widget.songId);
+    final html = await processSongHtml(
+      assetPath,
+      widget.songId,
+      barreLabel: _barreAtFretLabel(),
+      noBarreLabel: _barreWithoutLabel(),
+    );
 
     setState(() {
       transposeOffset = offset;
@@ -64,24 +81,6 @@ class _SongPageState extends State<SongPage> {
       _controller.loadHtmlString(html);
     });
   }
-
-  // Future<void> _loadAndDisplay() async {
-  //   final assetPath = "assets/data/songs_raw/raw-it/${widget.songId}";
-  //   final offset =
-  //       await loadTransposeOffset(widget.songId); // 🔁 recupero aggiornato
-  //   final html = await loadAndTransposeHtml(assetPath, widget.songId);
-  //   final barre = await loadBarreOffset(widget.songId);
-  //   setState(() {
-  //     transposeOffset = offset;
-  //     barreOffset = barre;
-  //     _controller.loadHtmlString(withBarre); // usa processSongHtml()
-  //   });
-
-  //   // setState(() {
-  //   //   transposeOffset = offset; // 🔁 aggiorno lo stato
-  //   //   _controller.loadHtmlString(html);
-  //   // });
-  // }
 
   Future<void> _updateTranspose(int delta) async {
     setState(() => transposeOffset += delta);
@@ -155,12 +154,12 @@ class _SongPageState extends State<SongPage> {
                             Navigator.pop(context);
                             setState(() => _editingTranspose = true);
                           },
-                          child: const Text('Modifica'),
+                          child: Text(AppLocalizations.of(context)!.translate('edit')!),
                         ),
                       ],
                       cancelButton: CupertinoActionSheetAction(
                         onPressed: () => Navigator.pop(context),
-                        child: const Text('Annulla'),
+                        child: Text(AppLocalizations.of(context)!.translate('cancel')!),
                       ),
                     ),
                   );

@@ -58,5 +58,39 @@ class ListsBloc extends Bloc<ListsEvent, ListsState> {
         );
       },
     );
+    on<ListsDeleteListEvent>(
+      (event, emit) async {
+        emit(ListsLoading());
+        final result = await listsRepository.deleteList(
+          event.listId,
+          event.languageCode,
+        );
+        result.fold(
+          (failure) => emit(ListsFailure(failure: failure)),
+          (lists) => emit(ListsLoaded(lists: lists)),
+        );
+      },
+    );
+    on<ListsRemoveSongFromListEvent>(
+      (event, emit) async {
+        emit(ListsLoading());
+        final result = await listsRepository.removeSongFromList(
+          event.listId,
+          event.songId,
+          event.languageCode,
+        );
+        result.fold(
+          (failure) => emit(ListsFailure(failure: failure)),
+          (list) {
+            emit(
+              ListsInfoLoaded(
+                list: list.where((list) => list.id == event.listId).first,
+              ),
+            );
+            emit(ListsLoaded(lists: list));
+          },
+        );
+      },
+    );
   }
 }

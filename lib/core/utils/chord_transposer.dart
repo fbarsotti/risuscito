@@ -69,6 +69,13 @@ const _englishToItalian = {
 String transposeChord(String chord, int semitones) {
   chord = chord.trim();
 
+  // Detect lowercase root (Ukrainian minor notation: d = Dm, g = Gm)
+  final isLowerCase =
+      chord.isNotEmpty && chord[0].toLowerCase() == chord[0] && chord[0].toUpperCase() != chord[0];
+  final workingChord = isLowerCase
+      ? chord[0].toUpperCase() + chord.substring(1)
+      : chord;
+
   // Lista ordinata per lunghezza decrescente per match più specifici prima (es. "Do#" prima di "Do")
   final allRoots = [
     ..._italianToEnglish.keys,
@@ -77,8 +84,8 @@ String transposeChord(String chord, int semitones) {
   ]..sort((a, b) => b.length.compareTo(a.length));
 
   for (final root in allRoots) {
-    if (chord.startsWith(root)) {
-      final suffix = chord.substring(root.length);
+    if (workingChord.startsWith(root)) {
+      final suffix = workingChord.substring(root.length);
       final isItalian = _italianToEnglish.containsKey(root);
       final englishRoot =
           isItalian ? _italianToEnglish[root]! : _normalize(root);
@@ -87,9 +94,15 @@ String transposeChord(String chord, int semitones) {
 
       final newIndex = (index + semitones) % 12;
       final transposed = _sharpScale[newIndex < 0 ? newIndex + 12 : newIndex];
-      final finalChord = isItalian
+      var finalChord = isItalian
           ? (_englishToItalian[transposed] ?? transposed)
           : transposed;
+
+      // Restore lowercase if original was lowercase (Ukrainian minor)
+      if (isLowerCase) {
+        finalChord = finalChord[0].toLowerCase() + finalChord.substring(1);
+      }
+
       return '$finalChord$suffix';
     }
   }
@@ -98,16 +111,27 @@ String transposeChord(String chord, int semitones) {
 }
 
 String _normalize(String note) {
+  if (_sharpScale.contains(note)) return note;
   return _flatToSharp[note] ?? note;
 }
 
-Future<String> processSongHtml(String assetPath, String songId) async {
+Future<String> processSongHtml(
+  String assetPath,
+  String songId, {
+  required String barreLabel,
+  required String noBarreLabel,
+}) async {
   final html = await rootBundle.loadString(assetPath);
   final transpose = await loadTransposeOffset(songId);
   final barre = await loadBarreOffset(songId);
 
   final withChords = transposeHtmlChords(html, transpose);
-  final withBarre = applyBarreToHtml(withChords, barre);
+  final withBarre = applyBarreToHtml(
+    withChords,
+    barre,
+    barreLabel: barreLabel,
+    noBarreLabel: noBarreLabel,
+  );
 
   return withBarre;
 }
@@ -184,7 +208,12 @@ Future<void> saveBarreOffset(int offset, String songId) async {
   await prefs.setInt('barre_offset_$songId', offset);
 }
 
-String applyBarreToHtml(String html, int? barreOffset) {
+String applyBarreToHtml(
+  String html,
+  int? barreOffset, {
+  required String barreLabel,
+  required String noBarreLabel,
+}) {
   if (barreOffset == null) return html;
 
   const roman = [
@@ -204,7 +233,7 @@ String applyBarreToHtml(String html, int? barreOffset) {
   ];
 
   final label =
-      barreOffset == 0 ? 'Senza barré' : 'Barré al ${roman[barreOffset]} tasto';
+      barreOffset == 0 ? noBarreLabel : barreLabel.replaceAll('%s', roman[barreOffset]);
 
   final bg = 'rgba($highlightBackgroundRGB, $highlightBackgroundOpacity)';
   final newBarreLine = '''
@@ -214,9 +243,9 @@ String applyBarreToHtml(String html, int? barreOffset) {
   </span>
 </H4>''';
 
-  // Regex più robusta, che consente tag chiusi male (es. </H2> invece di </I>)
+  // Language-independent regex: match any <H4> block containing <FONT> + <I>
   final barreRegex = RegExp(
-    r'<H4>\s*<FONT[^>]*>\s*<I>(Barr[eè] al .*? tasto|Senza barr[eè])<\/I>.*?<\/FONT>\s*<\/H4>',
+    r'<H4>\s*(?:<span[^>]*>\s*)?(?:<FONT[^>]*>\s*)?<I>.*?</I>.*?</H4>',
     caseSensitive: false,
   );
 

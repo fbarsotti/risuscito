@@ -18,4 +18,15 @@ mixin ListsRepository {
     String songId,
     String languageCode,
   );
+
+  Future<Either<Failure, List<ListDomainModel>>> deleteList(
+    String listId,
+    String languageCode,
+  );
+
+  Future<Either<Failure, List<ListDomainModel>>> removeSongFromList(
+    String listId,
+    String songId,
+    String languageCode,
+  );
 }

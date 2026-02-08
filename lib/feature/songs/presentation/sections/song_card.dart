@@ -36,6 +36,7 @@ class SongCard extends StatelessWidget {
               htmlContent: song.htmlContent!,
               songId: song.id!,
               color: song.color!,
+              languageCode: AppLocalizations.of(context)!.locale.languageCode,
             ),
           ),
         );

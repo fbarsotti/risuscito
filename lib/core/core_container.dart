@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:risuscito/feature/favourites/favourites_container.dart';
 import 'package:risuscito/feature/history/history_container.dart';
+import 'package:risuscito/feature/lists/lists_container.dart';
 import 'package:risuscito/feature/songs/data/datasource/songs_datasource.dart';
 import 'package:risuscito/feature/songs/songs_container.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -38,6 +39,7 @@ class CoreContainer {
     await SongsContainer.init();
     await FavouritesContainer.init();
     await HistoryContainer.init();
+    await ListsContainer.init();
   }
 
   static List<BlocProvider> getBlocProviders() {
@@ -45,6 +47,7 @@ class CoreContainer {
       ...SongsContainer.getBlocProviders(),
       ...FavouritesContainer.getBlocProviders(),
       ...HistoryContainer.getBlocProviders(),
+      ...ListsContainer.getBlocProviders(),
     ];
   }
 }

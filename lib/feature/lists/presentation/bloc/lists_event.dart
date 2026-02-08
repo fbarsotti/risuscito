@@ -32,3 +32,25 @@ class ListsAddSongToListEvent extends ListsEvent {
     required this.languageCode,
   });
 }
+
+class ListsDeleteListEvent extends ListsEvent {
+  final String listId;
+  final String languageCode;
+
+  ListsDeleteListEvent({
+    required this.listId,
+    required this.languageCode,
+  });
+}
+
+class ListsRemoveSongFromListEvent extends ListsEvent {
+  final String listId;
+  final String songId;
+  final String languageCode;
+
+  ListsRemoveSongFromListEvent({
+    required this.listId,
+    required this.songId,
+    required this.languageCode,
+  });
+}
