@@ -96,6 +96,8 @@
   "songs_count": "songs",
   "delete_list": "Delete list",
 
+  "liturgical_index": "Liturgical indexes",
+
   "help_question_one": "How do I add a song to favorites?",
   "help_answer_one": "To add a song to favorites, simply swipe the song to the left on the index to reveal the available options, including adding to favorites.",
   "help_question_two": "What is Always On Display for?",

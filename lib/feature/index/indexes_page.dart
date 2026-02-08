@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
 import 'package:risuscito/core/presentation/bulked_cupertino_list_tile.dart';
 import 'package:risuscito/feature/index/pages/biblical_index_page.dart';
 import 'package:risuscito/feature/index/pages/generic_indexes_page.dart';
+import 'package:risuscito/feature/index/pages/liturgical_index_page.dart';
+import 'package:risuscito/feature/songs/presentation/bloc/songs_bloc.dart';
 import '../../core/presentation/customization/rs_colors.dart';
 import '../../core/presentation/customization/theme/rs_theme_provider.dart';
 
@@ -78,7 +81,6 @@ class _IndexesPageState extends State<IndexesPage> {
                         );
                       },
                     ),
-
                     // CupertinoListTile.notched(
                     //   title: const Text('Push to master'),
                     //   leading: Container(
@@ -100,6 +102,47 @@ class _IndexesPageState extends State<IndexesPage> {
                     //   onTap: null,
                     // ),
                   ],
+                ),
+                BlocBuilder<SongsBloc, SongsState>(
+                  builder: (context, state) {
+                    if (state is SongsLoaded &&
+                        state.songs.liturgicalOrder != null &&
+                        state.songs.liturgicalOrder!.isNotEmpty) {
+                      final categories = state.songs.liturgicalOrder!;
+                      return CupertinoListSection.insetGrouped(
+                        header: Text(
+                          AppLocalizations.of(context)!
+                              .translate('liturgical_index')!,
+                        ),
+                        children: categories
+                            .map(
+                              (category) => BulkedCupertinoListTile(
+                                text: category.categoryName,
+                                icon: Icon(
+                                  CupertinoIcons.calendar,
+                                  size: 30,
+                                ),
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    CupertinoPageRoute(
+                                      builder: (context) =>
+                                          LiturgicalIndexPage(
+                                        categoryName: category.categoryName,
+                                        songs: category.songs,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            )
+                            .toList(),
+                      );
+                    }
+                    return SizedBox.shrink();
+                  },
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).padding.bottom + 16,
                 ),
               ],
             ),

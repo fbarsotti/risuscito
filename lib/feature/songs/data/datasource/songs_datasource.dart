@@ -76,4 +76,20 @@ class SongsDatasource {
     // return await rootBundle.loadString(
     //     'assets/data/songs_values/values-$languageCode/sorgenti.xml');
   }
+
+  Future<String> getLocalizedLiturgicalIndexContent(
+    String languageCode,
+  ) async {
+    var path = _getLocalizedValuesPath(languageCode);
+    var content = await _getFileContent(path, 'indice_liturgico');
+    return content;
+  }
+
+  Future<String> getLocalizedLiturgicalNamesContent(
+    String languageCode,
+  ) async {
+    var path = _getLocalizedValuesPath(languageCode);
+    var content = await _getFileContent(path, 'nomi_liturgici');
+    return content;
+  }
 }

@@ -9,6 +9,7 @@ import 'package:xml/xml.dart';
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart' show parse;
 import 'package:html/dom.dart' as dom;
+import '../../domain/model/liturgical_index_domain_model.dart';
 import '../../domain/model/paged_songs_domain_model.dart';
 import '../../domain/model/song_domain_model.dart';
 
@@ -103,10 +104,16 @@ class SongsRepositoryImpl implements SongsRepository {
       songs.sort(_numericalComparison);
       final numericalOrder = new List<SongDomainModel>.from(songs);
 
+      final liturgicalOrder = await getLocalizedSongsLiturgical(
+        languageCode,
+        alphabeticalOrder,
+      );
+
       PagedSongsDomainModel pagedSongs = PagedSongsDomainModel(
         alphabeticalOrder: alphabeticalOrder,
         numericalOrder: numericalOrder,
         biblicalOrder: biblicalOrder,
+        liturgicalOrder: liturgicalOrder,
       );
       return Right(pagedSongs);
     } catch (e, s) {
@@ -187,6 +194,63 @@ class SongsRepositoryImpl implements SongsRepository {
     return songs;
   }
 
+  Future<List<LiturgicalIndexDomainModel>> getLocalizedSongsLiturgical(
+    String languageCode,
+    List<SongDomainModel> allSongs,
+  ) async {
+    final namesContent =
+        await localDatasource.getLocalizedLiturgicalNamesContent(languageCode);
+    final indexContent =
+        await localDatasource.getLocalizedLiturgicalIndexContent(languageCode);
+
+    final namesDocument = XmlDocument.parse(namesContent);
+    final namesNode = namesDocument.findElements('resources').first;
+    final names = namesNode.findElements('string');
+
+    // Build categoryKey -> categoryName map
+    final Map<String, String> categoryNames = {};
+    for (final name in names) {
+      final key = name.getAttribute('name')!;
+      categoryNames[key] = name.text.replaceAll('\\', '');
+    }
+
+    final indexDocument = XmlDocument.parse(indexContent);
+    final indexNode = indexDocument.findElements('resources').first;
+    final arrays = indexNode.findElements('string-array');
+
+    // Build a map of song ID -> SongDomainModel for quick lookup
+    final Map<String, SongDomainModel> songMap = {};
+    for (final song in allSongs) {
+      if (song.id != null) {
+        songMap[song.id!] = song;
+      }
+    }
+
+    final List<LiturgicalIndexDomainModel> result = [];
+    for (final array in arrays) {
+      final categoryKey = array.getAttribute('name')!;
+      final items = array.findElements('item');
+      final List<SongDomainModel> categorySongs = [];
+
+      for (final item in items) {
+        final songId = item.text.toLowerCase();
+        if (songMap.containsKey(songId)) {
+          categorySongs.add(songMap[songId]!);
+        }
+      }
+
+      if (categorySongs.isNotEmpty && categoryNames.containsKey(categoryKey)) {
+        result.add(LiturgicalIndexDomainModel(
+          categoryKey: categoryKey,
+          categoryName: _toTitleCase(categoryNames[categoryKey]!),
+          songs: categorySongs,
+        ));
+      }
+    }
+
+    return result;
+  }
+
   Future<bool> _checkIfSongExists(String languageCode, String songId) async {
     final sourcesContent =
         await localDatasource.getLocalizedSongSources(languageCode);
@@ -212,6 +276,11 @@ class SongsRepositoryImpl implements SongsRepository {
           songId) return source.text;
     }
     return null;
+  }
+
+  String _toTitleCase(String text) {
+    if (text.isEmpty) return text;
+    return text[0].toUpperCase() + text.substring(1).toLowerCase();
   }
 
   String _extractBlackFontLines(String html) {
