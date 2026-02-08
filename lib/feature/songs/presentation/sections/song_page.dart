@@ -86,14 +86,11 @@ class _SongPageState extends State<SongPage> {
       noBarreLabel: _barreWithoutLabel(),
     );
 
-    if (mounted) {
-      setState(() {
-        _pageReady = false;
-        transposeOffset = offset;
-        barreOffset = barre;
-        _controller.loadHtmlString(html);
-      });
-    }
+    setState(() {
+      transposeOffset = offset;
+      barreOffset = barre;
+      _controller.loadHtmlString(html);
+    });
   }
 
   Future<void> _updateTranspose(int delta) async {

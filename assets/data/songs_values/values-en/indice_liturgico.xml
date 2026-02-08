@@ -26,6 +26,19 @@
         <item>vieni_figlio_dell_uomo</item>
     </string-array>
     <string-array name="tempo_natale">
+        <item>benedite_il_signore</item>
+        <item>cerano_due_angeli</item>
+        <item>canto_di_balaam</item>
+        <item>come_bello_come_da_gioia</item>
+        <item>consolate_il_mio_popolo</item>
+        <item>dajenu</item>
+        <item>evenu_shalom</item>
+        <item>benedici_anima_mia</item>
+        <item>grazie_a_jahve</item>
+        <item>guardate_come_e_bello</item>
+        <item>guardate_come_e_bello_gustate</item>
+        <item>per_amore_dei_miei_fratelli</item>
+        <item>sale_dio_tra_acclamazioni</item>
     </string-array>
     <string-array name="tempo_quaresima">
         <item>a_te_levo_i_miei_occhi</item>
@@ -139,6 +152,22 @@
         <item>voglio_andare_a_gerusalemme</item>
     </string-array>
     <string-array name="canti_pentecoste">
+        <item>andate_ed_annunziate</item>
+        <item>la_donna_peccatrice</item>
+        <item>canto_di_balaam</item>
+        <item>battesimo_del_signore</item>
+        <item>consolate_il_mio_popolo</item>
+        <item>giordania_fonte</item>
+        <item>giorno_di_riposo</item>
+        <item>grazie_a_jahve</item>
+        <item>gridate_con_gioia</item>
+        <item>gloria_gloria_gloria</item>
+        <item>mietitura_delle_nazioni</item>
+        <item>sue_fondamenta</item>
+        <item>epifania_del_signore</item>
+        <item>tu_sei_il_piu_bello</item>
+        <item>presentazione_signore</item>
+        <item>voglio_andare_a_gerusalemme</item>
     </string-array>
     <string-array name="canti_vergine">
         <item>agnella_di_dio</item>

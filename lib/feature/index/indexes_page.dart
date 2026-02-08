@@ -10,6 +10,22 @@ import 'package:risuscito/feature/songs/presentation/bloc/songs_bloc.dart';
 import '../../core/presentation/customization/rs_colors.dart';
 import '../../core/presentation/customization/theme/rs_theme_provider.dart';
 
+const _liturgicalIcons = <String, IconData>{
+  'tempo_avvento': CupertinoIcons.book_circle,
+  'tempo_natale': CupertinoIcons.book_circle,
+  'tempo_quaresima': CupertinoIcons.book_circle,
+  'tempo_pasqua': CupertinoIcons.book_circle,
+  'canti_pentecoste': CupertinoIcons.book_circle,
+  'canti_vergine': CupertinoIcons.music_note_2,
+  'canti_bambini': CupertinoIcons.music_note_2,
+  'lodi_vespri': CupertinoIcons.music_note_2,
+  'canti_ingresso': CupertinoIcons.music_note_2,
+  'canti_pace': CupertinoIcons.music_note_2,
+  'canti_pane': CupertinoIcons.music_note_2,
+  'canti_comunione': CupertinoIcons.music_note_2,
+  'canti_fine': CupertinoIcons.music_note_2,
+};
+
 class IndexesPage extends StatefulWidget {
   const IndexesPage({Key? key}) : super(key: key);
 
@@ -119,14 +135,14 @@ class _IndexesPageState extends State<IndexesPage> {
                               (category) => BulkedCupertinoListTile(
                                 text: category.categoryName,
                                 icon: Icon(
-                                  CupertinoIcons.calendar,
+                                  _liturgicalIcons[category.categoryKey] ??
+                                      CupertinoIcons.calendar,
                                   size: 30,
                                 ),
                                 onTap: () {
                                   Navigator.of(context).push(
                                     CupertinoPageRoute(
-                                      builder: (context) =>
-                                          LiturgicalIndexPage(
+                                      builder: (context) => LiturgicalIndexPage(
                                         categoryName: category.categoryName,
                                         songs: category.songs,
                                       ),
