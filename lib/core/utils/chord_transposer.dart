@@ -5,12 +5,9 @@ import 'package:flutter/services.dart';
 
 // === COLORI PERSONALIZZABILI ===
 const defaultChordColor = '#A13F3C'; // colore originale accordi
-const modifiedColor = '#A13F3C'; // colore accordi trasposti
 const barreTextColor = '#A13F3C'; // colore testo "Barré"
-// colore di evidenziazione pastel yellow
-const highlightBackground = '#FFFACD';
 
-const highlightBackgroundRGB = '161,63,60'; // RGB di #FFFACD
+const highlightBackgroundRGB = '161,63,60'; // RGB highlight accordi trasposti
 const highlightBackgroundOpacity = 0.1; // 10% di opacità
 
 const _sharpScale = [
@@ -139,13 +136,14 @@ Future<String> processSongHtml(
 String transposeHtmlChords(String html, int semitones) {
   final chordTagRegex = RegExp(r'(<FONT COLOR=\"#A13F3C\">)([^<]+)(</FONT>)');
 
-  return html.replaceAllMapped(chordTagRegex, (match) {
+  var result = html.replaceAllMapped(chordTagRegex, (match) {
     final rawText = match.group(2)!;
+
     final transposed = rawText.replaceAllMapped(RegExp(r'(\s+|\S+)'), (m) {
       final token = m.group(0)!;
       if (token.trim().isEmpty) return token;
 
-      // Estrai eventuali caratteri non musicali all’inizio/fine
+      // Estrai eventuali caratteri non musicali all'inizio/fine
       final match =
           RegExp(r'^([^\w♯#♭b\/]*)([A-Za-zàèéìòù#♯b♭\/0-9]+)([^\w♯#♭b\/]*)$')
               .firstMatch(token);
@@ -167,19 +165,23 @@ String transposeHtmlChords(String html, int semitones) {
       return token;
     });
 
-    final color = semitones == 0 ? defaultChordColor : modifiedColor;
-
-    // return '<FONT COLOR="$color"><b>$transposed</b></FONT>';
-    // nuovo ritorno: span con solo background
-    final bgStyle = semitones == 0
-        ? ' style="color: $color;"'
-        : ' style="background-color: rgba($highlightBackgroundRGB, $highlightBackgroundOpacity); color: $color;"';
-
-    // : ' style="background-color: $highlightBackground; color: $color;"';
-// lasciamo il <b> se vuoi mantenere il grassetto,
-// altrimenti puoi tolgerlo
-    return '<span$bgStyle><b>$transposed</b></span>';
+    return '<FONT COLOR="$defaultChordColor">$transposed</FONT>';
   });
+
+  // Badge "+N" / "-N" sulla stessa riga del titolo, a destra
+  if (semitones != 0) {
+    final sign = semitones > 0 ? '+' : '';
+    final badge =
+        '<span style="float: right; background-color: rgba($highlightBackgroundRGB, $highlightBackgroundOpacity); color: $defaultChordColor; padding: 2px 8px; border-radius: 4px; font-size: 20px; font-weight: bold; margin-top: 2px; margin-right: 8px;">$sign$semitones</span>';
+    // Inserisci prima del primo <H2>
+    final h2Regex = RegExp(r'<H2>', caseSensitive: false);
+    final h2Match = h2Regex.firstMatch(result);
+    if (h2Match != null) {
+      result = result.replaceRange(h2Match.start, h2Match.start, badge);
+    }
+  }
+
+  return result;
 }
 
 Future<int> loadTransposeOffset(String songId) async {
