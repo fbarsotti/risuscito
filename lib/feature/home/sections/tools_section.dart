@@ -30,8 +30,8 @@ class ToolsSection extends StatelessWidget {
             children: [
               _ToolCard(
                 text: AppLocalizations.of(context)!.translate('prepare_word')!,
-                icon: CupertinoIcons.book,
-                iconColor: CupertinoColors.systemIndigo,
+                icon: CupertinoIcons.book_circle,
+                iconColor: RSColors.primary,
                 onTap: () {
                   Navigator.of(context).push(
                     CupertinoPageRoute(
@@ -44,8 +44,8 @@ class ToolsSection extends StatelessWidget {
               _ToolCard(
                 text: AppLocalizations.of(context)!
                     .translate('prepare_eucharist')!,
-                icon: CupertinoIcons.flame,
-                iconColor: CupertinoColors.systemOrange,
+                icon: CupertinoIcons.group,
+                iconColor: RSColors.primary,
                 onTap: () {
                   Navigator.of(context).push(
                     CupertinoPageRoute(
@@ -104,9 +104,8 @@ class _ToolCard extends StatelessWidget {
               child: Text(
                 text,
                 style: TextStyle(
-                  color: themeChange.darkTheme
-                      ? RSColors.darkText
-                      : RSColors.text,
+                  color:
+                      themeChange.darkTheme ? RSColors.darkText : RSColors.text,
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                 ),
