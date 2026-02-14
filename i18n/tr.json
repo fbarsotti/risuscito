@@ -99,6 +99,10 @@
 
   "liturgical_index": "Litürjik indeksler",
 
+  "onboarding_lists": "Kutlama veya dua anı gibi ihtiyaç duyduğunuz şarkıları düzenlemek için kendi özel şarkı listelerinizi oluşturun.",
+  "onboarding_transpose_title": "Transpozisyon ve Barre",
+  "onboarding_transpose": "Herhangi bir şarkının akorlarını transpoze edebilir ve sağ üst köşedeki menüden doğrudan barre ayarlayabilirsiniz.",
+
   "help_question_one": "Bir şarkıyı favorilere nasıl eklerim?",
   "help_answer_one": "Bir şarkıyı favorilere eklemek için, şarkıyı indekste sola kaydırarak mevcut seçenekleri açabilir ve favorilere ekleme seçeneğini seçebilirsiniz.",
   "help_question_two": "Ekran Her Zaman Açık ne işe yarar?",

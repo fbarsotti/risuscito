@@ -86,6 +86,40 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
               ),
             ],
           ),
+          WhatsNewPage(
+            title: Text(AppLocalizations.of(context)!
+                .translate('onboarding_features')!),
+            features: [
+              WhatsNewFeature(
+                icon: Icon(
+                  CupertinoIcons.list_bullet,
+                  color: RSColors.primary,
+                ),
+                title: Text(
+                  AppLocalizations.of(context)!
+                      .translate('personalized_lists')!,
+                ),
+                description: Text(
+                  AppLocalizations.of(context)!
+                      .translate('onboarding_lists')!,
+                ),
+              ),
+              WhatsNewFeature(
+                icon: Icon(
+                  CupertinoIcons.music_note,
+                  color: RSColors.primary,
+                ),
+                title: Text(
+                  AppLocalizations.of(context)!
+                      .translate('onboarding_transpose_title')!,
+                ),
+                description: Text(
+                  AppLocalizations.of(context)!
+                      .translate('onboarding_transpose')!,
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
