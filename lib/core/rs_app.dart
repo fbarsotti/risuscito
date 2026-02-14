@@ -7,6 +7,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:risuscito/core/presentation/customization/theme/rs_theme_provider.dart';
 import '../feature/onboarding/onboarding_page.dart';
+import '../feature/onboarding/whats_new_onboarding_page.dart';
 import 'core_container.dart';
 import 'data/remote/rs_dio_client.dart';
 import 'infrastructure/localization/app_localizations.dart';
@@ -15,11 +16,13 @@ import 'presentation/customization/rs_colors.dart';
 
 class RSApp extends StatefulWidget {
   final bool onboarding;
+  final bool whatsNew;
   final Widget child;
 
   const RSApp({
     Key? key,
     required this.onboarding,
+    required this.whatsNew,
     required this.child,
   }) : super(key: key);
 
@@ -140,10 +143,15 @@ class _RSAppState extends State<RSApp> {
                       primaryColor: RSColors.primary,
                     ),
                   ),
-                  initialRoute: widget.onboarding ? '/onboarding' : '/',
+                  initialRoute: widget.onboarding
+                      ? '/onboarding'
+                      : widget.whatsNew
+                          ? '/whats_new'
+                          : '/',
                   routes: {
                     '/': (context) => widget.child,
                     '/onboarding': (context) => OnBoardingPage(),
+                    '/whats_new': (context) => WhatsNewOnboardingPage(),
                   },
                   // home: widget.child,
                 );

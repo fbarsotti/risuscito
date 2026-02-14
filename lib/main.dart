@@ -15,9 +15,11 @@ void main() async {
       Bloc.observer = LoggerBlocDelegate();
       SharedPreferences prefs = await SharedPreferences.getInstance();
       bool? onboarding = prefs.getBool('onboarding') ?? true;
+      bool whatsNew = prefs.getBool('whats_new_v2') ?? true;
       runApp(
         RSApp(
           onboarding: onboarding,
+          whatsNew: whatsNew,
           child: Home(),
         ),
       );

@@ -25,6 +25,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
           Navigator.of(context).pop();
           SharedPreferences prefs = rs();
           await prefs.setBool('onboarding', false);
+          await prefs.setBool('whats_new_v2', false);
         },
         pages: [
           CupertinoOnboardingPage(
