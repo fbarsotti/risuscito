@@ -51,6 +51,7 @@ dependencies:
   audioplayers: ^5.2.0
   new_version_plus: ^0.1.0
   cupertino_onboarding: ^1.1.1
+  url_launcher: ^6.1.0
 
 dependency_overrides:
   intl: ^0.18.0

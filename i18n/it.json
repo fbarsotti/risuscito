@@ -104,6 +104,28 @@
 
   "whats_new_welcome": "Bentornato!\nCi sono delle novità:",
 
+  "tools": "Strumenti",
+  "prepare_word": "Prepara una Parola",
+  "prepare_eucharist": "Prepara un'Eucarestia",
+
+  "eucharist_entry_song": "Canto d'inizio",
+  "eucharist_peace_song": "Canto alla Pace",
+  "eucharist_bread_song": "Canto al Pane",
+  "eucharist_wine_song": "Canto al Vino",
+  "eucharist_final_song": "Canto finale",
+  "select_song": "Seleziona un canto",
+  "share_whatsapp": "Condividi su WhatsApp",
+  "share_at_least_one": "Seleziona almeno un canto per condividere",
+  "eucharist_share_title": "Canti per l'Eucarestia",
+  "choose_song": "Scegli un canto",
+
+  "word_entry_song": "Canto d'ingresso",
+  "word_reading_1": "In risposta alla prima lettura",
+  "word_reading_2": "In risposta alla seconda lettura",
+  "word_reading_3": "In risposta alla terza lettura",
+  "word_final_song": "Canto finale",
+  "word_share_title": "Canti per la Parola",
+
   "help_question_one": "Come faccio ad aggiungere un canto ai preferiti?",
   "help_answer_one": "Per aggiungere un canto ai preferiti, basta scorrere sull'indice il canto verso sinistra per rivelare le opzioni disponibili, tra cui anche l'aggiunta ai preferiti.",
   "help_question_two": "A cosa serve Display Always On?",

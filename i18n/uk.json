@@ -104,6 +104,28 @@
 
   "whats_new_welcome": "З поверненням!\nОсь що нового:",
 
+  "tools": "Інструменти",
+  "prepare_word": "Підготувати Слово",
+  "prepare_eucharist": "Підготувати Євхаристію",
+
+  "eucharist_entry_song": "Вступна пісня",
+  "eucharist_peace_song": "Пісня Миру",
+  "eucharist_bread_song": "Пісня Хліба",
+  "eucharist_wine_song": "Пісня Вина",
+  "eucharist_final_song": "Завершальна пісня",
+  "select_song": "Виберіть пісню",
+  "share_whatsapp": "Поділитися у WhatsApp",
+  "share_at_least_one": "Виберіть принаймні одну пісню для поширення",
+  "eucharist_share_title": "Пісні для Євхаристії",
+  "choose_song": "Виберіть пісню",
+
+  "word_entry_song": "Вступна пісня",
+  "word_reading_1": "У відповідь на перше читання",
+  "word_reading_2": "У відповідь на друге читання",
+  "word_reading_3": "У відповідь на третє читання",
+  "word_final_song": "Завершальна пісня",
+  "word_share_title": "Пісні для Слова",
+
   "help_question_one": "Як додати пісню до улюблених?",
   "help_answer_one": "Щоб додати пісню до улюблених, просто прокрутіть пісню вліво на індексі, щоб побачити доступні опції, включаючи додавання до улюблених.",
   "help_question_two": "Для чого екран завжди ввімкнено?",

@@ -22,7 +22,6 @@
 - [x] Personalized Lists
   - [x] Bug when exiting search song page and keyboard is up
 
-- [] Shareable lists
 
 - [x] Changing chords
   - [x] translation is not working tho
@@ -37,3 +36,9 @@
   - [] Prepare Word
 
 - [] Add tags on song search
+
+- [] Shareable lists
+
+- [] Search bar in each index
+
+- [] Numerical index separated from alphabetical
