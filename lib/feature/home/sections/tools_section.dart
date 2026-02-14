@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
+import 'package:risuscito/core/presentation/bulked_cupertino_list_tile.dart';
 import 'package:risuscito/core/presentation/customization/rs_colors.dart';
 import 'package:risuscito/core/presentation/customization/theme/rs_theme_provider.dart';
-import 'package:risuscito/core/presentation/header_text.dart';
 import 'package:risuscito/feature/tools/presentation/prepare_word_page.dart';
 import 'package:risuscito/feature/tools/presentation/prepare_eucharist_page.dart';
 
@@ -12,50 +12,38 @@ class ToolsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return CupertinoListSection.insetGrouped(
+      header: Text(
+        AppLocalizations.of(context)!.translate('tools')!,
+      ),
       children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 16.0),
-          child: HeaderText(
-            text: AppLocalizations.of(context)!.translate('tools')!,
-            textAlign: TextAlign.start,
+        BulkedCupertinoListTile(
+          text: AppLocalizations.of(context)!.translate('prepare_word')!,
+          icon: Icon(
+            CupertinoIcons.book_circle,
+            size: 30,
           ),
+          onTap: () {
+            Navigator.of(context).push(
+              CupertinoPageRoute(
+                builder: (context) => const PrepareWordPage(),
+              ),
+            );
+          },
         ),
-        const SizedBox(height: 8),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            children: [
-              _ToolCard(
-                text: AppLocalizations.of(context)!.translate('prepare_word')!,
-                icon: CupertinoIcons.book_circle,
-                iconColor: RSColors.primary,
-                onTap: () {
-                  Navigator.of(context).push(
-                    CupertinoPageRoute(
-                      builder: (context) => const PrepareWordPage(),
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(height: 8),
-              _ToolCard(
-                text: AppLocalizations.of(context)!
-                    .translate('prepare_eucharist')!,
-                icon: CupertinoIcons.group,
-                iconColor: RSColors.primary,
-                onTap: () {
-                  Navigator.of(context).push(
-                    CupertinoPageRoute(
-                      builder: (context) => const PrepareEucharistPage(),
-                    ),
-                  );
-                },
-              ),
-            ],
+        BulkedCupertinoListTile(
+          text: AppLocalizations.of(context)!.translate('prepare_eucharist')!,
+          icon: Icon(
+            CupertinoIcons.group_solid,
+            size: 30,
           ),
+          onTap: () {
+            Navigator.of(context).push(
+              CupertinoPageRoute(
+                builder: (context) => const PrepareEucharistPage(),
+              ),
+            );
+          },
         ),
       ],
     );

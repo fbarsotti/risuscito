@@ -49,9 +49,6 @@ class _HomePageState extends State<HomePage> {
                   height: 16.0,
                 ),
                 QuickActions(),
-                const SizedBox(
-                  height: 16,
-                ),
                 ToolsSection(),
                 const SizedBox(
                   height: 16,

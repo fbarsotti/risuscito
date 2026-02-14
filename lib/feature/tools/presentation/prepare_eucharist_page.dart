@@ -194,14 +194,26 @@ class _MomentSlotCard extends StatelessWidget {
                   color: isDark ? RSColors.darkText : RSColors.text,
                 ),
               ),
-            if (isFilled)
+            if (isFilled && (isDark || song!.color != Color(0xffFFFFFF)))
               CircleAvatar(
                 radius: 20,
-                backgroundColor: RSColors.primary,
-                child: Icon(
-                  CupertinoIcons.music_note,
-                  size: 20,
-                  color: CupertinoColors.white,
+                backgroundColor: song!.color,
+                child: Text(
+                  song!.number!,
+                  style: TextStyle(color: RSColors.primary),
+                ),
+              ),
+            if (isFilled && !isDark && song!.color == Color(0xffFFFFFF))
+              CircleAvatar(
+                radius: 20,
+                backgroundColor: CupertinoColors.black,
+                child: CircleAvatar(
+                  radius: 19,
+                  backgroundColor: song!.color,
+                  child: Text(
+                    song!.number!,
+                    style: TextStyle(color: RSColors.primary),
+                  ),
                 ),
               ),
             const SizedBox(width: 12),
