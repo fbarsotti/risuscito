@@ -37,14 +37,23 @@ class _ListAddSongPageState extends State<ListAddSongPage> {
   Widget build(BuildContext context) {
     final themeChange = Provider.of<DarkThemeProvider>(context);
 
-    return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        middle: Text(
-          AppLocalizations.of(context)!.translate('add_song')!,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (!didPop) {
+          FocusManager.instance.primaryFocus?.unfocus();
+          await Future.delayed(const Duration(milliseconds: 50));
+          if (context.mounted) Navigator.of(context).pop();
+        }
+      },
+      child: CupertinoPageScaffold(
+        navigationBar: CupertinoNavigationBar(
+          middle: Text(
+            AppLocalizations.of(context)!.translate('add_song')!,
+          ),
+          previousPageTitle: widget.list.name,
         ),
-        previousPageTitle: widget.list.name,
-      ),
-      child: SafeArea(
+        child: SafeArea(
         child: BlocListener<ListsBloc, ListsState>(
           listener: (context, state) {
             if (state is ListsInfoLoaded) {
@@ -210,6 +219,7 @@ class _ListAddSongPageState extends State<ListAddSongPage> {
           ),
         ),
       ),
+    ),
     );
   }
 }

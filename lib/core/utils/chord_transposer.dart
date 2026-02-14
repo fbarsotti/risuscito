@@ -275,29 +275,44 @@ String applyBarreToHtml(
     caseSensitive: false,
   );
 
-  if (barreRegex.hasMatch(html)) {
-    return html.replaceFirst(barreRegex, newBarreLine);
+  // Only remove the matched H4 if it sits between the title headers and the
+  // first verse (a "real" barré line). Informational notes buried inside <PRE>
+  // at the bottom of the song are kept as-is.
+  final match = barreRegex.firstMatch(html);
+  String base = html;
+
+  if (match != null) {
+    final lastH2 = RegExp(r'</H2>', caseSensitive: false)
+        .allMatches(html)
+        .toList();
+    final firstH3 = RegExp(r'<H3>', caseSensitive: false).firstMatch(html);
+    if (lastH2.isNotEmpty &&
+        firstH3 != null &&
+        match.start >= lastH2.last.end &&
+        match.end <= firstH3.start) {
+      base = html.replaceFirst(barreRegex, '');
+    }
   }
 
-  // Inserimento dopo ultimo </H2>
+  // Insert after last </H2> (standard position: between title and first verse)
   final h2CloseMatches =
-      RegExp(r'</H2>', caseSensitive: false).allMatches(html).toList();
+      RegExp(r'</H2>', caseSensitive: false).allMatches(base).toList();
   if (h2CloseMatches.isNotEmpty) {
     final lastMatch = h2CloseMatches.last;
     final insertIndex = lastMatch.end;
-    return html.replaceRange(insertIndex, insertIndex, '\n$newBarreLine');
+    return base.replaceRange(insertIndex, insertIndex, '\n$newBarreLine');
   }
 
   // Fallback: inserimento dopo <BODY>
   final bodyTagRegex = RegExp(r'<BODY[^>]*>', caseSensitive: false);
-  final bodyMatch = bodyTagRegex.firstMatch(html);
+  final bodyMatch = bodyTagRegex.firstMatch(base);
   if (bodyMatch != null) {
     final original = bodyMatch.group(0)!;
     final replacement = '$original\n$newBarreLine';
-    return html.replaceFirst(original, replacement);
+    return base.replaceFirst(original, replacement);
   }
 
-  return html;
+  return base;
 }
 
 Future<void> clearBarreOffset(String songId) async {

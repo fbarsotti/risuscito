@@ -136,107 +136,112 @@ class _ListsPageState extends State<ListsPage> {
                     final list = lists[index];
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: SwipeActionCell(
-                        key: ObjectKey(list.id),
-                        trailingActions: <SwipeAction>[
-                          SwipeAction(
-                            color: CupertinoColors.systemRed,
-                            icon: const Icon(
-                              CupertinoIcons.trash,
-                              color: CupertinoColors.white,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8.0),
+                        child: SwipeActionCell(
+                          key: ObjectKey(list.id),
+                          trailingActions: <SwipeAction>[
+                            SwipeAction(
+                              color: CupertinoColors.systemRed,
+                              icon: const Icon(
+                                CupertinoIcons.trash,
+                                color: CupertinoColors.white,
+                              ),
+                              onTap: (CompletionHandler handler) async {
+                                await handler(true);
+                                BlocProvider.of<ListsBloc>(context).add(
+                                  ListsDeleteListEvent(
+                                    listId: list.id,
+                                    languageCode:
+                                        AppLocalizations.of(context)!
+                                            .locale
+                                            .languageCode,
+                                  ),
+                                );
+                              },
                             ),
-                            onTap: (CompletionHandler handler) async {
-                              await handler(true);
-                              BlocProvider.of<ListsBloc>(context).add(
-                                ListsDeleteListEvent(
-                                  listId: list.id,
-                                  languageCode: AppLocalizations.of(context)!
-                                      .locale
-                                      .languageCode,
+                          ],
+                          child: CupertinoButton(
+                            pressedOpacity:
+                                themeChange.darkTheme ? 0.8 : 0.4,
+                            padding: EdgeInsets.zero,
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                CupertinoPageRoute(
+                                  builder: (context) => ListDetailPage(
+                                    list: list,
+                                  ),
                                 ),
                               );
                             },
-                          ),
-                        ],
-                        child: CupertinoButton(
-                          pressedOpacity: themeChange.darkTheme ? 0.8 : 0.4,
-                          padding: EdgeInsets.zero,
-                          onPressed: () {
-                            Navigator.of(context).push(
-                              CupertinoPageRoute(
-                                builder: (context) => ListDetailPage(
-                                  list: list,
-                                ),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                              color: themeChange.darkTheme
-                                  ? RSColors.cardColorDark
-                                  : RSColors.cardColorLight,
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(8.0),
-                              ),
+                            child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                            color: themeChange.darkTheme
+                                ? RSColors.cardColorDark
+                                : RSColors.cardColorLight,
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(8.0),
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        CupertinoIcons
-                                            .rectangle_stack_badge_person_crop,
-                                        color: RSColors.primary,
-                                        size: 18,
-                                      ),
-                                      const SizedBox(width: 8),
-                                      Text(
-                                        '${list.songs?.length ?? 0} ${AppLocalizations.of(context)!.translate('songs_count')}',
-                                        style: TextStyle(
-                                          color: RSColors.primary,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
-                                        ),
-                                      ),
-                                      const Spacer(),
-                                      Icon(
-                                        CupertinoIcons.chevron_right,
-                                        color: RSColors.primary,
-                                        size: 20,
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 20),
-                                  Text(
-                                    list.name,
-                                    style: TextStyle(
-                                      color: themeChange.darkTheme
-                                          ? RSColors.darkText
-                                          : RSColors.text,
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w700,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      CupertinoIcons
+                                          .rectangle_stack_badge_person_crop,
+                                      color: RSColors.primary,
+                                      size: 18,
                                     ),
-                                  ),
-                                  if (list.description.isNotEmpty) ...[
-                                    const SizedBox(height: 4),
+                                    const SizedBox(width: 8),
                                     Text(
-                                      list.description,
+                                      '${list.songs?.length ?? 0} ${AppLocalizations.of(context)!.translate('songs_count')}',
                                       style: TextStyle(
-                                        color: CupertinoColors.inactiveGray,
-                                        fontSize: 14,
+                                        color: RSColors.primary,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
                                       ),
+                                    ),
+                                    const Spacer(),
+                                    Icon(
+                                      CupertinoIcons.chevron_right,
+                                      color: RSColors.primary,
+                                      size: 20,
                                     ),
                                   ],
+                                ),
+                                const SizedBox(height: 20),
+                                Text(
+                                  list.name,
+                                  style: TextStyle(
+                                    color: themeChange.darkTheme
+                                        ? RSColors.darkText
+                                        : RSColors.text,
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                                if (list.description.isNotEmpty) ...[
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    list.description,
+                                    style: TextStyle(
+                                      color: CupertinoColors.inactiveGray,
+                                      fontSize: 14,
+                                    ),
+                                  ),
                                 ],
-                              ),
+                              ],
                             ),
                           ),
                         ),
                       ),
+                    ),
+                    ),
                     );
                   },
                 );
