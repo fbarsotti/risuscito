@@ -19,11 +19,11 @@ const _liturgicalIcons = <String, IconData>{
   'canti_vergine': CupertinoIcons.music_note_2,
   'canti_bambini': CupertinoIcons.music_note_2,
   'lodi_vespri': CupertinoIcons.music_note_2,
-  'canti_ingresso': CupertinoIcons.book_circle,
-  'canti_pace': CupertinoIcons.book_circle,
-  'canti_pane': CupertinoIcons.book_circle,
-  'canti_comunione': CupertinoIcons.book_circle,
-  'canti_fine': CupertinoIcons.book_circle,
+  'canti_ingresso': CupertinoIcons.bookmark,
+  'canti_pace': CupertinoIcons.bookmark,
+  'canti_pane': CupertinoIcons.bookmark,
+  'canti_comunione': CupertinoIcons.bookmark,
+  'canti_fine': CupertinoIcons.bookmark,
 };
 
 class IndexesPage extends StatefulWidget {
