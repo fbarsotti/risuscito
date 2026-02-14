@@ -25,12 +25,25 @@ class ListAddSongPage extends StatefulWidget {
 class _ListAddSongPageState extends State<ListAddSongPage> {
   String _searchQuery = '';
   late Set<String> _addedSongIds;
+  final FocusNode _searchFocusNode = FocusNode();
+  DateTime? _focusLostTime;
 
   @override
   void initState() {
     super.initState();
     _addedSongIds =
         widget.list.songs?.map((s) => s.id!).toSet() ?? <String>{};
+    _searchFocusNode.addListener(() {
+      if (!_searchFocusNode.hasFocus) {
+        _focusLostTime = DateTime.now();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchFocusNode.dispose();
+    super.dispose();
   }
 
   @override
@@ -41,8 +54,14 @@ class _ListAddSongPageState extends State<ListAddSongPage> {
       canPop: false,
       onPopInvokedWithResult: (didPop, result) async {
         if (!didPop) {
+          final keyboardWasOpen = _searchFocusNode.hasFocus ||
+              (_focusLostTime != null &&
+                  DateTime.now().difference(_focusLostTime!).inMilliseconds <
+                      300);
           FocusManager.instance.primaryFocus?.unfocus();
-          await Future.delayed(const Duration(milliseconds: 50));
+          if (keyboardWasOpen) {
+            await Future.delayed(const Duration(milliseconds: 300));
+          }
           if (context.mounted) Navigator.of(context).pop();
         }
       },
@@ -70,6 +89,7 @@ class _ListAddSongPageState extends State<ListAddSongPage> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: CupertinoSearchTextField(
+                  focusNode: _searchFocusNode,
                   placeholder:
                       AppLocalizations.of(context)!.translate('search_a_song'),
                   onChanged: (value) {
