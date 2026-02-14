@@ -104,6 +104,28 @@
 
   "whats_new_welcome": "Welcome back!\nHere's what's new:",
 
+  "tools": "Tools",
+  "prepare_word": "Prepare a Word",
+  "prepare_eucharist": "Prepare a Eucharist",
+
+  "eucharist_entry_song": "Entry Song",
+  "eucharist_peace_song": "Peace Song",
+  "eucharist_bread_song": "Bread Song",
+  "eucharist_wine_song": "Wine Song",
+  "eucharist_final_song": "Final Song",
+  "select_song": "Select a song",
+  "share_whatsapp": "Share on WhatsApp",
+  "share_at_least_one": "Select at least one song to share",
+  "eucharist_share_title": "Songs for the Eucharist",
+  "choose_song": "Choose a song",
+
+  "word_entry_song": "Entry Song",
+  "word_reading_1": "In response to the first reading",
+  "word_reading_2": "In response to the second reading",
+  "word_reading_3": "In response to the third reading",
+  "word_final_song": "Final Song",
+  "word_share_title": "Songs for the Word",
+
   "help_question_one": "How do I add a song to favorites?",
   "help_answer_one": "To add a song to favorites, simply swipe the song to the left on the index to reveal the available options, including adding to favorites.",
   "help_question_two": "What is Always On Display for?",

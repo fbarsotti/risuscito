@@ -105,6 +105,28 @@
 
   "whats_new_welcome": "Tekrar hoş geldiniz!\nİşte yenilikler:",
 
+  "tools": "Araçlar",
+  "prepare_word": "Bir Söz Hazırla",
+  "prepare_eucharist": "Bir Efkaristiya Hazırla",
+
+  "eucharist_entry_song": "Giriş İlahisi",
+  "eucharist_peace_song": "Barış İlahisi",
+  "eucharist_bread_song": "Ekmek İlahisi",
+  "eucharist_wine_song": "Şarap İlahisi",
+  "eucharist_final_song": "Kapanış İlahisi",
+  "select_song": "Bir ilahi seçin",
+  "share_whatsapp": "WhatsApp'ta paylaş",
+  "share_at_least_one": "Paylaşmak için en az bir ilahi seçin",
+  "eucharist_share_title": "Efkaristiya İlahileri",
+  "choose_song": "Bir ilahi seçin",
+
+  "word_entry_song": "Giriş İlahisi",
+  "word_reading_1": "Birinci okumaya yanıt olarak",
+  "word_reading_2": "İkinci okumaya yanıt olarak",
+  "word_reading_3": "Üçüncü okumaya yanıt olarak",
+  "word_final_song": "Kapanış İlahisi",
+  "word_share_title": "Söz İlahileri",
+
   "help_question_one": "Bir şarkıyı favorilere nasıl eklerim?",
   "help_answer_one": "Bir şarkıyı favorilere eklemek için, şarkıyı indekste sola kaydırarak mevcut seçenekleri açabilir ve favorilere ekleme seçeneğini seçebilirsiniz.",
   "help_question_two": "Ekran Her Zaman Açık ne işe yarar?",

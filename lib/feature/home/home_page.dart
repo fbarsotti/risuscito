@@ -5,6 +5,7 @@ import 'package:risuscito/core/infrastructure/localization/app_localizations.dar
 import 'package:risuscito/core/presentation/customization/rs_colors.dart';
 import 'package:risuscito/core/presentation/customization/theme/rs_theme_provider.dart';
 import 'package:risuscito/feature/home/sections/quick_actions.dart';
+import 'package:risuscito/feature/home/sections/tools_section.dart';
 import 'package:risuscito/feature/home/sections/last_songs.dart';
 import 'package:risuscito/feature/settings/settings_page.dart';
 
@@ -48,6 +49,10 @@ class _HomePageState extends State<HomePage> {
                   height: 16.0,
                 ),
                 QuickActions(),
+                const SizedBox(
+                  height: 16,
+                ),
+                ToolsSection(),
                 const SizedBox(
                   height: 16,
                 ),
