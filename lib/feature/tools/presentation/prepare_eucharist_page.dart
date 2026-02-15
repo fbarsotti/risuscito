@@ -46,9 +46,8 @@ class _PrepareEucharistPageState extends State<PrepareEucharistPage> {
 
     for (final key in _momentKeys) {
       final song = _selectedSongs[key];
-      if (song != null) {
-        buffer.writeln('${loc.translate(key)}: ${song.title}');
-      }
+      final value = song != null ? '_${song.title}_' : '-';
+      buffer.writeln('• ${loc.translate(key)}: $value');
     }
 
     final text = Uri.encodeComponent(buffer.toString().trimRight());
