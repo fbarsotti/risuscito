@@ -62,7 +62,7 @@ class SongTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    forceRef ? song.biblicalRef! : song.title!,
+                    forceRef && song.biblicalRef != null ? song.biblicalRef! : song.title!,
                     textAlign: TextAlign.start,
                   ),
                 ],

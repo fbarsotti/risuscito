@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
 import 'package:risuscito/core/presentation/customization/rs_colors.dart';
 import 'package:risuscito/core/presentation/customization/theme/rs_theme_provider.dart';
+import 'package:risuscito/core/presentation/song_search/song_search_bar.dart';
+import 'package:risuscito/core/presentation/song_search/song_search_filter.dart';
 import 'package:risuscito/feature/songs/domain/model/song_domain_model.dart';
 import 'package:risuscito/feature/songs/presentation/bloc/songs_bloc.dart';
 
@@ -21,13 +23,17 @@ class WordSongPickerPage extends StatefulWidget {
 }
 
 class _WordSongPickerPageState extends State<WordSongPickerPage> {
-  String _searchQuery = '';
+  final TextEditingController _searchController = TextEditingController();
+  int _selectedTag = 0;
   final FocusNode _searchFocusNode = FocusNode();
   DateTime? _focusLostTime;
 
   @override
   void initState() {
     super.initState();
+    _searchController.addListener(() {
+      setState(() {});
+    });
     _searchFocusNode.addListener(() {
       if (!_searchFocusNode.hasFocus) {
         _focusLostTime = DateTime.now();
@@ -37,6 +43,7 @@ class _WordSongPickerPageState extends State<WordSongPickerPage> {
 
   @override
   void dispose() {
+    _searchController.dispose();
     _searchFocusNode.dispose();
     super.dispose();
   }
@@ -69,18 +76,15 @@ class _WordSongPickerPageState extends State<WordSongPickerPage> {
         child: SafeArea(
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: CupertinoSearchTextField(
-                  focusNode: _searchFocusNode,
-                  placeholder: AppLocalizations.of(context)!
-                      .translate('search_a_song'),
-                  onChanged: (value) {
-                    setState(() {
-                      _searchQuery = value.toLowerCase();
-                    });
-                  },
-                ),
+              SongSearchBar(
+                controller: _searchController,
+                selectedTag: _selectedTag,
+                focusNode: _searchFocusNode,
+                onTagChanged: (tag) {
+                  setState(() {
+                    _selectedTag = tag;
+                  });
+                },
               ),
               Expanded(
                 child: BlocBuilder<SongsBloc, SongsState>(
@@ -88,13 +92,11 @@ class _WordSongPickerPageState extends State<WordSongPickerPage> {
                     if (state is SongsLoaded) {
                       final allSongs =
                           state.songs.alphabeticalOrder ?? <SongDomainModel>[];
-                      final filtered = allSongs.where((song) {
-                        if (_searchQuery.isEmpty) return true;
-                        return song.title
-                                ?.toLowerCase()
-                                .contains(_searchQuery) ??
-                            false;
-                      }).toList();
+                      final filtered = SongSearchFilter.filter(
+                        songs: allSongs,
+                        query: _searchController.text,
+                        selectedTag: _selectedTag,
+                      );
 
                       if (filtered.isEmpty) {
                         return Center(
