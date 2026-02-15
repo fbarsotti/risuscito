@@ -26,6 +26,7 @@ class EucharistSongPickerPage extends StatefulWidget {
 class _EucharistSongPickerPageState extends State<EucharistSongPickerPage> {
   final TextEditingController _searchController = TextEditingController();
   int _selectedTag = 0;
+  bool _isSearching = false;
   final FocusNode _searchFocusNode = FocusNode();
   DateTime? _focusLostTime;
 
@@ -73,19 +74,42 @@ class _EucharistSongPickerPageState extends State<EucharistSongPickerPage> {
           middle: Text(widget.momentName),
           previousPageTitle:
               AppLocalizations.of(context)!.translate('prepare_eucharist'),
+          trailing: CupertinoButton(
+            padding: EdgeInsets.zero,
+            child: Icon(
+              _isSearching ? CupertinoIcons.xmark : CupertinoIcons.search,
+            ),
+            onPressed: () {
+              setState(() {
+                _isSearching = !_isSearching;
+                if (!_isSearching) {
+                  _searchController.clear();
+                  _selectedTag = 0;
+                  _searchFocusNode.unfocus();
+                }
+              });
+            },
+          ),
         ),
         child: SafeArea(
           child: Column(
             children: [
-              SongSearchBar(
-                controller: _searchController,
-                selectedTag: _selectedTag,
-                focusNode: _searchFocusNode,
-                onTagChanged: (tag) {
-                  setState(() {
-                    _selectedTag = tag;
-                  });
-                },
+              AnimatedCrossFade(
+                firstChild: const SizedBox(width: double.infinity),
+                secondChild: SongSearchBar(
+                  controller: _searchController,
+                  selectedTag: _selectedTag,
+                  focusNode: _searchFocusNode,
+                  onTagChanged: (tag) {
+                    setState(() {
+                      _selectedTag = tag;
+                    });
+                  },
+                ),
+                crossFadeState: _isSearching
+                    ? CrossFadeState.showSecond
+                    : CrossFadeState.showFirst,
+                duration: const Duration(milliseconds: 200),
               ),
               Expanded(
                 child: BlocBuilder<SongsBloc, SongsState>(
@@ -93,13 +117,15 @@ class _EucharistSongPickerPageState extends State<EucharistSongPickerPage> {
                     if (state is SongsLoaded) {
                       final allSongs =
                           state.songs.alphabeticalOrder ?? <SongDomainModel>[];
-                      final filtered = SongSearchFilter.filter(
-                        songs: allSongs,
-                        query: _searchController.text,
-                        selectedTag: _selectedTag,
-                      );
+                      final displaySongs = _isSearching
+                          ? SongSearchFilter.filter(
+                              songs: allSongs,
+                              query: _searchController.text,
+                              selectedTag: _selectedTag,
+                            )
+                          : allSongs;
 
-                      if (filtered.isEmpty) {
+                      if (displaySongs.isEmpty) {
                         return Center(
                           child: Text(
                             AppLocalizations.of(context)!
@@ -112,9 +138,9 @@ class _EucharistSongPickerPageState extends State<EucharistSongPickerPage> {
                       }
 
                       return ListView.builder(
-                        itemCount: filtered.length,
+                        itemCount: displaySongs.length,
                         itemBuilder: (context, index) {
-                          final song = filtered[index];
+                          final song = displaySongs[index];
                           return Container(
                             color: themeChange.darkTheme
                                 ? RSColors.cardColorDark
@@ -167,7 +193,7 @@ class _EucharistSongPickerPageState extends State<EucharistSongPickerPage> {
                                     Navigator.of(context).pop(song);
                                   },
                                 ),
-                                if (index != filtered.length - 1)
+                                if (index != displaySongs.length - 1)
                                   Divider(
                                     height: 1,
                                     color: themeChange.darkTheme

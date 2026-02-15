@@ -130,12 +130,12 @@ class _SearchPageState extends State<SearchPage> {
                                 SwipeAction(
                                   color: favSongIds
                                           .contains(_filteredSongs[index].id!)
-                                      ? CupertinoColors.systemRed
+                                      ? CupertinoColors.systemOrange
                                       : CupertinoColors.systemYellow,
                                   icon: Icon(
                                     favSongIds
                                             .contains(_filteredSongs[index].id!)
-                                        ? CupertinoIcons.trash
+                                        ? CupertinoIcons.star_slash
                                         : CupertinoIcons.star_fill,
                                     color: CupertinoColors.white,
                                   ),

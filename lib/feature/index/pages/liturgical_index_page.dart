@@ -31,6 +31,7 @@ class _LiturgicalIndexPageState extends State<LiturgicalIndexPage> {
   SharedPreferences prefs = rs();
   final TextEditingController _searchController = TextEditingController();
   int _selectedTag = 0;
+  bool _isSearching = false;
 
   @override
   void initState() {
@@ -53,6 +54,25 @@ class _LiturgicalIndexPageState extends State<LiturgicalIndexPage> {
       navigationBar: CupertinoNavigationBar(
         previousPageTitle: AppLocalizations.of(context)!.translate('index')!,
         middle: Text(widget.categoryName),
+        trailing: widget.songs.isEmpty
+            ? null
+            : CupertinoButton(
+                padding: EdgeInsets.zero,
+                child: Icon(
+                  _isSearching
+                      ? CupertinoIcons.xmark
+                      : CupertinoIcons.search,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _isSearching = !_isSearching;
+                    if (!_isSearching) {
+                      _searchController.clear();
+                      _selectedTag = 0;
+                    }
+                  });
+                },
+              ),
       ),
       child: widget.songs.isEmpty
           ? SafeArea(
@@ -69,37 +89,46 @@ class _LiturgicalIndexPageState extends State<LiturgicalIndexPage> {
           : SafeArea(
               child: Column(
                 children: [
-                  SongSearchBar(
-                    controller: _searchController,
-                    selectedTag: _selectedTag,
-                    onTagChanged: (tag) {
-                      setState(() {
-                        _selectedTag = tag;
-                      });
-                    },
+                  AnimatedCrossFade(
+                    firstChild: const SizedBox(width: double.infinity),
+                    secondChild: SongSearchBar(
+                      controller: _searchController,
+                      selectedTag: _selectedTag,
+                      onTagChanged: (tag) {
+                        setState(() {
+                          _selectedTag = tag;
+                        });
+                      },
+                    ),
+                    crossFadeState: _isSearching
+                        ? CrossFadeState.showSecond
+                        : CrossFadeState.showFirst,
+                    duration: const Duration(milliseconds: 200),
                   ),
                   Expanded(
                     child: Builder(
                       builder: (context) {
-                        final filteredSongs = SongSearchFilter.filter(
-                          songs: widget.songs,
-                          query: _searchController.text,
-                          selectedTag: _selectedTag,
-                        );
+                        final displaySongs = _isSearching
+                            ? SongSearchFilter.filter(
+                                songs: widget.songs,
+                                query: _searchController.text,
+                                selectedTag: _selectedTag,
+                              )
+                            : widget.songs;
                         return ListView.builder(
-                          itemCount: filteredSongs.length,
+                          itemCount: displaySongs.length,
                           itemBuilder: (context, index) {
-                            final song = filteredSongs[index];
+                            final song = displaySongs[index];
                             return SwipeActionCell(
                               key: ObjectKey(song),
                               trailingActions: [
                                 SwipeAction(
                                   color: favSongIds.contains(song.id!)
-                                      ? CupertinoColors.systemRed
+                                      ? CupertinoColors.systemOrange
                                       : CupertinoColors.systemYellow,
                                   icon: Icon(
                                     favSongIds.contains(song.id!)
-                                        ? CupertinoIcons.trash
+                                        ? CupertinoIcons.star_slash
                                         : CupertinoIcons.star_fill,
                                     color: CupertinoColors.white,
                                   ),
@@ -148,8 +177,8 @@ class _LiturgicalIndexPageState extends State<LiturgicalIndexPage> {
                               ],
                               child: SongTile(
                                 song: song,
-                                forceRef: _selectedTag == 2,
-                                divider: index != filteredSongs.length - 1,
+                                forceRef: _isSearching && _selectedTag == 2,
+                                divider: index != displaySongs.length - 1,
                               ),
                             );
                           },

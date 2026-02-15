@@ -25,6 +25,7 @@ class _NumericalIndexPageState extends State<NumericalIndexPage> {
   SharedPreferences prefs = rs();
   final TextEditingController _searchController = TextEditingController();
   int _selectedTag = 0;
+  bool _isSearching = false;
 
   @override
   void initState() {
@@ -48,6 +49,21 @@ class _NumericalIndexPageState extends State<NumericalIndexPage> {
         previousPageTitle: AppLocalizations.of(context)!.translate('index')!,
         middle:
             Text(AppLocalizations.of(context)!.translate('numerical_index')!),
+        trailing: CupertinoButton(
+          padding: EdgeInsets.zero,
+          child: Icon(
+            _isSearching ? CupertinoIcons.xmark : CupertinoIcons.search,
+          ),
+          onPressed: () {
+            setState(() {
+              _isSearching = !_isSearching;
+              if (!_isSearching) {
+                _searchController.clear();
+                _selectedTag = 0;
+              }
+            });
+          },
+        ),
       ),
       child: BlocBuilder<SongsBloc, SongsState>(
         builder: (context, state) {
@@ -55,47 +71,56 @@ class _NumericalIndexPageState extends State<NumericalIndexPage> {
             return RSFailureView(failure: state.failure);
           if (state is SongsLoaded) {
             final allSongs = state.songs.numericalOrder!;
-            final filteredSongs = SongSearchFilter.filter(
-              songs: allSongs,
-              query: _searchController.text,
-              selectedTag: _selectedTag,
-            );
+            final displaySongs = _isSearching
+                ? SongSearchFilter.filter(
+                    songs: allSongs,
+                    query: _searchController.text,
+                    selectedTag: _selectedTag,
+                  )
+                : allSongs;
             return SafeArea(
               child: Column(
                 children: [
-                  SongSearchBar(
-                    controller: _searchController,
-                    selectedTag: _selectedTag,
-                    onTagChanged: (tag) {
-                      setState(() {
-                        _selectedTag = tag;
-                      });
-                    },
+                  AnimatedCrossFade(
+                    firstChild: const SizedBox(width: double.infinity),
+                    secondChild: SongSearchBar(
+                      controller: _searchController,
+                      selectedTag: _selectedTag,
+                      onTagChanged: (tag) {
+                        setState(() {
+                          _selectedTag = tag;
+                        });
+                      },
+                    ),
+                    crossFadeState: _isSearching
+                        ? CrossFadeState.showSecond
+                        : CrossFadeState.showFirst,
+                    duration: const Duration(milliseconds: 200),
                   ),
                   Expanded(
                     child: ListView.builder(
-                      itemCount: filteredSongs.length,
+                      itemCount: displaySongs.length,
                       itemBuilder: (context, index) => SwipeActionCell(
-                        key: ObjectKey(filteredSongs[index]),
+                        key: ObjectKey(displaySongs[index]),
                         trailingActions: [
                           SwipeAction(
                             color:
-                                favSongIds.contains(filteredSongs[index].id!)
-                                    ? CupertinoColors.systemRed
+                                favSongIds.contains(displaySongs[index].id!)
+                                    ? CupertinoColors.systemOrange
                                     : CupertinoColors.systemYellow,
                             icon: Icon(
-                              favSongIds.contains(filteredSongs[index].id!)
-                                  ? CupertinoIcons.trash
+                              favSongIds.contains(displaySongs[index].id!)
+                                  ? CupertinoIcons.star_slash
                                   : CupertinoIcons.star_fill,
                               color: CupertinoColors.white,
                             ),
                             onTap: (CompletionHandler handler) async {
                               handler(false);
                               if (favSongIds
-                                  .contains(filteredSongs[index].id!)) {
+                                  .contains(displaySongs[index].id!)) {
                                 BlocProvider.of<FavouritesBloc>(context).add(
                                   RemoveFavourite(
-                                    songId: filteredSongs[index].id!,
+                                    songId: displaySongs[index].id!,
                                     reload: true,
                                     languageCode:
                                         AppLocalizations.of(context)!
@@ -110,12 +135,12 @@ class _NumericalIndexPageState extends State<NumericalIndexPage> {
                                         AppLocalizations.of(context)!
                                             .locale
                                             .languageCode,
-                                    songId: filteredSongs[index].id!,
+                                    songId: displaySongs[index].id!,
                                   ),
                                 );
                               Fluttertoast.showToast(
                                 msg: favSongIds
-                                        .contains(filteredSongs[index].id!)
+                                        .contains(displaySongs[index].id!)
                                     ? AppLocalizations.of(context)!
                                         .translate('favourite_removed')!
                                     : AppLocalizations.of(context)!
@@ -133,9 +158,9 @@ class _NumericalIndexPageState extends State<NumericalIndexPage> {
                           )
                         ],
                         child: SongTile(
-                          song: filteredSongs[index],
-                          forceRef: _selectedTag == 2,
-                          divider: index != filteredSongs.length - 1,
+                          song: displaySongs[index],
+                          forceRef: _isSearching && _selectedTag == 2,
+                          divider: index != displaySongs.length - 1,
                         ),
                       ),
                     ),
