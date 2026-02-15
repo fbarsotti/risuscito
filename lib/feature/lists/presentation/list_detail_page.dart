@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
 import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
 import 'package:risuscito/core/presentation/empty_page_message.dart';
+import 'package:risuscito/core/presentation/song_search/song_search_bar.dart';
+import 'package:risuscito/core/presentation/song_search/song_search_filter.dart';
 import 'package:risuscito/core/presentation/states/rs_loading_view.dart';
 import 'package:risuscito/feature/lists/domain/model/list_domain_model.dart';
 import 'package:risuscito/feature/lists/presentation/bloc/lists_bloc.dart';
@@ -23,11 +25,22 @@ class ListDetailPage extends StatefulWidget {
 
 class _ListDetailPageState extends State<ListDetailPage> {
   late ListDomainModel currentList;
+  final TextEditingController _searchController = TextEditingController();
+  int _selectedTag = 0;
 
   @override
   void initState() {
     super.initState();
     currentList = widget.list;
+    _searchController.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 
   @override
@@ -86,39 +99,60 @@ class _ListDetailPageState extends State<ListDetailPage> {
                 ),
               );
             }
-            return ListView.builder(
-              itemCount: songs.length,
-              itemBuilder: (context, index) {
-                return SwipeActionCell(
-                  key: ObjectKey(songs[index].id),
-                  trailingActions: <SwipeAction>[
-                    SwipeAction(
-                      color: CupertinoColors.systemRed,
-                      icon: const Icon(
-                        CupertinoIcons.trash,
-                        color: CupertinoColors.white,
-                      ),
-                      onTap: (CompletionHandler handler) async {
-                        await handler(true);
-                        BlocProvider.of<ListsBloc>(context).add(
-                          ListsRemoveSongFromListEvent(
-                            listId: currentList.id,
-                            songId: songs[index].id!,
-                            languageCode: AppLocalizations.of(context)!
-                                .locale
-                                .languageCode,
+            final filteredSongs = SongSearchFilter.filter(
+              songs: songs,
+              query: _searchController.text,
+              selectedTag: _selectedTag,
+            );
+            return Column(
+              children: [
+                SongSearchBar(
+                  controller: _searchController,
+                  selectedTag: _selectedTag,
+                  onTagChanged: (tag) {
+                    setState(() {
+                      _selectedTag = tag;
+                    });
+                  },
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: filteredSongs.length,
+                    itemBuilder: (context, index) {
+                      return SwipeActionCell(
+                        key: ObjectKey(filteredSongs[index].id),
+                        trailingActions: <SwipeAction>[
+                          SwipeAction(
+                            color: CupertinoColors.systemRed,
+                            icon: const Icon(
+                              CupertinoIcons.trash,
+                              color: CupertinoColors.white,
+                            ),
+                            onTap: (CompletionHandler handler) async {
+                              await handler(true);
+                              BlocProvider.of<ListsBloc>(context).add(
+                                ListsRemoveSongFromListEvent(
+                                  listId: currentList.id,
+                                  songId: filteredSongs[index].id!,
+                                  languageCode:
+                                      AppLocalizations.of(context)!
+                                          .locale
+                                          .languageCode,
+                                ),
+                              );
+                            },
                           ),
-                        );
-                      },
-                    ),
-                  ],
-                  child: SongTile(
-                    song: songs[index],
-                    forceRef: false,
-                    divider: index != songs.length - 1,
+                        ],
+                        child: SongTile(
+                          song: filteredSongs[index],
+                          forceRef: _selectedTag == 2,
+                          divider: index != filteredSongs.length - 1,
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
+                ),
+              ],
             );
           },
         ),

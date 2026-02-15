@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:html/parser.dart' show parse;
+import 'package:html/dom.dart' as dom;
 import 'package:risuscito/feature/songs/data/datasource/songs_datasource.dart';
 import 'package:risuscito/feature/songs/domain/model/song_domain_model.dart';
 import 'package:xml/xml.dart';
@@ -18,15 +20,29 @@ class SongParser {
         await localDatasource.getLocalizedTitlesFileContent(languageCode);
     final pagesContent =
         await localDatasource.getLocalizedPagesFileContent(languageCode);
+    final biblicalContent =
+        await localDatasource.getLocalizedBiblicalRefsFileContent(languageCode);
 
     final titlesDocument = XmlDocument.parse(titlesContent);
     final pagesDocument = XmlDocument.parse(pagesContent);
+    final biblicalDocument = XmlDocument.parse(biblicalContent);
 
     final titlesNode = titlesDocument.findElements('resources').first;
     final titles = titlesNode.findElements('string');
 
     final pagesNode = pagesDocument.findElements('resources').first;
     final pages = pagesNode.findElements('string');
+
+    final biblicalNode = biblicalDocument.findElements('resources').first;
+    final biblicalRefs = biblicalNode.findElements('string');
+
+    // Build biblical ref lookup map
+    final Map<String, String> biblicalMap = {};
+    for (final ref in biblicalRefs) {
+      final key =
+          ref.getAttribute('name')!.replaceAll('_biblico', '').toLowerCase();
+      biblicalMap[key] = ref.text;
+    }
 
     for (final title in titles) {
       if (ids.contains(
@@ -36,9 +52,9 @@ class SongParser {
             title.getAttribute('name')!.replaceAll('_title', '').toLowerCase();
         final exists = await _checkIfSongExists(languageCode, id);
         if (exists) {
-          final content =
+          final htmlContent =
               await localDatasource.getLocalizedSongPath(languageCode, id);
-          final color = content.split('BGCOLOR="#')[1].substring(0, 6);
+          final color = htmlContent.split('BGCOLOR="#')[1].substring(0, 6);
           songs.add(
             SongDomainModel(
               id: id,
@@ -54,19 +70,13 @@ class SongParser {
                   )
                   .first
                   .text,
-              htmlContent: content,
-              // songWebView: WebViewPlus(
-              //   javascriptMode: JavascriptMode.unrestricted,
-              //   backgroundColor: Color(int.parse('0xff$color')),
-              //   onWebViewCreated: (controller) {
-              //     controller.loadString(content);
-              //   },
-              // ),
+              htmlContent: htmlContent,
               url: await _getSongUrl(languageCode, id),
               color: Color(
                 int.parse('0xff$color'),
               ),
-              content: null,
+              content: _extractBlackFontLines(htmlContent),
+              biblicalRef: biblicalMap[id],
             ),
           );
         }
@@ -86,6 +96,25 @@ class SongParser {
       if (source.text == songId) return true;
     }
     return false;
+  }
+
+  String _extractBlackFontLines(String html) {
+    dom.Document document = parse(html);
+    List<dom.Element> preElements = document.querySelectorAll('h3 pre');
+    String blackFontLines = '';
+
+    for (dom.Element preElement in preElements) {
+      List<dom.Element> textElements = preElement.getElementsByTagName('font');
+      for (dom.Element textElement in textElements) {
+        if (textElement.attributes['color'] == '#000000') {
+          String line = textElement.text.trim();
+          if (line.isNotEmpty) {
+            blackFontLines += ' ' + line;
+          }
+        }
+      }
+    }
+    return blackFontLines;
   }
 
   Future<String?> _getSongUrl(String languageCode, String songId) async {

@@ -6,6 +6,7 @@ import 'package:risuscito/core/presentation/bulked_cupertino_list_tile.dart';
 import 'package:risuscito/feature/index/pages/biblical_index_page.dart';
 import 'package:risuscito/feature/index/pages/generic_indexes_page.dart';
 import 'package:risuscito/feature/index/pages/liturgical_index_page.dart';
+import 'package:risuscito/feature/index/pages/numerical_index_page.dart';
 import 'package:risuscito/feature/songs/presentation/bloc/songs_bloc.dart';
 import '../../core/presentation/customization/rs_colors.dart';
 import '../../core/presentation/customization/theme/rs_theme_provider.dart';
@@ -62,7 +63,7 @@ class _IndexesPageState extends State<IndexesPage> {
                   children: [
                     BulkedCupertinoListTile(
                       text: AppLocalizations.of(context)!
-                          .translate('generic_indexes')!,
+                          .translate('alphabetical_index')!,
                       icon: Icon(
                         CupertinoIcons.textformat_abc,
                         size: 30,
@@ -70,7 +71,22 @@ class _IndexesPageState extends State<IndexesPage> {
                       onTap: () {
                         Navigator.of(context).push(
                           CupertinoPageRoute(
-                            builder: (context) => GenericIndexesPage(),
+                            builder: (context) => AlphabeticalIndexPage(),
+                          ),
+                        );
+                      },
+                    ),
+                    BulkedCupertinoListTile(
+                      text: AppLocalizations.of(context)!
+                          .translate('numerical_index')!,
+                      icon: Icon(
+                        CupertinoIcons.number,
+                        size: 30,
+                      ),
+                      onTap: () {
+                        Navigator.of(context).push(
+                          CupertinoPageRoute(
+                            builder: (context) => NumericalIndexPage(),
                           ),
                         );
                       },
