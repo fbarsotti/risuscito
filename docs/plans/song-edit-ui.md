@@ -3,12 +3,13 @@
 ## Contesto
 In modalità modifica la pagina del canto impila quattro righe: −1/valore/+1, "Ripristina", il pulsante barré, un altro "Ripristina", più due `Divider` Material. Occupano circa 180 pt in alto e, su un iPhone SE, al canto resta meno di metà schermo. Il barré si sceglie da un action sheet con 13 voci, e l'offset di trasposizione può crescere senza limite ("+14"). La barra audio ha 64 pt fissi di margine sotto.
 
-Obiettivo: una barra compatta in basso con la stessa funzionalità, un offset limitato con modulo 12, la tonalità risultante nel badge del canto e una barra audio più bassa.
+Obiettivo: una barra compatta in basso con la stessa funzionalità, un offset limitato con modulo 12 e una barra audio più bassa.
 
 **Decisioni dell'utente, da rispettare:**
 - Ingresso da "…" → "Modifica" e spunta di chiusura: **invariati**.
 - Due ripristini **separati**: uno per gli accordi, uno per il barré.
-- Il badge "+x" e la riga del barré nel testo del canto restano come sono. Si aggiunge solo la tonalità al badge, nel formato **`+2 · Mi-`**.
+- Il badge "+x" e la riga del barré nel testo del canto restano **esattamente** come sono.
+- **Niente tonalità nel badge.** Era stata provata ricavandola dal primo accordo, poi scartata: il primo accordo non è sempre la tonica (su 234 canti italiani il primo e l'ultimo accordo coincidono solo nel 51%) e alcuni canti modulano. Una tonalità a volte sbagliata è peggio di nessuna.
 - Modulo 12 con intervallo **da −11 a +11**: arrivato a ±12 torna a 0 e il segno si mantiene.
 - **Niente** conservazione dello scroll: la ricarica della WebView resta com'è.
 - La barra di modifica va **in basso, sopra l'audio**, e la barra audio va abbassata.
@@ -53,12 +54,7 @@ Sostituisce `song_transposer.dart` e `barre_selector_button.dart`, che vengono e
 
 ### 4. `lib/core/utils/chord_transposer.dart`
 - `loadTransposeOffset`: restituisce il valore salvato `.remainder(12)`, per normalizzare le preferenze già salvate fuori intervallo.
-- Nuova funzione privata `_songKey(String html, int semitones)`:
-  - prende il primo match di `chordTagRegex` nell'HTML **originale** (il titolo `<B>` e la riga del barré `<I>` non combaciano, quindi è la prima riga di accordi) e il primo token;
-  - lo traspone con `transposeChord` (già esistente, gestisce notazione italiana, inglese e ucraina minuscola);
-  - tiene solo la radice più l'indicatore di minore (`-` in italiano, `m` ma non `maj` in inglese, minuscolo in ucraino). Per esempio "Re-" diventa "Mi-" e "La7" diventa "Si".
-  - restituisce `null` se non trova nulla.
-- Nel blocco del badge di `transposeHtmlChords` (circa righe 195-205) il testo diventa `'$sign$semitones · $key'` se `key != null`, altrimenti resta `'$sign$semitones'`. Stile e posizione del badge restano **invariati**.
+- Nessun'altra modifica: badge e logica di trasposizione invariati.
 
 ### 5. i18n (`i18n/it.json`, `en.json`, `uk.json`, `tr.json`)
 - Aggiungere `barre_short`: it "Barré %s", en "Barre %s", uk "Барре %s", tr "Bare %s".
@@ -68,8 +64,7 @@ Sostituisce `song_transposer.dart` e `barre_selector_button.dart`, che vengono e
 1. `flutter analyze`: 0 errori e 0 warning.
 2. `flutter build ios --simulator --debug`.
 3. Prove manuali in simulatore (le fa l'utente, o io se c'è il simulatore attivo):
-   - it, "A te levo i miei occhi": primo accordo Re-, quindi +2 dà il badge "+2 · Mi-". Da +11 premendo + si va a 0 e il badge sparisce. Da 0 premendo − si va a −1, badge "−1 · Do#-".
-   - en e uk: un canto per lingua. In uk verificare che la tonalità minore resti minuscola.
+   - Da +11 premendo + si va a 0 e il badge sparisce. Da 0 premendo − si va a −1 (badge "-1").
    - Barré: rotella, Fatto, la riga nel canto si aggiorna. Il ↺ del barré torna all'originale senza toccare gli accordi, e viceversa.
    - Canto **senza audio**: la barra resta sopra la home indicator. Canto **con audio**: barra di modifica sopra l'audio, audio più basso.
    - iPhone SE e iPhone 17 Pro, tema chiaro e scuro.
