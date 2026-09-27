@@ -126,54 +126,71 @@ class SongEditBar extends StatelessWidget {
         top: 2,
         bottom: 2 + bottomPadding,
       ),
+      // Two equal halves (transposition | barré), each centered
       child: Row(
         children: [
-          _BarIconButton(
-            icon: CupertinoIcons.minus,
-            onPressed: () => onTranspose(-1),
-          ),
-          SizedBox(
-            width: 36,
-            child: Text(
-              transposeOffset > 0 ? '+$transposeOffset' : '$transposeOffset',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: RSColors.black,
-                fontWeight: FontWeight.bold,
-              ),
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _BarIconButton(
+                  icon: CupertinoIcons.minus,
+                  onPressed: () => onTranspose(-1),
+                ),
+                SizedBox(
+                  width: 36,
+                  child: Text(
+                    transposeOffset > 0
+                        ? '+$transposeOffset'
+                        : '$transposeOffset',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: RSColors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                _BarIconButton(
+                  icon: CupertinoIcons.plus,
+                  onPressed: () => onTranspose(1),
+                ),
+                _BarIconButton(
+                  icon: CupertinoIcons.arrow_counterclockwise,
+                  onPressed: transposeOffset == 0 ? null : onTransposeReset,
+                ),
+              ],
             ),
-          ),
-          _BarIconButton(
-            icon: CupertinoIcons.plus,
-            onPressed: () => onTranspose(1),
-          ),
-          _BarIconButton(
-            icon: CupertinoIcons.arrow_counterclockwise,
-            onPressed: transposeOffset == 0 ? null : onTransposeReset,
           ),
           Container(width: 0.5, height: 28, color: separator),
           Expanded(
-            child: CupertinoButton(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              onPressed: () => _showBarrePicker(context),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Flexible(
-                    child: Text(
-                      _barreLabel(l10n),
-                      overflow: TextOverflow.ellipsis,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Flexible(
+                  child: CupertinoButton(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    onPressed: () => _showBarrePicker(context),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Flexible(
+                          child: Text(
+                            _barreLabel(l10n),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        const SizedBox(width: 4),
+                        const Icon(CupertinoIcons.chevron_down, size: 14),
+                      ],
                     ),
                   ),
-                  const SizedBox(width: 4),
-                  const Icon(CupertinoIcons.chevron_down, size: 14),
-                ],
-              ),
+                ),
+                _BarIconButton(
+                  icon: CupertinoIcons.arrow_counterclockwise,
+                  onPressed: barreOffset == null ? null : onBarreReset,
+                ),
+              ],
             ),
-          ),
-          _BarIconButton(
-            icon: CupertinoIcons.arrow_counterclockwise,
-            onPressed: barreOffset == null ? null : onBarreReset,
           ),
         ],
       ),
