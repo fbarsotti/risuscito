@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' show CircleAvatar;
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
@@ -8,59 +9,142 @@ import 'package:risuscito/core/presentation/customization/theme/rs_theme_provide
 import 'package:risuscito/feature/history/presentation/bloc/history_bloc.dart';
 import 'package:risuscito/feature/songs/domain/model/song_domain_model.dart';
 import 'package:risuscito/feature/songs/presentation/sections/song_page.dart';
-import 'package:risuscito/feature/tools/presentation/eucharist_song_picker_page.dart';
+import 'package:risuscito/feature/tools/presentation/song_picker_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class PrepareEucharistPage extends StatefulWidget {
-  const PrepareEucharistPage({Key? key}) : super(key: key);
+class PrepareCelebrationPage extends StatefulWidget {
+  final String titleKey;
+  final String shareTitleKey;
+  final List<String> momentKeys;
+
+  const PrepareCelebrationPage({
+    Key? key,
+    required this.titleKey,
+    required this.shareTitleKey,
+    required this.momentKeys,
+  }) : super(key: key);
+
+  const PrepareCelebrationPage.word({Key? key})
+      : this(
+          key: key,
+          titleKey: 'prepare_word',
+          shareTitleKey: 'word_share_title',
+          momentKeys: const [
+            'word_entry_song',
+            'word_reading_1',
+            'word_reading_2',
+            'word_reading_3',
+            'word_final_song',
+          ],
+        );
+
+  const PrepareCelebrationPage.eucharist({Key? key})
+      : this(
+          key: key,
+          titleKey: 'prepare_eucharist',
+          shareTitleKey: 'eucharist_share_title',
+          momentKeys: const [
+            'eucharist_entry_song',
+            'eucharist_peace_song',
+            'eucharist_bread_song',
+            'eucharist_wine_song',
+            'eucharist_final_song',
+          ],
+        );
 
   @override
-  State<PrepareEucharistPage> createState() => _PrepareEucharistPageState();
+  State<PrepareCelebrationPage> createState() => _PrepareCelebrationPageState();
 }
 
-class _PrepareEucharistPageState extends State<PrepareEucharistPage> {
-  static const _momentKeys = [
-    'eucharist_entry_song',
-    'eucharist_peace_song',
-    'eucharist_bread_song',
-    'eucharist_wine_song',
-    'eucharist_final_song',
-  ];
-
-  final Map<String, SongDomainModel?> _selectedSongs = {
-    'eucharist_entry_song': null,
-    'eucharist_peace_song': null,
-    'eucharist_bread_song': null,
-    'eucharist_wine_song': null,
-    'eucharist_final_song': null,
+class _PrepareCelebrationPageState extends State<PrepareCelebrationPage> {
+  late final Map<String, SongDomainModel?> _selectedSongs = {
+    for (final key in widget.momentKeys) key: null,
   };
 
-  bool get _hasAnySong =>
-      _selectedSongs.values.any((song) => song != null);
+  bool get _hasAnySong => _selectedSongs.values.any((song) => song != null);
 
-  Future<void> _shareOnWhatsApp() async {
+  /// With [whatsAppFormatting] the title is bold (*...*) and song titles
+  /// are italic (_..._); otherwise plain text is returned.
+  String _buildShareText({bool whatsAppFormatting = false}) {
     final loc = AppLocalizations.of(context)!;
+    final bold = whatsAppFormatting ? '*' : '';
+    final italic = whatsAppFormatting ? '_' : '';
     final buffer = StringBuffer();
-    buffer.writeln('*${loc.translate('eucharist_share_title')}*');
+    buffer.writeln('$bold${loc.translate(widget.shareTitleKey)}$bold');
     buffer.writeln();
 
-    for (final key in _momentKeys) {
+    for (final key in widget.momentKeys) {
       final song = _selectedSongs[key];
-      final value = song != null ? '_${song.title}_' : '-';
+      final value = song != null ? '$italic${song.title}$italic' : '-';
       buffer.writeln('• ${loc.translate(key)}: $value');
     }
 
-    final text = Uri.encodeComponent(buffer.toString().trimRight());
+    return buffer.toString().trimRight();
+  }
+
+  Future<void> _shareOnWhatsApp() async {
+    final text = Uri.encodeComponent(
+      _buildShareText(whatsAppFormatting: true),
+    );
     final url = Uri.parse('https://wa.me/?text=$text');
     await launchUrl(url, mode: LaunchMode.externalApplication);
+  }
+
+  Future<void> _copyShareText() async {
+    await Clipboard.setData(ClipboardData(text: _buildShareText()));
+    if (!mounted) return;
+    showCupertinoDialog(
+      context: context,
+      builder: (dialogContext) {
+        Future.delayed(const Duration(milliseconds: 1200), () {
+          if (Navigator.of(dialogContext).canPop()) {
+            Navigator.of(dialogContext).pop();
+          }
+        });
+        return CupertinoAlertDialog(
+          title: Text(AppLocalizations.of(context)!.translate('text_copied')!),
+        );
+      },
+    );
+  }
+
+  void _showShareOptions() {
+    final loc = AppLocalizations.of(context)!;
+    showCupertinoModalPopup(
+      context: context,
+      builder: (context) => CupertinoActionSheet(
+        actions: [
+          CupertinoActionSheetAction(
+            isDefaultAction: true,
+            onPressed: () {
+              Navigator.pop(context);
+              _shareOnWhatsApp();
+            },
+            child: Text(loc.translate('share_whatsapp')!),
+          ),
+          CupertinoActionSheetAction(
+            onPressed: () {
+              Navigator.pop(context);
+              _copyShareText();
+            },
+            child: Text(loc.translate('copy_text')!),
+          ),
+        ],
+        cancelButton: CupertinoActionSheetAction(
+          onPressed: () => Navigator.pop(context),
+          child: Text(loc.translate('cancel')!),
+        ),
+      ),
+    );
   }
 
   Future<void> _pickSong(String momentKey) async {
     final loc = AppLocalizations.of(context)!;
     final song = await Navigator.of(context).push<SongDomainModel>(
       CupertinoPageRoute(
-        builder: (context) => EucharistSongPickerPage(
+        builder: (context) => SongPickerPage(
           momentName: loc.translate(momentKey)!,
+          previousPageTitle: loc.translate(widget.titleKey),
         ),
       ),
     );
@@ -72,8 +156,7 @@ class _PrepareEucharistPageState extends State<PrepareEucharistPage> {
   }
 
   void _openSong(SongDomainModel song) {
-    final langCode =
-        AppLocalizations.of(context)!.locale.languageCode;
+    final langCode = AppLocalizations.of(context)!.locale.languageCode;
     BlocProvider.of<HistoryBloc>(context).add(
       SaveInHistory(
         languageCode: langCode,
@@ -106,25 +189,24 @@ class _PrepareEucharistPageState extends State<PrepareEucharistPage> {
 
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
-        middle: Text(loc.translate('prepare_eucharist')!),
+        middle: Text(loc.translate(widget.titleKey)!),
         trailing: CupertinoButton(
           padding: EdgeInsets.zero,
-          onPressed: _hasAnySong ? _shareOnWhatsApp : null,
+          onPressed: _hasAnySong ? _showShareOptions : null,
           child: Icon(
             CupertinoIcons.share,
-            color: _hasAnySong
-                ? RSColors.primary
-                : CupertinoColors.inactiveGray,
+            color:
+                _hasAnySong ? RSColors.primary : CupertinoColors.inactiveGray,
           ),
         ),
       ),
       child: SafeArea(
         child: ListView.separated(
           padding: const EdgeInsets.all(16),
-          itemCount: _momentKeys.length,
+          itemCount: widget.momentKeys.length,
           separatorBuilder: (_, __) => const SizedBox(height: 10),
           itemBuilder: (context, index) {
-            final key = _momentKeys[index];
+            final key = widget.momentKeys[index];
             final song = _selectedSongs[key];
             return _MomentSlotCard(
               momentName: loc.translate(key)!,
@@ -230,9 +312,7 @@ class _MomentSlotCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    isFilled
-                        ? song!.title!
-                        : loc.translate('select_song')!,
+                    isFilled ? song!.title! : loc.translate('select_song')!,
                     style: TextStyle(
                       color: isFilled
                           ? (isDark ? RSColors.darkText : RSColors.text)
