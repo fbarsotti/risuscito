@@ -24,6 +24,7 @@ class QuickActions extends StatelessWidget {
           child: HeaderText(
             text: AppLocalizations.of(context)!.translate('quick_actions')!,
             textAlign: TextAlign.start,
+            fontSize: HeaderText.sectionFontSize,
           ),
         ),
         const SizedBox(
