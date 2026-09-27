@@ -125,7 +125,7 @@ class _SearchPageState extends State<SearchPage> {
                           ...List.generate(
                             _filteredSongs.length,
                             (index) => SwipeActionCell(
-                              key: ObjectKey(songs[index]),
+                              key: ObjectKey(_filteredSongs[index]),
                               trailingActions: [
                                 SwipeAction(
                                   color: favSongIds
@@ -187,7 +187,7 @@ class _SearchPageState extends State<SearchPage> {
                               child: SongTile(
                                 song: _filteredSongs[index],
                                 forceRef: selectedTag == 2,
-                                divider: index != songs.length - 1,
+                                divider: index != _filteredSongs.length - 1,
                               ),
                             ),
                           ),
