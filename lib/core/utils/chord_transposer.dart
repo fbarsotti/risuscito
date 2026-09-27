@@ -192,11 +192,14 @@ String transposeHtmlChords(String html, int semitones) {
     return '<FONT COLOR="$defaultChordColor">$transposed</FONT>';
   });
 
-  // Badge "+N" / "-N" sulla stessa riga del titolo, a destra
+  // Badge "+N" / "-N" (con la tonalità risultante, es. "+2 · Mi-") sulla
+  // stessa riga del titolo, a destra
   if (semitones != 0) {
     final sign = semitones > 0 ? '+' : '';
+    final key = _songKey(html, semitones);
+    final label = key != null ? '$sign$semitones · $key' : '$sign$semitones';
     final badge =
-        '<span style="float: right; background-color: rgba($highlightBackgroundRGB, $highlightBackgroundOpacity); color: $defaultChordColor; padding: 2px 8px; border-radius: 4px; font-size: 20px; font-weight: bold; margin-top: 2px; margin-right: 8px;">$sign$semitones</span>';
+        '<span style="float: right; background-color: rgba($highlightBackgroundRGB, $highlightBackgroundOpacity); color: $defaultChordColor; padding: 2px 8px; border-radius: 4px; font-size: 20px; font-weight: bold; margin-top: 2px; margin-right: 8px;">$label</span>';
     // Inserisci prima del primo <H2>
     final h2Regex = RegExp(r'<H2>', caseSensitive: false);
     final h2Match = h2Regex.firstMatch(result);
@@ -208,9 +211,33 @@ String transposeHtmlChords(String html, int semitones) {
   return result;
 }
 
+/// Tonalità del canto trasposta di [semitones], ricavata dal primo accordo
+/// dell'HTML originale (es. "Re-" +2 → "Mi-", "Dm" +2 → "Em", "d" +2 → "e").
+/// Restituisce solo radice + indicatore di minore, o null se non riconosciuta.
+String? _songKey(String html, int semitones) {
+  final firstChordLine =
+      RegExp(r'<FONT COLOR="#A13F3C">([^<]+)</FONT>').firstMatch(html);
+  if (firstChordLine == null) return null;
+
+  final tokens = firstChordLine.group(1)!.trim().split(RegExp(r'\s+'));
+  final firstChord = tokens.first.replaceAll(RegExp(r'^[^A-Za-z]+'), '');
+  if (firstChord.isEmpty) return null;
+
+  final transposed = transposeChord(firstChord.split('/').first, semitones);
+
+  // Notazione italiana prima: "Do"/"Re" inizierebbero anche con "D"
+  final italian =
+      RegExp(r'^(Do|Re|Mi|Fa|Sol|La|Si)([#b♯♭]?)(-?)').firstMatch(transposed);
+  if (italian != null) return italian.group(0);
+
+  final english = RegExp(r'^[A-Ga-g][#b♯♭]?(m(?!aj))?').firstMatch(transposed);
+  return english?.group(0);
+}
+
 Future<int> loadTransposeOffset(String songId) async {
   final prefs = await SharedPreferences.getInstance();
-  return prefs.getInt('transpose_offset_$songId') ?? 0;
+  // Normalizza eventuali valori salvati fuori da -11..+11
+  return (prefs.getInt('transpose_offset_$songId') ?? 0).remainder(12);
 }
 
 Future<void> saveTransposeOffset(int offset, String songId) async {
