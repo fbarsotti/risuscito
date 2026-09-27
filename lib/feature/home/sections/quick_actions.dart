@@ -27,9 +27,6 @@ class QuickActions extends StatelessWidget {
             fontSize: HeaderText.sectionFontSize,
           ),
         ),
-        const SizedBox(
-          height: 8,
-        ),
         Container(
           height: 230,
           child: ListView(
