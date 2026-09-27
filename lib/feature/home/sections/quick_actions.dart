@@ -20,7 +20,7 @@ class QuickActions extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 16.0),
+          padding: const EdgeInsets.only(left: 20.0),
           child: HeaderText(
             text: AppLocalizations.of(context)!.translate('quick_actions')!,
             textAlign: TextAlign.start,
@@ -32,8 +32,9 @@ class QuickActions extends StatelessWidget {
           child: ListView(
             scrollDirection: Axis.horizontal,
             children: [
+              // 12 + 8 of button padding = 20, aligned with the header
               const SizedBox(
-                width: 8,
+                width: 12,
               ),
               QuickActionButton(
                 text: AppLocalizations.of(context)!.translate('favourites')!,
