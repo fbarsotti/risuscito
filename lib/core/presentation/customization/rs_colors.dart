@@ -8,6 +8,13 @@ class RSColors {
   RSColors._();
 
   static Color get primary => const Color(0xff964946); //0xff964946
+  // Accent family: same saturation/lightness (HSL S 78%, L 50%), only the hue
+  // changes. "Remove" variants use L 38%. Primary stays as the lists accent.
+  static Color get accentBlue => const Color(0xff1C7FE3); // hsl(210, 78%, 50%)
+  // Favourites: add / remove actions, used app-wide
+  static Color get favourite => const Color(0xffE3A41C); // hsl(41, 78%, 50%)
+  static Color get favouriteRemove =>
+      const Color(0xffAC7D15); // hsl(41, 78%, 38%)
   static Color get extraLightText => const Color(0xffD8D8D8);
   static Color get lightText => const Color(0xffACACAC);
   static Color get facebookColor => const Color(0xff3A569B);

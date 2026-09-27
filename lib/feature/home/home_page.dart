@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage> {
                   height: 16,
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
                   child: LastSongs(),
                 ),
                 const SizedBox(

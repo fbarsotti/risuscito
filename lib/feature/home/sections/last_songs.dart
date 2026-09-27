@@ -24,15 +24,13 @@ class LastSongs extends StatelessWidget {
                   text:
                       AppLocalizations.of(context)!.translate('seen_recently')!,
                   textAlign: TextAlign.start,
+                  fontSize: HeaderText.sectionFontSize,
                 ),
+                // Same gap below the header as CupertinoListSection.insetGrouped
                 const SizedBox(
-                  height: 8,
+                  height: 6,
                 ),
                 if (state.songs.length == 0) EmptyCard(),
-                if (state.songs.length > 0)
-                  const SizedBox(
-                    height: 8,
-                  ),
                 if (state.songs.length > 0)
                   SongCard(
                     song: state.songs[0],

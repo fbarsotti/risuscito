@@ -4,28 +4,42 @@ import 'package:flutter_swipe_action_cell/core/cell.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:risuscito/core/core_container.dart';
 import 'package:risuscito/core/presentation/customization/rs_colors.dart';
+import 'package:risuscito/core/presentation/song_search/song_search_bar.dart';
+import 'package:risuscito/core/presentation/song_search/song_search_filter.dart';
 import 'package:risuscito/feature/favourites/presentation/bloc/favourites_bloc.dart';
 import 'package:risuscito/feature/songs/presentation/sections/song_tile.dart';
 import 'package:risuscito/core/presentation/states/rs_loading_view.dart';
-import 'package:risuscito/core/utils/rs_utils.dart';
-import 'package:risuscito/feature/songs/domain/model/song_domain_model.dart';
 import 'package:risuscito/feature/songs/presentation/bloc/songs_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../../../core/infrastructure/localization/app_localizations.dart';
+import '../../../core/infrastructure/localization/app_localizations.dart';
 import '../../../core/presentation/states/rs_failure_view.dart';
 
-class GenericIndexesPage extends StatefulWidget {
-  const GenericIndexesPage({Key? key}) : super(key: key);
+class AlphabeticalIndexPage extends StatefulWidget {
+  const AlphabeticalIndexPage({Key? key}) : super(key: key);
 
   @override
-  State<GenericIndexesPage> createState() => _GenericIndexesPageState();
+  State<AlphabeticalIndexPage> createState() => _AlphabeticalIndexPageState();
 }
 
-class _GenericIndexesPageState extends State<GenericIndexesPage> {
-  late List<SongDomainModel> songs;
-  bool init = true;
-  Index selected = Index.alphabetical;
+class _AlphabeticalIndexPageState extends State<AlphabeticalIndexPage> {
   SharedPreferences prefs = rs();
+  final TextEditingController _searchController = TextEditingController();
+  int _selectedTag = 0;
+  bool _isSearching = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,103 +47,100 @@ class _GenericIndexesPageState extends State<GenericIndexesPage> {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         previousPageTitle: AppLocalizations.of(context)!.translate('index')!,
-        middle:
-            Text(AppLocalizations.of(context)!.translate('generic_indexes')!),
+        middle: Text(
+            AppLocalizations.of(context)!.translate('alphabetical_index')!),
+        trailing: CupertinoButton(
+          padding: EdgeInsets.zero,
+          child: Icon(
+            _isSearching ? CupertinoIcons.xmark : CupertinoIcons.search,
+          ),
+          onPressed: () {
+            setState(() {
+              _isSearching = !_isSearching;
+              if (!_isSearching) {
+                _searchController.clear();
+                _selectedTag = 0;
+              }
+            });
+          },
+        ),
       ),
       child: BlocBuilder<SongsBloc, SongsState>(
         builder: (context, state) {
           if (state is SongsFailure)
             return RSFailureView(failure: state.failure);
           if (state is SongsLoaded) {
-            if (state.forceReload) init = true;
-            if (init) {
-              songs = state.songs.alphabeticalOrder!;
-              init = false;
-            }
+            final allSongs = state.songs.alphabeticalOrder!;
+            final displaySongs = _isSearching
+                ? SongSearchFilter.filter(
+                    songs: allSongs,
+                    query: _searchController.text,
+                    selectedTag: _selectedTag,
+                  )
+                : allSongs;
             return SafeArea(
               child: Column(
                 children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 20,
-                    ),
-                    child: CupertinoSlidingSegmentedControl(
-                      groupValue: selected,
-                      children: <Index, Widget>{
-                        Index.alphabetical: Container(
-                          height: 40,
-                          width: MediaQuery.of(context).size.width,
-                          child: Center(
-                            child: Text(
-                              AppLocalizations.of(context)!
-                                  .translate('alphabetical_index')!,
-                            ),
-                          ),
-                        ),
-                        Index.numerical: Container(
-                          height: 40,
-                          width: MediaQuery.of(context).size.width,
-                          child: Center(
-                            child: Text(
-                              AppLocalizations.of(context)!
-                                  .translate('numerical_index')!,
-                            ),
-                          ),
-                        ),
-                      },
-                      onValueChanged: (Index? value) {
-                        if (value != null) {
-                          setState(() {
-                            selected = value;
-                            if (value == Index.alphabetical)
-                              songs = state.songs.alphabeticalOrder!;
-                            else
-                              songs = state.songs.numericalOrder!;
-                          });
-                        }
+                  AnimatedCrossFade(
+                    firstChild: const SizedBox(width: double.infinity),
+                    secondChild: SongSearchBar(
+                      controller: _searchController,
+                      selectedTag: _selectedTag,
+                      onTagChanged: (tag) {
+                        setState(() {
+                          _selectedTag = tag;
+                        });
                       },
                     ),
+                    crossFadeState: _isSearching
+                        ? CrossFadeState.showSecond
+                        : CrossFadeState.showFirst,
+                    duration: const Duration(milliseconds: 200),
                   ),
                   Expanded(
                     child: ListView.builder(
-                      itemCount: songs.length,
+                      itemCount: displaySongs.length,
                       itemBuilder: (context, index) => SwipeActionCell(
-                        key: ObjectKey(songs[index]),
+                        key: ObjectKey(displaySongs[index]),
                         trailingActions: [
                           SwipeAction(
-                            color: favSongIds.contains(songs[index].id!)
-                                ? CupertinoColors.systemRed
-                                : CupertinoColors.systemYellow,
+                            color:
+                                favSongIds.contains(displaySongs[index].id!)
+                                    ? RSColors.favouriteRemove
+                                    : RSColors.favourite,
                             icon: Icon(
-                              favSongIds.contains(songs[index].id!)
-                                  ? CupertinoIcons.trash
+                              favSongIds.contains(displaySongs[index].id!)
+                                  ? CupertinoIcons.star_slash
                                   : CupertinoIcons.star_fill,
                               color: CupertinoColors.white,
                             ),
                             onTap: (CompletionHandler handler) async {
                               handler(false);
-                              if (favSongIds.contains(songs[index].id!)) {
+                              if (favSongIds
+                                  .contains(displaySongs[index].id!)) {
                                 BlocProvider.of<FavouritesBloc>(context).add(
                                   RemoveFavourite(
-                                    songId: songs[index].id!,
+                                    songId: displaySongs[index].id!,
                                     reload: true,
-                                    languageCode: AppLocalizations.of(context)!
-                                        .locale
-                                        .languageCode,
+                                    languageCode:
+                                        AppLocalizations.of(context)!
+                                            .locale
+                                            .languageCode,
                                   ),
                                 );
                               } else
                                 BlocProvider.of<FavouritesBloc>(context).add(
                                   SaveFavourite(
-                                    languageCode: AppLocalizations.of(context)!
-                                        .locale
-                                        .languageCode,
-                                    songId: songs[index].id!,
+                                    languageCode:
+                                        AppLocalizations.of(context)!
+                                            .locale
+                                            .languageCode,
+                                    songId: displaySongs[index].id!,
                                   ),
                                 );
                               Fluttertoast.showToast(
-                                msg: favSongIds.contains(songs[index].id!)
+                                msg: favSongIds
+                                        .contains(displaySongs[index].id!)
                                     ? AppLocalizations.of(context)!
                                         .translate('favourite_removed')!
                                     : AppLocalizations.of(context)!
@@ -147,57 +158,13 @@ class _GenericIndexesPageState extends State<GenericIndexesPage> {
                           )
                         ],
                         child: SongTile(
-                          song: songs[index],
-                          forceRef: false,
-                          divider: index != songs.length - 1,
+                          song: displaySongs[index],
+                          forceRef: _isSearching && _selectedTag == 2,
+                          divider: index != displaySongs.length - 1,
                         ),
                       ),
                     ),
                   ),
-                  // CupertinoListSection(
-                  //   children: [
-                  //     ...List.generate(
-                  //       songs.length,
-                  //       (index) => Slidable(
-                  //         endActionPane: ActionPane(
-                  //           extentRatio: 0.25,
-                  //           motion: DrawerMotion(),
-                  //           children: [
-                  //             SlidableAction(
-                  //               onPressed: (context) {
-                  //                 BlocProvider.of<FavouritesBloc>(context)
-                  //                     .add(
-                  //                   SaveFavourite(
-                  //                     languageCode:
-                  //                         AppLocalizations.of(context)!
-                  //                             .locale
-                  //                             .languageCode,
-                  //                     songId: songs[index].id!,
-                  //                   ),
-                  //                 );
-                  //               },
-                  //               backgroundColor: CupertinoColors.systemYellow,
-                  //               foregroundColor: RSColors.white,
-                  //               icon: CupertinoIcons.text_badge_star,
-                  //               label: 'Preferiti',
-                  //             ),
-                  //             // SlidableAction(
-                  //             //   onPressed: null,
-                  //             //   backgroundColor: Color(0xFF0392CF),
-                  //             //   foregroundColor: RSColors.white,
-                  //             //   icon: CupertinoIcons.folder,
-                  //             //   label: 'Save',
-                  //             // ),
-                  //           ],
-                  //         ),
-                  //         child: SongTile(
-                  //           song: songs[index],
-                  //           forceRef: false,
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
                 ],
               ),
             );
@@ -208,10 +175,3 @@ class _GenericIndexesPageState extends State<GenericIndexesPage> {
     );
   }
 }
-
-// ListView.builder(
-//         itemCount: songs.length,
-//         itemBuilder: (context, index) {
-//           return CupertinoListTile(title: Text(songs[index].title!));
-//         },
-//       ),

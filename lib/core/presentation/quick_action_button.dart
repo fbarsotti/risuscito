@@ -28,7 +28,8 @@ class QuickActionButton extends StatelessWidget {
           left: 8.0,
           right: 8.0,
           bottom: 40,
-          top: 8,
+          // Same gap below the header as CupertinoListSection.insetGrouped
+          top: 6,
         ),
         child: Container(
           decoration: BoxDecoration(

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:risuscito/core/presentation/customization/rs_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
 import 'package:risuscito/core/presentation/header_text.dart';
@@ -20,27 +21,26 @@ class QuickActions extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 16.0),
+          padding: const EdgeInsets.only(left: 20.0),
           child: HeaderText(
             text: AppLocalizations.of(context)!.translate('quick_actions')!,
             textAlign: TextAlign.start,
+            fontSize: HeaderText.sectionFontSize,
           ),
-        ),
-        const SizedBox(
-          height: 8,
         ),
         Container(
           height: 230,
           child: ListView(
             scrollDirection: Axis.horizontal,
             children: [
+              // 12 + 8 of button padding = 20, aligned with the header
               const SizedBox(
-                width: 8,
+                width: 12,
               ),
               QuickActionButton(
                 text: AppLocalizations.of(context)!.translate('favourites')!,
                 icon: CupertinoIcons.text_badge_star,
-                iconColor: CupertinoColors.systemYellow,
+                iconColor: RSColors.favourite,
                 onTap: () {
                   BlocProvider.of<FavouritesBloc>(context).add(
                     GetLocalizedFavourites(
@@ -59,7 +59,7 @@ class QuickActions extends StatelessWidget {
                 text: AppLocalizations.of(context)!
                     .translate('personalized_lists')!,
                 icon: CupertinoIcons.rectangle_stack_badge_person_crop,
-                iconColor: CupertinoColors.systemRed,
+                iconColor: RSColors.primary,
                 onTap: () {
                   BlocProvider.of<ListsBloc>(context).add(
                     ListsGetAllListsEvent(
@@ -77,7 +77,7 @@ class QuickActions extends StatelessWidget {
               QuickActionButton(
                 text: AppLocalizations.of(context)!.translate('history')!,
                 icon: CupertinoIcons.refresh_circled,
-                iconColor: CupertinoColors.systemBlue,
+                iconColor: RSColors.accentBlue,
                 onTap: () {
                   BlocProvider.of<HistoryBloc>(context).add(
                     GetLocalizedHistory(

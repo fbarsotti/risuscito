@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
 import 'package:risuscito/core/presentation/customization/rs_colors.dart';
 import 'package:risuscito/core/presentation/customization/theme/rs_theme_provider.dart';
+import 'package:risuscito/core/presentation/song_search/song_search_bar.dart';
+import 'package:risuscito/core/presentation/song_search/song_search_filter.dart';
 import 'package:risuscito/feature/songs/domain/model/song_domain_model.dart';
 import 'package:risuscito/feature/songs/presentation/bloc/songs_bloc.dart';
 
@@ -23,13 +25,18 @@ class SongPickerPage extends StatefulWidget {
 }
 
 class _SongPickerPageState extends State<SongPickerPage> {
-  String _searchQuery = '';
+  final TextEditingController _searchController = TextEditingController();
+  int _selectedTag = 0;
+  bool _isSearching = false;
   final FocusNode _searchFocusNode = FocusNode();
   DateTime? _focusLostTime;
 
   @override
   void initState() {
     super.initState();
+    _searchController.addListener(() {
+      setState(() {});
+    });
     _searchFocusNode.addListener(() {
       if (!_searchFocusNode.hasFocus) {
         _focusLostTime = DateTime.now();
@@ -39,6 +46,7 @@ class _SongPickerPageState extends State<SongPickerPage> {
 
   @override
   void dispose() {
+    _searchController.dispose();
     _searchFocusNode.dispose();
     super.dispose();
   }
@@ -64,24 +72,48 @@ class _SongPickerPageState extends State<SongPickerPage> {
       },
       child: CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
-          middle: Text(widget.momentName),
+          middle: Text(
+            widget.momentName,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
           previousPageTitle: widget.previousPageTitle,
+          trailing: CupertinoButton(
+            padding: EdgeInsets.zero,
+            child: Icon(
+              _isSearching ? CupertinoIcons.xmark : CupertinoIcons.search,
+            ),
+            onPressed: () {
+              setState(() {
+                _isSearching = !_isSearching;
+                if (!_isSearching) {
+                  _searchController.clear();
+                  _selectedTag = 0;
+                  _searchFocusNode.unfocus();
+                }
+              });
+            },
+          ),
         ),
         child: SafeArea(
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: CupertinoSearchTextField(
+              AnimatedCrossFade(
+                firstChild: const SizedBox(width: double.infinity),
+                secondChild: SongSearchBar(
+                  controller: _searchController,
+                  selectedTag: _selectedTag,
                   focusNode: _searchFocusNode,
-                  placeholder: AppLocalizations.of(context)!
-                      .translate('search_a_song'),
-                  onChanged: (value) {
+                  onTagChanged: (tag) {
                     setState(() {
-                      _searchQuery = value.toLowerCase();
+                      _selectedTag = tag;
                     });
                   },
                 ),
+                crossFadeState: _isSearching
+                    ? CrossFadeState.showSecond
+                    : CrossFadeState.showFirst,
+                duration: const Duration(milliseconds: 200),
               ),
               Expanded(
                 child: BlocBuilder<SongsBloc, SongsState>(
@@ -89,15 +121,15 @@ class _SongPickerPageState extends State<SongPickerPage> {
                     if (state is SongsLoaded) {
                       final allSongs =
                           state.songs.alphabeticalOrder ?? <SongDomainModel>[];
-                      final filtered = allSongs.where((song) {
-                        if (_searchQuery.isEmpty) return true;
-                        return song.title
-                                ?.toLowerCase()
-                                .contains(_searchQuery) ??
-                            false;
-                      }).toList();
+                      final displaySongs = _isSearching
+                          ? SongSearchFilter.filter(
+                              songs: allSongs,
+                              query: _searchController.text,
+                              selectedTag: _selectedTag,
+                            )
+                          : allSongs;
 
-                      if (filtered.isEmpty) {
+                      if (displaySongs.isEmpty) {
                         return Center(
                           child: Text(
                             AppLocalizations.of(context)!
@@ -110,9 +142,9 @@ class _SongPickerPageState extends State<SongPickerPage> {
                       }
 
                       return ListView.builder(
-                        itemCount: filtered.length,
+                        itemCount: displaySongs.length,
                         itemBuilder: (context, index) {
-                          final song = filtered[index];
+                          final song = displaySongs[index];
                           return Container(
                             color: themeChange.darkTheme
                                 ? RSColors.cardColorDark
@@ -165,7 +197,7 @@ class _SongPickerPageState extends State<SongPickerPage> {
                                     Navigator.of(context).pop(song);
                                   },
                                 ),
-                                if (index != filtered.length - 1)
+                                if (index != displaySongs.length - 1)
                                   Divider(
                                     height: 1,
                                     color: themeChange.darkTheme

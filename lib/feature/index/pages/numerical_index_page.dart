@@ -4,7 +4,6 @@ import 'package:flutter_swipe_action_cell/core/cell.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:risuscito/core/core_container.dart';
 import 'package:risuscito/core/presentation/customization/rs_colors.dart';
-import 'package:risuscito/core/presentation/empty_page_message.dart';
 import 'package:risuscito/core/presentation/song_search/song_search_bar.dart';
 import 'package:risuscito/core/presentation/song_search/song_search_filter.dart';
 import 'package:risuscito/feature/favourites/presentation/bloc/favourites_bloc.dart';
@@ -15,17 +14,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/infrastructure/localization/app_localizations.dart';
 import '../../../core/presentation/states/rs_failure_view.dart';
 
-class BiblicalIndexPage extends StatefulWidget {
-  const BiblicalIndexPage({Key? key}) : super(key: key);
+class NumericalIndexPage extends StatefulWidget {
+  const NumericalIndexPage({Key? key}) : super(key: key);
 
   @override
-  State<BiblicalIndexPage> createState() => _BiblicalIndexPageState();
+  State<NumericalIndexPage> createState() => _NumericalIndexPageState();
 }
 
-class _BiblicalIndexPageState extends State<BiblicalIndexPage> {
+class _NumericalIndexPageState extends State<NumericalIndexPage> {
   SharedPreferences prefs = rs();
   final TextEditingController _searchController = TextEditingController();
-  int _selectedTag = 2;
+  int _selectedTag = 0;
   bool _isSearching = false;
 
   @override
@@ -49,7 +48,7 @@ class _BiblicalIndexPageState extends State<BiblicalIndexPage> {
       navigationBar: CupertinoNavigationBar(
         previousPageTitle: AppLocalizations.of(context)!.translate('index')!,
         middle:
-            Text(AppLocalizations.of(context)!.translate('biblical_index')!),
+            Text(AppLocalizations.of(context)!.translate('numerical_index')!),
         trailing: CupertinoButton(
           padding: EdgeInsets.zero,
           child: Icon(
@@ -60,7 +59,7 @@ class _BiblicalIndexPageState extends State<BiblicalIndexPage> {
               _isSearching = !_isSearching;
               if (!_isSearching) {
                 _searchController.clear();
-                _selectedTag = 2;
+                _selectedTag = 0;
               }
             });
           },
@@ -71,28 +70,7 @@ class _BiblicalIndexPageState extends State<BiblicalIndexPage> {
           if (state is SongsFailure)
             return RSFailureView(failure: state.failure);
           if (state is SongsLoaded) {
-            final allSongs = state.songs.biblicalOrder!;
-            if (allSongs.isEmpty)
-              return SafeArea(
-                child: Container(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Center(
-                        child: Container(
-                          child: EmptyPageMessage(
-                            icon: CupertinoIcons.book,
-                            title: AppLocalizations.of(context)!
-                                .translate('no_songs')!,
-                            subtitle: AppLocalizations.of(context)!
-                                .translate('no_songs_full')!,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
+            final allSongs = state.songs.numericalOrder!;
             final displaySongs = _isSearching
                 ? SongSearchFilter.filter(
                     songs: allSongs,
@@ -181,7 +159,7 @@ class _BiblicalIndexPageState extends State<BiblicalIndexPage> {
                         ],
                         child: SongTile(
                           song: displaySongs[index],
-                          forceRef: !_isSearching || _selectedTag == 2,
+                          forceRef: _isSearching && _selectedTag == 2,
                           divider: index != displaySongs.length - 1,
                         ),
                       ),

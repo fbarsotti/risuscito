@@ -31,14 +31,14 @@
   - [x] Language (settings and onboarding)
   - [x] Songs info reading
 
-- [] Add Tools feature
-  - [] Prepare Eucarist
-  - [] Prepare Word
+- [x] Add Tools feature
+  - [x] Prepare Eucarist
+  - [x] Prepare Word
 
 - [] Add tags on song search
 
 - [] Shareable lists
 
-- [] Search bar in each index
+- [x] Search bar in each index
 
-- [] Numerical index separated from alphabetical
+- [x] Numerical index separated from alphabetical

@@ -94,7 +94,7 @@ class SongsRepositoryImpl implements SongsRepository {
       );
       for (final biblicalRef in biblicalOrder) {
         songs[songs.indexWhere((element) => element.id == biblicalRef.id)]
-            .biblicalRef = biblicalRef.title;
+            .biblicalRef = biblicalRef.biblicalRef;
       }
       songs.sort(_alphabeticalComparison);
       final alphabeticalOrder = new List<SongDomainModel>.from(songs);
@@ -124,13 +124,19 @@ class SongsRepositoryImpl implements SongsRepository {
   }) async {
     List<SongDomainModel> songs = [];
 
+    final titlesContent =
+        await localDatasource.getLocalizedTitlesFileContent(languageCode);
     final pagesContent =
         await localDatasource.getLocalizedPagesFileContent(languageCode);
     final biblicalContent =
         await localDatasource.getLocalizedBiblicalRefsFileContent(languageCode);
 
+    final titlesDocument = XmlDocument.parse(titlesContent);
     final pagesDocument = XmlDocument.parse(pagesContent);
     final biblicalDocument = XmlDocument.parse(biblicalContent);
+
+    final titlesNode = titlesDocument.findElements('resources').first;
+    final titles = titlesNode.findElements('string');
 
     final pagesNode = pagesDocument.findElements('resources').first;
     final pages = pagesNode.findElements('string');
@@ -146,6 +152,13 @@ class SongsRepositoryImpl implements SongsRepository {
     for (final page in pages) {
       final key = page.getAttribute('name')!.replaceAll('_page', '').toLowerCase();
       pagesMap[key] = page.text;
+    }
+
+    // Build titles lookup map
+    final Map<String, String> titlesMap = {};
+    for (final title in titles) {
+      final key = title.getAttribute('name')!.replaceAll('_title', '').toLowerCase();
+      titlesMap[key] = title.text;
     }
 
     // Load song URLs once
@@ -167,7 +180,8 @@ class SongsRepositoryImpl implements SongsRepository {
         songs.add(
           SongDomainModel(
             id: id,
-            title: biblicalRef.text,
+            title: titlesMap[id] ?? biblicalRef.text,
+            biblicalRef: biblicalRef.text,
             number: pagesMap[id] ?? '',
             htmlContent: content,
             url: songUrls[id],
