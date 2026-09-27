@@ -8,20 +8,21 @@ import 'package:risuscito/core/presentation/customization/theme/rs_theme_provide
 import 'package:risuscito/feature/songs/domain/model/song_domain_model.dart';
 import 'package:risuscito/feature/songs/presentation/bloc/songs_bloc.dart';
 
-class EucharistSongPickerPage extends StatefulWidget {
+class SongPickerPage extends StatefulWidget {
   final String momentName;
+  final String? previousPageTitle;
 
-  const EucharistSongPickerPage({
+  const SongPickerPage({
     Key? key,
     required this.momentName,
+    this.previousPageTitle,
   }) : super(key: key);
 
   @override
-  State<EucharistSongPickerPage> createState() =>
-      _EucharistSongPickerPageState();
+  State<SongPickerPage> createState() => _SongPickerPageState();
 }
 
-class _EucharistSongPickerPageState extends State<EucharistSongPickerPage> {
+class _SongPickerPageState extends State<SongPickerPage> {
   String _searchQuery = '';
   final FocusNode _searchFocusNode = FocusNode();
   DateTime? _focusLostTime;
@@ -64,8 +65,7 @@ class _EucharistSongPickerPageState extends State<EucharistSongPickerPage> {
       child: CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
           middle: Text(widget.momentName),
-          previousPageTitle:
-              AppLocalizations.of(context)!.translate('prepare_eucharist'),
+          previousPageTitle: widget.previousPageTitle,
         ),
         child: SafeArea(
           child: Column(
