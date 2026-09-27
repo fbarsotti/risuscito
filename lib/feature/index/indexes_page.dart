@@ -7,6 +7,7 @@ import 'package:risuscito/feature/index/pages/biblical_index_page.dart';
 import 'package:risuscito/feature/index/pages/generic_indexes_page.dart';
 import 'package:risuscito/feature/index/pages/liturgical_index_page.dart';
 import 'package:risuscito/feature/index/pages/numerical_index_page.dart';
+import 'package:risuscito/feature/songs/domain/model/liturgical_index_domain_model.dart';
 import 'package:risuscito/feature/songs/presentation/bloc/songs_bloc.dart';
 import '../../core/presentation/customization/rs_colors.dart';
 import '../../core/presentation/customization/theme/rs_theme_provider.dart';
@@ -25,6 +26,25 @@ const _liturgicalIcons = <String, IconData>{
   'canti_pane': CupertinoIcons.bookmark,
   'canti_comunione': CupertinoIcons.bookmark,
   'canti_fine': CupertinoIcons.bookmark,
+};
+
+/// Liturgical categories grouped into sections (header key -> category keys).
+/// Categories not listed here end up in the "other_songs" section.
+const _liturgicalSections = <String, List<String>>{
+  'liturgical_seasons': [
+    'tempo_avvento',
+    'tempo_natale',
+    'tempo_quaresima',
+    'tempo_pasqua',
+    'canti_pentecoste',
+  ],
+  'eucharistic_celebration': [
+    'canti_ingresso',
+    'canti_pace',
+    'canti_pane',
+    'canti_comunione',
+    'canti_fine',
+  ],
 };
 
 class IndexesPage extends StatefulWidget {
@@ -141,30 +161,28 @@ class _IndexesPageState extends State<IndexesPage> {
                         state.songs.liturgicalOrder != null &&
                         state.songs.liturgicalOrder!.isNotEmpty) {
                       final categories = state.songs.liturgicalOrder!;
-                      return CupertinoListSection.insetGrouped(
-                        header: Text(
-                          AppLocalizations.of(context)!
-                              .translate('liturgical_index')!,
-                        ),
-                        children: categories
+                      final grouped = _liturgicalSections.values
+                          .expand((keys) => keys)
+                          .toSet();
+                      // Keeps the XML order inside each section
+                      final sections =
+                          <String, List<LiturgicalIndexDomainModel>>{
+                        for (final entry in _liturgicalSections.entries)
+                          entry.key: categories
+                              .where((c) => entry.value.contains(c.categoryKey))
+                              .toList(),
+                        'other_songs': categories
+                            .where((c) => !grouped.contains(c.categoryKey))
+                            .toList(),
+                      };
+                      return Column(
+                        children: sections.entries
+                            .where((section) => section.value.isNotEmpty)
                             .map(
-                              (category) => BulkedCupertinoListTile(
-                                text: category.categoryName,
-                                icon: Icon(
-                                  _liturgicalIcons[category.categoryKey] ??
-                                      CupertinoIcons.calendar,
-                                  size: 30,
-                                ),
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                    CupertinoPageRoute(
-                                      builder: (context) => LiturgicalIndexPage(
-                                        categoryName: category.categoryName,
-                                        songs: category.songs,
-                                      ),
-                                    ),
-                                  );
-                                },
+                              (section) => _LiturgicalSection(
+                                title: AppLocalizations.of(context)!
+                                    .translate(section.key)!,
+                                categories: section.value,
                               ),
                             )
                             .toList(),
@@ -191,6 +209,46 @@ class _IndexesPageState extends State<IndexesPage> {
       //     ],
       //   ),
       // ),
+    );
+  }
+}
+
+class _LiturgicalSection extends StatelessWidget {
+  final String title;
+  final List<LiturgicalIndexDomainModel> categories;
+
+  const _LiturgicalSection({
+    Key? key,
+    required this.title,
+    required this.categories,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoListSection.insetGrouped(
+      header: Text(title),
+      children: categories
+          .map(
+            (category) => BulkedCupertinoListTile(
+              text: category.categoryName,
+              icon: Icon(
+                _liturgicalIcons[category.categoryKey] ??
+                    CupertinoIcons.calendar,
+                size: 30,
+              ),
+              onTap: () {
+                Navigator.of(context).push(
+                  CupertinoPageRoute(
+                    builder: (context) => LiturgicalIndexPage(
+                      categoryName: category.categoryName,
+                      songs: category.songs,
+                    ),
+                  ),
+                );
+              },
+            ),
+          )
+          .toList(),
     );
   }
 }

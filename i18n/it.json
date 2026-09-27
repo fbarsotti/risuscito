@@ -21,7 +21,7 @@
   "favourites": "Preferiti",
   "history": "Cronologia",
   "songs": "Canti",
-  "browse_lists": "Naviga tra le liste dei canti",
+  "browse_lists": "Indici principali",
   "generic_indexes": "Indici generici",
   "alphabetical_index": "Indice alfabetico",
   "biblical_index": "Indice biblico",
@@ -98,6 +98,9 @@
   "delete_list": "Elimina lista",
 
   "liturgical_index": "Indici liturgici",
+  "liturgical_seasons": "Tempi liturgici",
+  "eucharistic_celebration": "Celebrazione eucaristica",
+  "other_songs": "Altri canti",
 
   "onboarding_lists": "Crea le tue liste personalizzate di canti per organizzare i brani che ti servono, ad esempio per una celebrazione o un momento di preghiera.",
   "onboarding_transpose_title": "Trasposizione e Barré",

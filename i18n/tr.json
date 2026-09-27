@@ -22,7 +22,7 @@
   "favourites": "Favoriler",
   "history": "Geçmiş",
   "songs": "Şarkılar",
-  "browse_lists": "Şarkı listelerine göz at",
+  "browse_lists": "Ana İndeksler",
   "generic_indexes": "Genel indeksler",
   "alphabetical_index": "Alfabetik İndeks",
   "biblical_index": "Kutsal Kitap İndeksi",
@@ -99,6 +99,9 @@
   "delete_list": "Listeyi sil",
 
   "liturgical_index": "Litürjik indeksler",
+  "liturgical_seasons": "Litürjik Dönemler",
+  "eucharistic_celebration": "Efkaristiya Ayini",
+  "other_songs": "Diğer İlahiler",
 
   "onboarding_lists": "Kutlama veya dua anı gibi ihtiyaç duyduğunuz şarkıları düzenlemek için kendi özel şarkı listelerinizi oluşturun.",
   "onboarding_transpose_title": "Transpozisyon ve Barre",
