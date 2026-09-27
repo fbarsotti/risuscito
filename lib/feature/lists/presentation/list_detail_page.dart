@@ -153,8 +153,8 @@ class _ListDetailPageState extends State<ListDetailPage> {
                           ),
                           SwipeAction(
                             color: isFav
-                                ? CupertinoColors.systemOrange
-                                : CupertinoColors.systemYellow,
+                                ? RSColors.favouriteRemove
+                                : RSColors.favourite,
                             icon: Icon(
                               isFav
                                   ? CupertinoIcons.star_slash

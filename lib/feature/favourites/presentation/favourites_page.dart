@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:risuscito/core/presentation/customization/rs_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
 import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
@@ -121,7 +122,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
                             key: ObjectKey(displaySongs[index].id),
                             trailingActions: <SwipeAction>[
                               SwipeAction(
-                                color: CupertinoColors.systemOrange,
+                                color: RSColors.favouriteRemove,
                                 icon: Icon(
                                   CupertinoIcons.star_slash,
                                   color: CupertinoColors.white,

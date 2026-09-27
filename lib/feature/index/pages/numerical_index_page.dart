@@ -106,8 +106,8 @@ class _NumericalIndexPageState extends State<NumericalIndexPage> {
                           SwipeAction(
                             color:
                                 favSongIds.contains(displaySongs[index].id!)
-                                    ? CupertinoColors.systemOrange
-                                    : CupertinoColors.systemYellow,
+                                    ? RSColors.favouriteRemove
+                                    : RSColors.favourite,
                             icon: Icon(
                               favSongIds.contains(displaySongs[index].id!)
                                   ? CupertinoIcons.star_slash

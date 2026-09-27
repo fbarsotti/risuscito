@@ -124,8 +124,8 @@ class _LiturgicalIndexPageState extends State<LiturgicalIndexPage> {
                               trailingActions: [
                                 SwipeAction(
                                   color: favSongIds.contains(song.id!)
-                                      ? CupertinoColors.systemOrange
-                                      : CupertinoColors.systemYellow,
+                                      ? RSColors.favouriteRemove
+                                      : RSColors.favourite,
                                   icon: Icon(
                                     favSongIds.contains(song.id!)
                                         ? CupertinoIcons.star_slash
