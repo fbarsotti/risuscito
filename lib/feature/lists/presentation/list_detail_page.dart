@@ -55,7 +55,11 @@ class _ListDetailPageState extends State<ListDetailPage> {
     final favSongIds = prefs.getStringList('favourites') ?? [];
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
-        middle: Text(currentList.name),
+        middle: Text(
+          currentList.name,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
         previousPageTitle:
             AppLocalizations.of(context)!.translate('personalized_lists'),
         trailing: Row(

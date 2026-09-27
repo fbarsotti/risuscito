@@ -72,7 +72,11 @@ class _SongPickerPageState extends State<SongPickerPage> {
       },
       child: CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
-          middle: Text(widget.momentName),
+          middle: Text(
+            widget.momentName,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
           previousPageTitle: widget.previousPageTitle,
           trailing: CupertinoButton(
             padding: EdgeInsets.zero,

@@ -53,7 +53,11 @@ class _LiturgicalIndexPageState extends State<LiturgicalIndexPage> {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         previousPageTitle: AppLocalizations.of(context)!.translate('index')!,
-        middle: Text(widget.categoryName),
+        middle: Text(
+          widget.categoryName,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
         trailing: widget.songs.isEmpty
             ? null
             : CupertinoButton(
