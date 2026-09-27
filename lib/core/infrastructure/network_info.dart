@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'log/logger.dart';
 
 abstract class NetworkInfo {
@@ -19,6 +19,6 @@ class NetworkInfoImpl implements NetworkInfo {
   Future<bool> get isConnected async {
     final connection = await connectivity.checkConnectivity();
     Logger.info(connection.toString());
-    return connection != ConnectivityResult.none;
+    return !connection.contains(ConnectivityResult.none);
   }
 }
