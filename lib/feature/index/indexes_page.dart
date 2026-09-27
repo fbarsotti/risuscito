@@ -21,11 +21,11 @@ const _liturgicalIcons = <String, IconData>{
   'canti_vergine': CupertinoIcons.music_note_2,
   'canti_bambini': CupertinoIcons.music_note_2,
   'lodi_vespri': CupertinoIcons.music_note_2,
-  'canti_ingresso': CupertinoIcons.bookmark,
-  'canti_pace': CupertinoIcons.bookmark,
-  'canti_pane': CupertinoIcons.bookmark,
-  'canti_comunione': CupertinoIcons.bookmark,
-  'canti_fine': CupertinoIcons.bookmark,
+  'canti_ingresso': CupertinoIcons.group_solid,
+  'canti_pace': CupertinoIcons.group_solid,
+  'canti_pane': CupertinoIcons.group_solid,
+  'canti_comunione': CupertinoIcons.group_solid,
+  'canti_fine': CupertinoIcons.group_solid,
 };
 
 /// Liturgical categories grouped into sections (header key -> category keys).
