@@ -32,6 +32,7 @@ class _ListDetailPageState extends State<ListDetailPage> {
   late ListDomainModel currentList;
   final TextEditingController _searchController = TextEditingController();
   int _selectedTag = 0;
+  bool _isSearching = false;
   SharedPreferences prefs = rs();
 
   @override
@@ -57,18 +58,38 @@ class _ListDetailPageState extends State<ListDetailPage> {
         middle: Text(currentList.name),
         previousPageTitle:
             AppLocalizations.of(context)!.translate('personalized_lists'),
-        trailing: CupertinoButton(
-          padding: EdgeInsets.zero,
-          child: const Icon(CupertinoIcons.add),
-          onPressed: () {
-            Navigator.of(context).push(
-              CupertinoPageRoute(
-                builder: (context) => ListAddSongPage(
-                  list: currentList,
-                ),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CupertinoButton(
+              padding: EdgeInsets.zero,
+              child: Icon(
+                _isSearching ? CupertinoIcons.xmark : CupertinoIcons.search,
               ),
-            );
-          },
+              onPressed: () {
+                setState(() {
+                  _isSearching = !_isSearching;
+                  if (!_isSearching) {
+                    _searchController.clear();
+                    _selectedTag = 0;
+                  }
+                });
+              },
+            ),
+            CupertinoButton(
+              padding: EdgeInsets.zero,
+              child: const Icon(CupertinoIcons.add),
+              onPressed: () {
+                Navigator.of(context).push(
+                  CupertinoPageRoute(
+                    builder: (context) => ListAddSongPage(
+                      list: currentList,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
         ),
       ),
       child: SafeArea(
@@ -106,21 +127,30 @@ class _ListDetailPageState extends State<ListDetailPage> {
                 ),
               );
             }
-            final filteredSongs = SongSearchFilter.filter(
-              songs: songs,
-              query: _searchController.text,
-              selectedTag: _selectedTag,
-            );
+            final filteredSongs = _isSearching
+                ? SongSearchFilter.filter(
+                    songs: songs,
+                    query: _searchController.text,
+                    selectedTag: _selectedTag,
+                  )
+                : songs;
             return Column(
               children: [
-                SongSearchBar(
-                  controller: _searchController,
-                  selectedTag: _selectedTag,
-                  onTagChanged: (tag) {
-                    setState(() {
-                      _selectedTag = tag;
-                    });
-                  },
+                AnimatedCrossFade(
+                  firstChild: const SizedBox(width: double.infinity),
+                  secondChild: SongSearchBar(
+                    controller: _searchController,
+                    selectedTag: _selectedTag,
+                    onTagChanged: (tag) {
+                      setState(() {
+                        _selectedTag = tag;
+                      });
+                    },
+                  ),
+                  crossFadeState: _isSearching
+                      ? CrossFadeState.showSecond
+                      : CrossFadeState.showFirst,
+                  duration: const Duration(milliseconds: 200),
                 ),
                 Expanded(
                   child: ListView.builder(
