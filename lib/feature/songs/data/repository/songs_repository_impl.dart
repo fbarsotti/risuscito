@@ -94,7 +94,7 @@ class SongsRepositoryImpl implements SongsRepository {
       );
       for (final biblicalRef in biblicalOrder) {
         songs[songs.indexWhere((element) => element.id == biblicalRef.id)]
-            .biblicalRef = biblicalRef.title;
+            .biblicalRef = biblicalRef.biblicalRef;
       }
       songs.sort(_alphabeticalComparison);
       final alphabeticalOrder = new List<SongDomainModel>.from(songs);
