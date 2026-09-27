@@ -4,10 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:risuscito/core/presentation/customization/rs_colors.dart';
 import 'package:risuscito/feature/favourites/presentation/bloc/favourites_bloc.dart';
-import 'package:risuscito/feature/songs/presentation/sections/edit/barre_selector_button.dart';
 import 'package:risuscito/feature/songs/presentation/sections/song_recording.dart';
 import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
-import 'package:risuscito/feature/songs/presentation/sections/edit/song_transposer.dart';
+import 'package:risuscito/feature/songs/presentation/sections/edit/song_edit_bar.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:risuscito/core/utils/chord_transposer.dart';
 
@@ -94,7 +93,8 @@ class _SongPageState extends State<SongPage> {
   }
 
   Future<void> _updateTranspose(int delta) async {
-    setState(() => transposeOffset += delta);
+    // Modulo 12 mantenendo il segno: +12/-12 → 0, range -11..+11
+    setState(() => transposeOffset = (transposeOffset + delta).remainder(12));
     await saveTransposeOffset(transposeOffset, widget.songId);
     _loadAndDisplay();
   }
@@ -184,26 +184,6 @@ class _SongPageState extends State<SongPage> {
         bottom: false,
         child: Column(
           children: [
-            if (_editingTranspose)
-              SongTransposer(
-                transposeOffset: transposeOffset,
-                onTranspose: (delta) => _updateTranspose(delta),
-              ),
-            if (_editingTranspose)
-              BarreSelectorButton(
-                barreOffset: barreOffset,
-                onChanged: (newOffset) async {
-                  setState(() => barreOffset = newOffset);
-                  await saveBarreOffset(newOffset, widget.songId);
-                  _loadAndDisplay(); // ricarica HTML aggiornato
-                },
-                onReset: () async {
-                  setState(() => barreOffset = null); // UI reset
-                  await clearBarreOffset(
-                      widget.songId); // elimina del tutto la preferenza
-                  _loadAndDisplay();
-                },
-              ),
             Expanded(
               child: AnimatedOpacity(
                 opacity: _pageReady ? 1.0 : 0.0,
@@ -211,6 +191,28 @@ class _SongPageState extends State<SongPage> {
                 child: WebViewWidget(controller: _controller),
               ),
             ),
+            if (_editingTranspose)
+              SongEditBar(
+                transposeOffset: transposeOffset,
+                onTranspose: (delta) => _updateTranspose(delta),
+                onTransposeReset: () => _updateTranspose(-transposeOffset),
+                barreOffset: barreOffset,
+                onBarreChanged: (newOffset) async {
+                  setState(() => barreOffset = newOffset);
+                  await saveBarreOffset(newOffset, widget.songId);
+                  _loadAndDisplay(); // ricarica HTML aggiornato
+                },
+                onBarreReset: () async {
+                  setState(() => barreOffset = null); // UI reset
+                  await clearBarreOffset(
+                      widget.songId); // elimina del tutto la preferenza
+                  _loadAndDisplay();
+                },
+                // Senza audio la barra è l'ultimo elemento: evita la home indicator
+                bottomPadding: (widget.url == null || widget.url!.isEmpty)
+                    ? MediaQuery.of(context).padding.bottom
+                    : 0,
+              ),
             SongRecording(url: widget.url),
           ],
         ),

@@ -210,7 +210,8 @@ String transposeHtmlChords(String html, int semitones) {
 
 Future<int> loadTransposeOffset(String songId) async {
   final prefs = await SharedPreferences.getInstance();
-  return prefs.getInt('transpose_offset_$songId') ?? 0;
+  // Normalizza eventuali valori salvati fuori da -11..+11
+  return (prefs.getInt('transpose_offset_$songId') ?? 0).remainder(12);
 }
 
 Future<void> saveTransposeOffset(int offset, String songId) async {
