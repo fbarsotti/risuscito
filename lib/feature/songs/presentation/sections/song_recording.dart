@@ -130,11 +130,11 @@ class _SongRecordingState extends State<SongRecording> {
             // height: 150,
             color: CupertinoColors.systemFill,
             child: Padding(
-              padding: const EdgeInsets.only(
+              padding: EdgeInsets.only(
                 left: 16,
                 right: 16,
-                top: 16,
-                bottom: 64,
+                top: 8,
+                bottom: MediaQuery.of(context).padding.bottom + 8,
               ),
               child: Row(children: [
                 Expanded(
@@ -179,7 +179,7 @@ class _SongRecordingState extends State<SongRecording> {
                 CupertinoButton(
                   color: RSColors.primary,
                   borderRadius: BorderRadius.circular(100),
-                  padding: EdgeInsets.all(16),
+                  padding: EdgeInsets.all(10),
                   child: snapshot.hasData
                       ? Icon(
                           _isPlaying
