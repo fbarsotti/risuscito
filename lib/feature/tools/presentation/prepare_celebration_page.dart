@@ -188,6 +188,7 @@ class _PrepareCelebrationPageState extends State<PrepareCelebrationPage> {
     final themeChange = Provider.of<DarkThemeProvider>(context);
 
     return CupertinoPageScaffold(
+      resizeToAvoidBottomInset: false,
       navigationBar: CupertinoNavigationBar(
         middle: Text(loc.translate(widget.titleKey)!),
         trailing: CupertinoButton(

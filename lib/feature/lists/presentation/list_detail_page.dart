@@ -54,6 +54,10 @@ class _ListDetailPageState extends State<ListDetailPage> {
   Widget build(BuildContext context) {
     final favSongIds = prefs.getStringList('favourites') ?? [];
     return CupertinoPageScaffold(
+      // Don't resize the page for the keyboard: this page can sit under
+      // "Aggiungi canto" while its keyboard closes. The list gets bottom
+      // padding instead, so the last songs stay reachable.
+      resizeToAvoidBottomInset: false,
       navigationBar: CupertinoNavigationBar(
         middle: Text(
           currentList.name,
@@ -158,6 +162,9 @@ class _ListDetailPageState extends State<ListDetailPage> {
                 ),
                 Expanded(
                   child: ListView.builder(
+                    padding: EdgeInsets.only(
+                      bottom: MediaQuery.viewInsetsOf(context).bottom,
+                    ),
                     itemCount: filteredSongs.length,
                     itemBuilder: (context, index) {
                       final song = filteredSongs[index];

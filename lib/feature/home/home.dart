@@ -46,6 +46,9 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(
+      // Pages handle the keyboard themselves: resizing the whole tab while the
+      // keyboard animates (e.g. popping a page with search open) caused jank
+      resizeToAvoidBottomInset: false,
       tabBar: CupertinoTabBar(
         items: [
           BottomNavigationBarItem(

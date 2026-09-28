@@ -104,6 +104,7 @@ class _SongPageState extends State<SongPage> {
     final langCode = AppLocalizations.of(context)!.locale.languageCode;
 
     return CupertinoPageScaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: widget.color,
       navigationBar: CupertinoNavigationBar(
         backgroundColor: CupertinoColors.systemFill,

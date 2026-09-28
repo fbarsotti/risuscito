@@ -21,6 +21,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final themeChange = Provider.of<DarkThemeProvider>(context);
     return CupertinoPageScaffold(
+      resizeToAvoidBottomInset: false,
       child: CustomScrollView(
         slivers: [
           CupertinoSliverNavigationBar(

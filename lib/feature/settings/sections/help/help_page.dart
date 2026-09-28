@@ -8,6 +8,7 @@ class HelpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
+      resizeToAvoidBottomInset: false,
       navigationBar: CupertinoNavigationBar(
         previousPageTitle: AppLocalizations.of(context)!.translate('settings'),
         middle: Text(AppLocalizations.of(context)!.translate('help')!),

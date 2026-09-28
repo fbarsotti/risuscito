@@ -16,6 +16,7 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
+      resizeToAvoidBottomInset: false,
       navigationBar: CupertinoNavigationBar(
         previousPageTitle: AppLocalizations.of(context)!.translate('home')!,
         middle: Text(AppLocalizations.of(context)!.translate('settings')!),
