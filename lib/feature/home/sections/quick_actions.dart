@@ -16,6 +16,59 @@ class QuickActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final buttons = <Widget>[
+      QuickActionButton(
+        text: AppLocalizations.of(context)!.translate('favourites')!,
+        icon: CupertinoIcons.text_badge_star,
+        iconColor: RSColors.favourite,
+        onTap: () {
+          BlocProvider.of<FavouritesBloc>(context).add(
+            GetLocalizedFavourites(
+              languageCode: AppLocalizations.of(context)!.locale.languageCode,
+            ),
+          );
+          Navigator.of(context).push(
+            CupertinoPageRoute(
+              builder: (context) => FavouritesPage(),
+            ),
+          );
+        },
+      ),
+      QuickActionButton(
+        text: AppLocalizations.of(context)!.translate('personalized_lists')!,
+        icon: CupertinoIcons.rectangle_stack_badge_person_crop,
+        iconColor: RSColors.primary,
+        onTap: () {
+          BlocProvider.of<ListsBloc>(context).add(
+            ListsGetAllListsEvent(
+              languageCode: AppLocalizations.of(context)!.locale.languageCode,
+            ),
+          );
+          Navigator.of(context).push(
+            CupertinoPageRoute(
+              builder: (context) => ListsPage(),
+            ),
+          );
+        },
+      ),
+      QuickActionButton(
+        text: AppLocalizations.of(context)!.translate('history')!,
+        icon: CupertinoIcons.refresh_circled,
+        iconColor: RSColors.accentBlue,
+        onTap: () {
+          BlocProvider.of<HistoryBloc>(context).add(
+            GetLocalizedHistory(
+              languageCode: AppLocalizations.of(context)!.locale.languageCode,
+            ),
+          );
+          Navigator.of(context).push(
+            CupertinoPageRoute(
+              builder: (context) => HistoryPage(),
+            ),
+          );
+        },
+      ),
+    ];
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -30,77 +83,34 @@ class QuickActions extends StatelessWidget {
         ),
         Container(
           height: 230,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: [
-              // 12 + 8 of button padding = 20, aligned with the header
-              const SizedBox(
-                width: 12,
-              ),
-              QuickActionButton(
-                text: AppLocalizations.of(context)!.translate('favourites')!,
-                icon: CupertinoIcons.text_badge_star,
-                iconColor: RSColors.favourite,
-                onTap: () {
-                  BlocProvider.of<FavouritesBloc>(context).add(
-                    GetLocalizedFavourites(
-                      languageCode:
-                          AppLocalizations.of(context)!.locale.languageCode,
-                    ),
-                  );
-                  Navigator.of(context).push(
-                    CupertinoPageRoute(
-                      builder: (context) => FavouritesPage(),
-                    ),
-                  );
-                },
-              ),
-              QuickActionButton(
-                text: AppLocalizations.of(context)!
-                    .translate('personalized_lists')!,
-                icon: CupertinoIcons.rectangle_stack_badge_person_crop,
-                iconColor: RSColors.primary,
-                onTap: () {
-                  BlocProvider.of<ListsBloc>(context).add(
-                    ListsGetAllListsEvent(
-                      languageCode:
-                          AppLocalizations.of(context)!.locale.languageCode,
-                    ),
-                  );
-                  Navigator.of(context).push(
-                    CupertinoPageRoute(
-                      builder: (context) => ListsPage(),
-                    ),
-                  );
-                },
-              ),
-              QuickActionButton(
-                text: AppLocalizations.of(context)!.translate('history')!,
-                icon: CupertinoIcons.refresh_circled,
-                iconColor: RSColors.accentBlue,
-                onTap: () {
-                  BlocProvider.of<HistoryBloc>(context).add(
-                    GetLocalizedHistory(
-                      languageCode:
-                          AppLocalizations.of(context)!.locale.languageCode,
-                    ),
-                  );
-                  Navigator.of(context).push(
-                    CupertinoPageRoute(
-                      builder: (context) => HistoryPage(),
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(
-                width: 8,
-              ),
-              // QuickActionButton(
-              //   text: 'Impostazioni',
-              //   icon: CupertinoIcons.settings,
-              //   iconColor: CupertinoColors.inactiveGray,
-              // ),
-            ],
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              // Wide screens (iPad): the three cards share the row equally.
+              // Phones: horizontal list as before.
+              if (constraints.maxWidth >= 600) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Row(
+                    children: buttons
+                        .map((button) => Expanded(child: button))
+                        .toList(),
+                  ),
+                );
+              }
+              return ListView(
+                scrollDirection: Axis.horizontal,
+                children: [
+                  // 12 + 8 of button padding = 20, aligned with the header
+                  const SizedBox(
+                    width: 12,
+                  ),
+                  ...buttons,
+                  const SizedBox(
+                    width: 8,
+                  ),
+                ],
+              );
+            },
           ),
         )
       ],
