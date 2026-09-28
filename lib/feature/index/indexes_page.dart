@@ -193,7 +193,7 @@ class _IndexesPageState extends State<IndexesPage> {
                   },
                 ),
                 SizedBox(
-                  height: MediaQuery.of(context).padding.bottom + 16,
+                  height: MediaQuery.paddingOf(context).bottom + 16,
                 ),
               ],
             ),

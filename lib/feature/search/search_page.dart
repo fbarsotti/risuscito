@@ -102,7 +102,7 @@ class _SearchPageState extends State<SearchPage> {
                         if (_filteredSongs.length == 0 &&
                             _searchController.text.isEmpty)
                           SizedBox(
-                            height: MediaQuery.of(context).size.height / 6,
+                            height: MediaQuery.sizeOf(context).height / 6,
                           ),
                         if (_filteredSongs.length == 0 &&
                             _searchController.text.isEmpty)
@@ -113,7 +113,7 @@ class _SearchPageState extends State<SearchPage> {
                         if (_filteredSongs.length == 0 &&
                             _searchController.text.isNotEmpty)
                           SizedBox(
-                            height: MediaQuery.of(context).size.height / 6,
+                            height: MediaQuery.sizeOf(context).height / 6,
                           ),
                         if (_filteredSongs.length == 0 &&
                             _searchController.text.isNotEmpty)

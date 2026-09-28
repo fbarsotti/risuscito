@@ -176,7 +176,7 @@ class _ListsPageState extends State<ListsPage> {
                               );
                             },
                             child: Container(
-                          width: MediaQuery.of(context).size.width,
+                          width: MediaQuery.sizeOf(context).width,
                           decoration: BoxDecoration(
                             color: themeChange.darkTheme
                                 ? RSColors.cardColorDark

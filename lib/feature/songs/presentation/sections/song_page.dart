@@ -211,7 +211,7 @@ class _SongPageState extends State<SongPage> {
                 },
                 // Senza audio la barra è l'ultimo elemento: evita la home indicator
                 bottomPadding: (widget.url == null || widget.url!.isEmpty)
-                    ? MediaQuery.of(context).padding.bottom
+                    ? MediaQuery.paddingOf(context).bottom
                     : 0,
               ),
             SongRecording(url: widget.url),

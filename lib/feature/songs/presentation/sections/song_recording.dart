@@ -134,7 +134,7 @@ class _SongRecordingState extends State<SongRecording> {
                 left: 16,
                 right: 16,
                 top: 8,
-                bottom: MediaQuery.of(context).padding.bottom + 8,
+                bottom: MediaQuery.paddingOf(context).bottom + 8,
               ),
               child: Row(children: [
                 Expanded(
