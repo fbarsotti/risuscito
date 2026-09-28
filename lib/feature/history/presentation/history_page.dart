@@ -20,6 +20,7 @@ class _HistoryPageState extends State<HistoryPage> {
   Widget build(BuildContext context) {
     final myListKey = GlobalKey<AnimatedListState>();
     return CupertinoPageScaffold(
+      resizeToAvoidBottomInset: false,
       navigationBar: CupertinoNavigationBar(
         middle: Text(AppLocalizations.of(context)!.translate('history')!),
         previousPageTitle: AppLocalizations.of(context)!.translate('home'),

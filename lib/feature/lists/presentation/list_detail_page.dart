@@ -54,6 +54,9 @@ class _ListDetailPageState extends State<ListDetailPage> {
   Widget build(BuildContext context) {
     final favSongIds = prefs.getStringList('favourites') ?? [];
     return CupertinoPageScaffold(
+      // Pages don't resize for the keyboard (no relayout while it animates):
+      // the list scrolls under it and dragging dismisses the keyboard.
+      resizeToAvoidBottomInset: false,
       navigationBar: CupertinoNavigationBar(
         middle: Text(
           currentList.name,
@@ -158,6 +161,7 @@ class _ListDetailPageState extends State<ListDetailPage> {
                 ),
                 Expanded(
                   child: ListView.builder(
+                    keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                     itemCount: filteredSongs.length,
                     itemBuilder: (context, index) {
                       final song = filteredSongs[index];

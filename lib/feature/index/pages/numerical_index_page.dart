@@ -45,6 +45,7 @@ class _NumericalIndexPageState extends State<NumericalIndexPage> {
   Widget build(BuildContext context) {
     final favSongIds = prefs.getStringList('favourites') ?? [];
     return CupertinoPageScaffold(
+      resizeToAvoidBottomInset: false,
       navigationBar: CupertinoNavigationBar(
         previousPageTitle: AppLocalizations.of(context)!.translate('index')!,
         middle:
@@ -99,6 +100,7 @@ class _NumericalIndexPageState extends State<NumericalIndexPage> {
                   ),
                   Expanded(
                     child: ListView.builder(
+                      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                       itemCount: displaySongs.length,
                       itemBuilder: (context, index) => SwipeActionCell(
                         key: ObjectKey(displaySongs[index]),

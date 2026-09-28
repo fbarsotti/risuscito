@@ -44,6 +44,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
+      resizeToAvoidBottomInset: false,
       navigationBar: CupertinoNavigationBar(
         middle: Text(AppLocalizations.of(context)!.translate('favourites')!),
         previousPageTitle: AppLocalizations.of(context)!.translate('home'),
@@ -115,6 +116,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
                     ),
                     Expanded(
                       child: ListView.builder(
+                        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                         key: myListKey,
                         itemCount: displaySongs.length,
                         itemBuilder: (context, index) {

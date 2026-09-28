@@ -188,6 +188,7 @@ class _PrepareCelebrationPageState extends State<PrepareCelebrationPage> {
     final themeChange = Provider.of<DarkThemeProvider>(context);
 
     return CupertinoPageScaffold(
+      resizeToAvoidBottomInset: false,
       navigationBar: CupertinoNavigationBar(
         middle: Text(loc.translate(widget.titleKey)!),
         trailing: CupertinoButton(
@@ -251,7 +252,7 @@ class _MomentSlotCard extends StatelessWidget {
       padding: EdgeInsets.zero,
       onPressed: isFilled ? onTapFilled : onTapEmpty,
       child: Container(
-        width: MediaQuery.of(context).size.width,
+        width: MediaQuery.sizeOf(context).width,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
           color: isDark ? RSColors.cardColorDark : RSColors.cardColorLight,

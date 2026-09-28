@@ -89,6 +89,7 @@ class _ListsPageState extends State<ListsPage> {
     final themeChange = Provider.of<DarkThemeProvider>(context);
 
     return CupertinoPageScaffold(
+      resizeToAvoidBottomInset: false,
       navigationBar: CupertinoNavigationBar(
         middle: Text(
           AppLocalizations.of(context)!.translate('personalized_lists')!,
@@ -175,7 +176,7 @@ class _ListsPageState extends State<ListsPage> {
                               );
                             },
                             child: Container(
-                          width: MediaQuery.of(context).size.width,
+                          width: MediaQuery.sizeOf(context).width,
                           decoration: BoxDecoration(
                             color: themeChange.darkTheme
                                 ? RSColors.cardColorDark

@@ -59,6 +59,7 @@ class _IndexesPageState extends State<IndexesPage> {
   Widget build(BuildContext context) {
     final themeChange = Provider.of<DarkThemeProvider>(context);
     return CupertinoPageScaffold(
+      resizeToAvoidBottomInset: false,
       child: CustomScrollView(
         slivers: [
           CupertinoSliverNavigationBar(
@@ -192,7 +193,7 @@ class _IndexesPageState extends State<IndexesPage> {
                   },
                 ),
                 SizedBox(
-                  height: MediaQuery.of(context).padding.bottom + 16,
+                  height: MediaQuery.paddingOf(context).bottom + 16,
                 ),
               ],
             ),

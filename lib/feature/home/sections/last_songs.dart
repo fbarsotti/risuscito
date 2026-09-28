@@ -13,7 +13,7 @@ class LastSongs extends StatelessWidget {
   Widget build(BuildContext context) {
     // final themeChange = Provider.of<DarkThemeProvider>(context);
     return Container(
-      width: MediaQuery.of(context).size.width,
+      width: MediaQuery.sizeOf(context).width,
       child: BlocBuilder<HistoryBloc, HistoryState>(
         builder: (context, state) {
           if (state is HistoryLoaded)

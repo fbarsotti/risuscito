@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:risuscito/core/presentation/ignore_keyboard_insets.dart';
 import 'package:new_version_plus/new_version_plus.dart';
 import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
 import 'package:risuscito/feature/home/home_page.dart';
@@ -45,32 +46,39 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoTabScaffold(
-      tabBar: CupertinoTabBar(
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.search),
-            label: AppLocalizations.of(context)!.translate('search'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.home),
-            label: AppLocalizations.of(context)!.translate('home')!,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.list_bullet),
-            label: AppLocalizations.of(context)!.translate('index'),
-          ),
-        ],
+    // Keeps the tab scaffold (and every page in the tabs) from rebuilding on
+    // each frame of the keyboard animation, see IgnoreKeyboardInsets
+    return IgnoreKeyboardInsets(
+      child: CupertinoTabScaffold(
+        // Pages handle the keyboard themselves: resizing the whole tab while the
+        // keyboard animates (e.g. popping a page with search open) caused jank
+        resizeToAvoidBottomInset: false,
+        tabBar: CupertinoTabBar(
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.search),
+              label: AppLocalizations.of(context)!.translate('search'),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.home),
+              label: AppLocalizations.of(context)!.translate('home')!,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.list_bullet),
+              label: AppLocalizations.of(context)!.translate('index'),
+            ),
+          ],
+        ),
+        tabBuilder: (context, index) {
+          return CupertinoTabView(
+            builder: (BuildContext context) {
+              return Center(
+                child: _pages[index],
+              );
+            },
+          );
+        },
       ),
-      tabBuilder: (context, index) {
-        return CupertinoTabView(
-          builder: (BuildContext context) {
-            return Center(
-              child: _pages[index],
-            );
-          },
-        );
-      },
     );
   }
 }

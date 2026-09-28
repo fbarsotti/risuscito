@@ -22,7 +22,7 @@ class HelpCard extends StatelessWidget {
     //   onPressed: null,
     return Container(
       // height: 70,
-      width: MediaQuery.of(context).size.width,
+      width: MediaQuery.sizeOf(context).width,
       decoration: BoxDecoration(
         color: themeChange.darkTheme
             ? RSColors.cardColorDark

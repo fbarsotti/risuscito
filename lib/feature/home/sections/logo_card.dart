@@ -9,7 +9,7 @@ class LogoCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Container(
-        width: MediaQuery.of(context).size.width,
+        width: MediaQuery.sizeOf(context).width,
         decoration: BoxDecoration(
           color: RSColors.cardColorDark,
           borderRadius: const BorderRadius.all(Radius.circular(8.0)),

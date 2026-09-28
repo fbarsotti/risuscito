@@ -46,6 +46,7 @@ class _BiblicalIndexPageState extends State<BiblicalIndexPage> {
   Widget build(BuildContext context) {
     final favSongIds = prefs.getStringList('favourites') ?? [];
     return CupertinoPageScaffold(
+      resizeToAvoidBottomInset: false,
       navigationBar: CupertinoNavigationBar(
         previousPageTitle: AppLocalizations.of(context)!.translate('index')!,
         middle:
@@ -121,6 +122,7 @@ class _BiblicalIndexPageState extends State<BiblicalIndexPage> {
                   ),
                   Expanded(
                     child: ListView.builder(
+                      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                       itemCount: displaySongs.length,
                       itemBuilder: (context, index) => SwipeActionCell(
                         key: ObjectKey(displaySongs[index]),
