@@ -54,9 +54,8 @@ class _ListDetailPageState extends State<ListDetailPage> {
   Widget build(BuildContext context) {
     final favSongIds = prefs.getStringList('favourites') ?? [];
     return CupertinoPageScaffold(
-      // Don't resize the page for the keyboard: this page can sit under
-      // "Aggiungi canto" while its keyboard closes. The list gets bottom
-      // padding instead, so the last songs stay reachable.
+      // Pages don't resize for the keyboard (no relayout while it animates):
+      // the list scrolls under it and dragging dismisses the keyboard.
       resizeToAvoidBottomInset: false,
       navigationBar: CupertinoNavigationBar(
         middle: Text(
@@ -162,9 +161,7 @@ class _ListDetailPageState extends State<ListDetailPage> {
                 ),
                 Expanded(
                   child: ListView.builder(
-                    padding: EdgeInsets.only(
-                      bottom: MediaQuery.viewInsetsOf(context).bottom,
-                    ),
+                    keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                     itemCount: filteredSongs.length,
                     itemBuilder: (context, index) {
                       final song = filteredSongs[index];

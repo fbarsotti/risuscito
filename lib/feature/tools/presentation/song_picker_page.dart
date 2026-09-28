@@ -50,6 +50,7 @@ class _SongPickerPageState extends State<SongPickerPage> {
     final themeChange = Provider.of<DarkThemeProvider>(context);
 
     return CupertinoPageScaffold(
+      resizeToAvoidBottomInset: false,
       navigationBar: CupertinoNavigationBar(
         middle: Text(
           widget.momentName,
@@ -120,6 +121,7 @@ class _SongPickerPageState extends State<SongPickerPage> {
                     }
 
                     return ListView.builder(
+                      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                       itemCount: displaySongs.length,
                       itemBuilder: (context, index) {
                         final song = displaySongs[index];

@@ -55,7 +55,9 @@ class _SearchPageState extends State<SearchPage> {
     final favSongIds = prefs.getStringList('favourites') ?? [];
     final themeChange = Provider.of<DarkThemeProvider>(context);
     return CupertinoPageScaffold(
+      resizeToAvoidBottomInset: false,
       child: CustomScrollView(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         slivers: [
           CupertinoSliverNavigationBar(
             border: Border.all(color: CupertinoColors.black.withOpacity(0)),

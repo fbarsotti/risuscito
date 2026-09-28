@@ -51,6 +51,7 @@ class _ListAddSongPageState extends State<ListAddSongPage> {
     final themeChange = Provider.of<DarkThemeProvider>(context);
 
     return CupertinoPageScaffold(
+      resizeToAvoidBottomInset: false,
       navigationBar: CupertinoNavigationBar(
         middle: Text(
           AppLocalizations.of(context)!.translate('add_song')!,
@@ -104,6 +105,7 @@ class _ListAddSongPageState extends State<ListAddSongPage> {
                       }
 
                       return ListView.builder(
+                        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                         itemCount: filtered.length,
                         itemBuilder: (context, index) {
                           final song = filtered[index];
