@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class RSColors {
   RSColors._();
 
-  static Color get primary => const Color(0xff964946); //0xff964946
+  static Color get primary => const Color(0xffB34043); // accent from Figma (was 0xff964946)
   // Accent family: same saturation/lightness (HSL S 78%, L 50%), only the hue
   // changes. "Remove" variants use L 38%. Primary stays as the lists accent.
   static Color get accentBlue => const Color(0xff1C7FE3); // hsl(210, 78%, 50%)

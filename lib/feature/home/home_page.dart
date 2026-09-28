@@ -22,49 +22,57 @@ class _HomePageState extends State<HomePage> {
     final themeChange = Provider.of<DarkThemeProvider>(context);
     return CupertinoPageScaffold(
       resizeToAvoidBottomInset: false,
-      child: CustomScrollView(
-        slivers: [
-          CupertinoSliverNavigationBar(
-            border: Border.all(color: CupertinoColors.black.withOpacity(0)),
-            backgroundColor: themeChange.darkTheme
-                ? RSColors.bgDarkColor
-                : RSColors.bgLightColor,
-            // largeTitle: Text(RSDatesUtils.localizedTimeMessage(context)!),
-            largeTitle: Text(AppLocalizations.of(context)!.translate('home')!),
-            trailing: CupertinoButton(
-              child: Icon(
-                CupertinoIcons.settings,
-              ),
-              onPressed: () => Navigator.of(context).push(
-                MaterialWithModalsPageRoute(
-                  builder: (context) => SettingsPage(),
+      // On wide screens (iPad) the home is a centered column instead of
+      // stretching to the full width; no effect on iPhone
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 700),
+          child: CustomScrollView(
+            slivers: [
+              CupertinoSliverNavigationBar(
+                border: Border.all(color: CupertinoColors.black.withOpacity(0)),
+                backgroundColor: themeChange.darkTheme
+                    ? RSColors.bgDarkColor
+                    : RSColors.bgLightColor,
+                // largeTitle: Text(RSDatesUtils.localizedTimeMessage(context)!),
+                largeTitle:
+                    Text(AppLocalizations.of(context)!.translate('home')!),
+                trailing: CupertinoButton(
+                  child: Icon(
+                    CupertinoIcons.settings,
+                  ),
+                  onPressed: () => Navigator.of(context).push(
+                    MaterialWithModalsPageRoute(
+                      builder: (context) => SettingsPage(),
+                    ),
+                  ),
                 ),
               ),
-            ),
+              SliverToBoxAdapter(
+                child: Column(
+                  children: [
+                    // LogoCard(),
+                    const SizedBox(
+                      height: 16.0,
+                    ),
+                    QuickActions(),
+                    ToolsSection(),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
+                      child: LastSongs(),
+                    ),
+                    const SizedBox(
+                      height: 100,
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-          SliverToBoxAdapter(
-            child: Column(
-              children: [
-                // LogoCard(),
-                const SizedBox(
-                  height: 16.0,
-                ),
-                QuickActions(),
-                ToolsSection(),
-                const SizedBox(
-                  height: 16,
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
-                  child: LastSongs(),
-                ),
-                const SizedBox(
-                  height: 100,
-                ),
-              ],
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
