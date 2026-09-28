@@ -4,6 +4,10 @@ Idee per l'iPad: vedi [ipad.md](ipad.md).
 
 ## Da fare
 
+### Prestazioni (importante)
+- [ ] **Apertura e chiusura della pagina del canto lente** (WebView/WebKit): problema presente da sempre. Da indagare con DevTools come fatto per la tastiera nella 2.1.0: registrare con Performance → "Track widget builds" durante apertura e chiusura di un canto, esportare il file e analizzare fotogrammi lenti e ricostruzioni. Il simulatore gira in debug, quindi i tempi sono gonfiati ma i conteggi sono affidabili; per i tempi reali serve un dispositivo. Il costo della WebView nativa (creazione, `loadHtmlString`) va distinto da quello di Flutter.
+- [ ] **Ricostruzione dell'HTML a ogni cambio di tonalità o barré**: ogni -1/+1 o scelta del barré ricarica tutto il canto nella WebView (`_loadAndDisplay` → `loadHtmlString` in `song_page.dart`). Il testo lampeggia e lo scorrimento torna in cima. In una release futura: aggiornare accordi e riga del barré direttamente nella pagina via JavaScript, oppure almeno salvare e ripristinare la posizione di scorrimento. La logica di trasposizione e barré (`chord_transposer.dart`) oggi è stabile: toccarla il meno possibile e provarla bene.
+
 ### Funzionalità
 - [ ] Scorrimento automatico del testo del canto
 - [ ] Tag nella ricerca dei canti
