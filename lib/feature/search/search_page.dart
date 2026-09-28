@@ -5,7 +5,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:risuscito/core/core_container.dart';
 import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
-import 'package:risuscito/core/presentation/ignore_keyboard_insets.dart';
 import 'package:risuscito/core/presentation/song_search/song_search_bar.dart';
 import 'package:risuscito/core/presentation/song_search/song_search_filter.dart';
 import 'package:risuscito/feature/songs/presentation/sections/song_tile.dart';
@@ -84,13 +83,11 @@ class _SearchPageState extends State<SearchPage> {
                 // search matches almost every song)
                 SliverSafeArea(
                   top: false,
-                  sliver: IgnoreKeyboardInsets(
-                    child: SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) =>
-                            _buildResult(context, index, favSongIds),
-                        childCount: _filteredSongs.length,
-                      ),
+                  sliver: SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) =>
+                          _buildResult(context, index, favSongIds),
+                      childCount: _filteredSongs.length,
                     ),
                   ),
                 ),

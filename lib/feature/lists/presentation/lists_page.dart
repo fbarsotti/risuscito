@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:risuscito/core/presentation/ignore_keyboard_insets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
 import 'package:provider/provider.dart';
@@ -128,126 +127,124 @@ class _ListsPageState extends State<ListsPage> {
                   ),
                 );
               } else {
-                return IgnoreKeyboardInsets(
-                  child: ListView.builder(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0,
-                      vertical: 8.0,
-                    ),
-                    itemCount: lists.length,
-                    itemBuilder: (context, index) {
-                      final list = lists[index];
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8.0),
-                          child: SwipeActionCell(
-                            key: ObjectKey(list.id),
-                            trailingActions: <SwipeAction>[
-                              SwipeAction(
-                                color: CupertinoColors.systemRed,
-                                icon: const Icon(
-                                  CupertinoIcons.trash,
-                                  color: CupertinoColors.white,
-                                ),
-                                onTap: (CompletionHandler handler) async {
-                                  await handler(true);
-                                  BlocProvider.of<ListsBloc>(context).add(
-                                    ListsDeleteListEvent(
-                                      listId: list.id,
-                                      languageCode:
-                                          AppLocalizations.of(context)!
-                                              .locale
-                                              .languageCode,
-                                    ),
-                                  );
-                                },
+                return ListView.builder(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 8.0,
+                  ),
+                  itemCount: lists.length,
+                  itemBuilder: (context, index) {
+                    final list = lists[index];
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8.0),
+                        child: SwipeActionCell(
+                          key: ObjectKey(list.id),
+                          trailingActions: <SwipeAction>[
+                            SwipeAction(
+                              color: CupertinoColors.systemRed,
+                              icon: const Icon(
+                                CupertinoIcons.trash,
+                                color: CupertinoColors.white,
                               ),
-                            ],
-                            child: CupertinoButton(
-                              pressedOpacity: themeChange.darkTheme ? 0.8 : 0.4,
-                              padding: EdgeInsets.zero,
-                              onPressed: () {
-                                Navigator.of(context).push(
-                                  CupertinoPageRoute(
-                                    builder: (context) => ListDetailPage(
-                                      list: list,
-                                    ),
+                              onTap: (CompletionHandler handler) async {
+                                await handler(true);
+                                BlocProvider.of<ListsBloc>(context).add(
+                                  ListsDeleteListEvent(
+                                    listId: list.id,
+                                    languageCode:
+                                        AppLocalizations.of(context)!
+                                            .locale
+                                            .languageCode,
                                   ),
                                 );
                               },
-                              child: Container(
-                                width: MediaQuery.sizeOf(context).width,
-                                decoration: BoxDecoration(
-                                  color: themeChange.darkTheme
-                                      ? RSColors.cardColorDark
-                                      : RSColors.cardColorLight,
-                                  borderRadius: const BorderRadius.all(
-                                    Radius.circular(8.0),
+                            ),
+                          ],
+                          child: CupertinoButton(
+                            pressedOpacity:
+                                themeChange.darkTheme ? 0.8 : 0.4,
+                            padding: EdgeInsets.zero,
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                CupertinoPageRoute(
+                                  builder: (context) => ListDetailPage(
+                                    list: list,
                                   ),
                                 ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Icon(
-                                            CupertinoIcons
-                                                .rectangle_stack_badge_person_crop,
-                                            color: RSColors.primary,
-                                            size: 18,
-                                          ),
-                                          const SizedBox(width: 8),
-                                          Text(
-                                            '${list.songs?.length ?? 0} ${AppLocalizations.of(context)!.translate('songs_count')}',
-                                            style: TextStyle(
-                                              color: RSColors.primary,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 16,
-                                            ),
-                                          ),
-                                          const Spacer(),
-                                          Icon(
-                                            CupertinoIcons.chevron_right,
-                                            color: RSColors.primary,
-                                            size: 20,
-                                          ),
-                                        ],
+                              );
+                            },
+                            child: Container(
+                          width: MediaQuery.sizeOf(context).width,
+                          decoration: BoxDecoration(
+                            color: themeChange.darkTheme
+                                ? RSColors.cardColorDark
+                                : RSColors.cardColorLight,
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(8.0),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      CupertinoIcons
+                                          .rectangle_stack_badge_person_crop,
+                                      color: RSColors.primary,
+                                      size: 18,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      '${list.songs?.length ?? 0} ${AppLocalizations.of(context)!.translate('songs_count')}',
+                                      style: TextStyle(
+                                        color: RSColors.primary,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
                                       ),
-                                      const SizedBox(height: 20),
-                                      Text(
-                                        list.name,
-                                        style: TextStyle(
-                                          color: themeChange.darkTheme
-                                              ? RSColors.darkText
-                                              : RSColors.text,
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
-                                      if (list.description.isNotEmpty) ...[
-                                        const SizedBox(height: 4),
-                                        Text(
-                                          list.description,
-                                          style: TextStyle(
-                                            color: CupertinoColors.inactiveGray,
-                                            fontSize: 14,
-                                          ),
-                                        ),
-                                      ],
-                                    ],
+                                    ),
+                                    const Spacer(),
+                                    Icon(
+                                      CupertinoIcons.chevron_right,
+                                      color: RSColors.primary,
+                                      size: 20,
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 20),
+                                Text(
+                                  list.name,
+                                  style: TextStyle(
+                                    color: themeChange.darkTheme
+                                        ? RSColors.darkText
+                                        : RSColors.text,
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w700,
                                   ),
                                 ),
-                              ),
+                                if (list.description.isNotEmpty) ...[
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    list.description,
+                                    style: TextStyle(
+                                      color: CupertinoColors.inactiveGray,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ],
+                              ],
                             ),
                           ),
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    ),
+                    ),
+                    );
+                  },
                 );
               }
             } else if (state is ListsFailure) {

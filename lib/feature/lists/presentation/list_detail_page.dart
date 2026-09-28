@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:risuscito/core/presentation/ignore_keyboard_insets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -161,96 +160,94 @@ class _ListDetailPageState extends State<ListDetailPage> {
                   duration: const Duration(milliseconds: 200),
                 ),
                 Expanded(
-                  child: IgnoreKeyboardInsets(
-                    child: ListView.builder(
-                      keyboardDismissBehavior:
-                          ScrollViewKeyboardDismissBehavior.onDrag,
-                      itemCount: filteredSongs.length,
-                      itemBuilder: (context, index) {
-                        final song = filteredSongs[index];
-                        final isFav = favSongIds.contains(song.id!);
-                        return SwipeActionCell(
-                          key: ObjectKey(song.id),
-                          trailingActions: <SwipeAction>[
-                            SwipeAction(
-                              color: CupertinoColors.systemRed,
-                              icon: const Icon(
-                                CupertinoIcons.minus_circle_fill,
-                                color: CupertinoColors.white,
-                              ),
-                              onTap: (CompletionHandler handler) async {
-                                await handler(true);
-                                BlocProvider.of<ListsBloc>(context).add(
-                                  ListsRemoveSongFromListEvent(
-                                    listId: currentList.id,
+                  child: ListView.builder(
+                    keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                    itemCount: filteredSongs.length,
+                    itemBuilder: (context, index) {
+                      final song = filteredSongs[index];
+                      final isFav = favSongIds.contains(song.id!);
+                      return SwipeActionCell(
+                        key: ObjectKey(song.id),
+                        trailingActions: <SwipeAction>[
+                          SwipeAction(
+                            color: CupertinoColors.systemRed,
+                            icon: const Icon(
+                              CupertinoIcons.minus_circle_fill,
+                              color: CupertinoColors.white,
+                            ),
+                            onTap: (CompletionHandler handler) async {
+                              await handler(true);
+                              BlocProvider.of<ListsBloc>(context).add(
+                                ListsRemoveSongFromListEvent(
+                                  listId: currentList.id,
+                                  songId: song.id!,
+                                  languageCode:
+                                      AppLocalizations.of(context)!
+                                          .locale
+                                          .languageCode,
+                                ),
+                              );
+                            },
+                          ),
+                          SwipeAction(
+                            color: isFav
+                                ? RSColors.favouriteRemove
+                                : RSColors.favourite,
+                            icon: Icon(
+                              isFav
+                                  ? CupertinoIcons.star_slash
+                                  : CupertinoIcons.star_fill,
+                              color: CupertinoColors.white,
+                            ),
+                            onTap: (CompletionHandler handler) async {
+                              handler(false);
+                              if (isFav) {
+                                BlocProvider.of<FavouritesBloc>(context).add(
+                                  RemoveFavourite(
                                     songId: song.id!,
-                                    languageCode: AppLocalizations.of(context)!
-                                        .locale
-                                        .languageCode,
+                                    reload: true,
+                                    languageCode:
+                                        AppLocalizations.of(context)!
+                                            .locale
+                                            .languageCode,
                                   ),
                                 );
-                              },
-                            ),
-                            SwipeAction(
-                              color: isFav
-                                  ? RSColors.favouriteRemove
-                                  : RSColors.favourite,
-                              icon: Icon(
-                                isFav
-                                    ? CupertinoIcons.star_slash
-                                    : CupertinoIcons.star_fill,
-                                color: CupertinoColors.white,
-                              ),
-                              onTap: (CompletionHandler handler) async {
-                                handler(false);
-                                if (isFav) {
-                                  BlocProvider.of<FavouritesBloc>(context).add(
-                                    RemoveFavourite(
-                                      songId: song.id!,
-                                      reload: true,
-                                      languageCode:
-                                          AppLocalizations.of(context)!
-                                              .locale
-                                              .languageCode,
-                                    ),
-                                  );
-                                } else {
-                                  BlocProvider.of<FavouritesBloc>(context).add(
-                                    SaveFavourite(
-                                      languageCode:
-                                          AppLocalizations.of(context)!
-                                              .locale
-                                              .languageCode,
-                                      songId: song.id!,
-                                    ),
-                                  );
-                                }
-                                Fluttertoast.showToast(
-                                  msg: isFav
-                                      ? AppLocalizations.of(context)!
-                                          .translate('favourite_removed')!
-                                      : AppLocalizations.of(context)!
-                                          .translate('favourite_added')!,
-                                  toastLength: Toast.LENGTH_LONG,
-                                  gravity: ToastGravity.TOP,
-                                  timeInSecForIosWeb: 2,
-                                  backgroundColor:
-                                      RSColors.cardColorDark.withOpacity(0.95),
-                                  textColor: CupertinoColors.white,
-                                  fontSize: 16.0,
+                              } else {
+                                BlocProvider.of<FavouritesBloc>(context).add(
+                                  SaveFavourite(
+                                    languageCode:
+                                        AppLocalizations.of(context)!
+                                            .locale
+                                            .languageCode,
+                                    songId: song.id!,
+                                  ),
                                 );
-                                setState(() {});
-                              },
-                            ),
-                          ],
-                          child: SongTile(
-                            song: song,
-                            forceRef: _selectedTag == 2,
-                            divider: index != filteredSongs.length - 1,
+                              }
+                              Fluttertoast.showToast(
+                                msg: isFav
+                                    ? AppLocalizations.of(context)!
+                                        .translate('favourite_removed')!
+                                    : AppLocalizations.of(context)!
+                                        .translate('favourite_added')!,
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.TOP,
+                                timeInSecForIosWeb: 2,
+                                backgroundColor:
+                                    RSColors.cardColorDark.withOpacity(0.95),
+                                textColor: CupertinoColors.white,
+                                fontSize: 16.0,
+                              );
+                              setState(() {});
+                            },
                           ),
-                        );
-                      },
-                    ),
+                        ],
+                        child: SongTile(
+                          song: song,
+                          forceRef: _selectedTag == 2,
+                          divider: index != filteredSongs.length - 1,
+                        ),
+                      );
+                    },
                   ),
                 ),
               ],

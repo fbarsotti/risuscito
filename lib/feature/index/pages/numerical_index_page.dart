@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:risuscito/core/presentation/ignore_keyboard_insets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -100,73 +99,70 @@ class _NumericalIndexPageState extends State<NumericalIndexPage> {
                     duration: const Duration(milliseconds: 200),
                   ),
                   Expanded(
-                    child: IgnoreKeyboardInsets(
-                      child: ListView.builder(
-                        keyboardDismissBehavior:
-                            ScrollViewKeyboardDismissBehavior.onDrag,
-                        itemCount: displaySongs.length,
-                        itemBuilder: (context, index) => SwipeActionCell(
-                          key: ObjectKey(displaySongs[index]),
-                          trailingActions: [
-                            SwipeAction(
-                              color:
-                                  favSongIds.contains(displaySongs[index].id!)
-                                      ? RSColors.favouriteRemove
-                                      : RSColors.favourite,
-                              icon: Icon(
+                    child: ListView.builder(
+                      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                      itemCount: displaySongs.length,
+                      itemBuilder: (context, index) => SwipeActionCell(
+                        key: ObjectKey(displaySongs[index]),
+                        trailingActions: [
+                          SwipeAction(
+                            color:
                                 favSongIds.contains(displaySongs[index].id!)
-                                    ? CupertinoIcons.star_slash
-                                    : CupertinoIcons.star_fill,
-                                color: CupertinoColors.white,
-                              ),
-                              onTap: (CompletionHandler handler) async {
-                                handler(false);
-                                if (favSongIds
-                                    .contains(displaySongs[index].id!)) {
-                                  BlocProvider.of<FavouritesBloc>(context).add(
-                                    RemoveFavourite(
-                                      songId: displaySongs[index].id!,
-                                      reload: true,
-                                      languageCode:
-                                          AppLocalizations.of(context)!
-                                              .locale
-                                              .languageCode,
-                                    ),
-                                  );
-                                } else
-                                  BlocProvider.of<FavouritesBloc>(context).add(
-                                    SaveFavourite(
-                                      languageCode:
-                                          AppLocalizations.of(context)!
-                                              .locale
-                                              .languageCode,
-                                      songId: displaySongs[index].id!,
-                                    ),
-                                  );
-                                Fluttertoast.showToast(
-                                  msg: favSongIds
-                                          .contains(displaySongs[index].id!)
-                                      ? AppLocalizations.of(context)!
-                                          .translate('favourite_removed')!
-                                      : AppLocalizations.of(context)!
-                                          .translate('favourite_added')!,
-                                  toastLength: Toast.LENGTH_LONG,
-                                  gravity: ToastGravity.TOP,
-                                  timeInSecForIosWeb: 2,
-                                  backgroundColor:
-                                      RSColors.cardColorDark.withOpacity(0.95),
-                                  textColor: CupertinoColors.white,
-                                  fontSize: 16.0,
+                                    ? RSColors.favouriteRemove
+                                    : RSColors.favourite,
+                            icon: Icon(
+                              favSongIds.contains(displaySongs[index].id!)
+                                  ? CupertinoIcons.star_slash
+                                  : CupertinoIcons.star_fill,
+                              color: CupertinoColors.white,
+                            ),
+                            onTap: (CompletionHandler handler) async {
+                              handler(false);
+                              if (favSongIds
+                                  .contains(displaySongs[index].id!)) {
+                                BlocProvider.of<FavouritesBloc>(context).add(
+                                  RemoveFavourite(
+                                    songId: displaySongs[index].id!,
+                                    reload: true,
+                                    languageCode:
+                                        AppLocalizations.of(context)!
+                                            .locale
+                                            .languageCode,
+                                  ),
                                 );
-                                setState(() {});
-                              },
-                            )
-                          ],
-                          child: SongTile(
-                            song: displaySongs[index],
-                            forceRef: _isSearching && _selectedTag == 2,
-                            divider: index != displaySongs.length - 1,
-                          ),
+                              } else
+                                BlocProvider.of<FavouritesBloc>(context).add(
+                                  SaveFavourite(
+                                    languageCode:
+                                        AppLocalizations.of(context)!
+                                            .locale
+                                            .languageCode,
+                                    songId: displaySongs[index].id!,
+                                  ),
+                                );
+                              Fluttertoast.showToast(
+                                msg: favSongIds
+                                        .contains(displaySongs[index].id!)
+                                    ? AppLocalizations.of(context)!
+                                        .translate('favourite_removed')!
+                                    : AppLocalizations.of(context)!
+                                        .translate('favourite_added')!,
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.TOP,
+                                timeInSecForIosWeb: 2,
+                                backgroundColor:
+                                    RSColors.cardColorDark.withOpacity(0.95),
+                                textColor: CupertinoColors.white,
+                                fontSize: 16.0,
+                              );
+                              setState(() {});
+                            },
+                          )
+                        ],
+                        child: SongTile(
+                          song: displaySongs[index],
+                          forceRef: _isSearching && _selectedTag == 2,
+                          divider: index != displaySongs.length - 1,
                         ),
                       ),
                     ),

@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:risuscito/core/presentation/ignore_keyboard_insets.dart';
 import 'package:risuscito/core/presentation/customization/rs_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
@@ -116,46 +115,42 @@ class _FavouritesPageState extends State<FavouritesPage> {
                       duration: const Duration(milliseconds: 200),
                     ),
                     Expanded(
-                      child: IgnoreKeyboardInsets(
-                        child: ListView.builder(
-                          keyboardDismissBehavior:
-                              ScrollViewKeyboardDismissBehavior.onDrag,
-                          key: myListKey,
-                          itemCount: displaySongs.length,
-                          itemBuilder: (context, index) {
-                            return SwipeActionCell(
-                              key: ObjectKey(displaySongs[index].id),
-                              trailingActions: <SwipeAction>[
-                                SwipeAction(
-                                  color: RSColors.favouriteRemove,
-                                  icon: Icon(
-                                    CupertinoIcons.star_slash,
-                                    color: CupertinoColors.white,
-                                  ),
-                                  onTap: (CompletionHandler handler) async {
-                                    await handler(true);
-                                    BlocProvider.of<FavouritesBloc>(context)
-                                        .add(
-                                      RemoveFavourite(
-                                        songId: displaySongs[index].id!,
-                                        reload: false,
-                                      ),
-                                    );
-
-                                    setState(() {
-                                      favSongs.remove(displaySongs[index]);
-                                    });
-                                  },
+                      child: ListView.builder(
+                        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                        key: myListKey,
+                        itemCount: displaySongs.length,
+                        itemBuilder: (context, index) {
+                          return SwipeActionCell(
+                            key: ObjectKey(displaySongs[index].id),
+                            trailingActions: <SwipeAction>[
+                              SwipeAction(
+                                color: RSColors.favouriteRemove,
+                                icon: Icon(
+                                  CupertinoIcons.star_slash,
+                                  color: CupertinoColors.white,
                                 ),
-                              ],
-                              child: SongTile(
-                                song: displaySongs[index],
-                                forceRef: _isSearching && _selectedTag == 2,
-                                divider: index != displaySongs.length - 1,
+                                onTap: (CompletionHandler handler) async {
+                                  await handler(true);
+                                  BlocProvider.of<FavouritesBloc>(context).add(
+                                    RemoveFavourite(
+                                      songId: displaySongs[index].id!,
+                                      reload: false,
+                                    ),
+                                  );
+
+                                  setState(() {
+                                    favSongs.remove(displaySongs[index]);
+                                  });
+                                },
                               ),
-                            );
-                          },
-                        ),
+                            ],
+                            child: SongTile(
+                              song: displaySongs[index],
+                              forceRef: _isSearching && _selectedTag == 2,
+                              divider: index != displaySongs.length - 1,
+                            ),
+                          );
+                        },
                       ),
                     ),
                   ],

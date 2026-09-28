@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 
-/// Hides the keyboard insets (MediaQuery.viewInsets) from [child].
+/// Shows [child] the MediaQuery it would have without the keyboard: no
+/// viewInsets, and padding equal to viewPadding (the keyboard also shrinks
+/// padding.bottom while it is open).
 ///
-/// Some widgets (e.g. SwipeActionCell) depend on the whole MediaQuery, so they
-/// rebuild on every frame of the keyboard animation. Pages don't resize for
-/// the keyboard, so lists don't need the insets: with them removed the
-/// MediaQuery data seen by [child] stays the same while the keyboard moves and
-/// its rows are not rebuilt. Works with both box and sliver children.
+/// Used around CupertinoTabScaffold: it reads MediaQuery.of(context), so it
+/// rebuilt on every frame of the keyboard animation; that recreated the tab
+/// Navigators, and Navigator.didUpdateWidget forces every route's page to
+/// rebuild (ModalRoute.changedExternalState). With this wrapper the data seen
+/// by the tabs stays the same while the keyboard moves. Pages don't resize
+/// for the keyboard, so they don't need the insets.
 class IgnoreKeyboardInsets extends StatelessWidget {
   final Widget child;
 
@@ -14,8 +17,12 @@ class IgnoreKeyboardInsets extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final data = MediaQuery.of(context);
     return MediaQuery(
-      data: MediaQuery.of(context).copyWith(viewInsets: EdgeInsets.zero),
+      data: data.copyWith(
+        viewInsets: EdgeInsets.zero,
+        padding: data.viewPadding,
+      ),
       child: child,
     );
   }
