@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:risuscito/core/core_container.dart';
 import 'package:risuscito/core/infrastructure/localization/app_localizations.dart';
+import 'package:risuscito/core/presentation/ignore_keyboard_insets.dart';
 import 'package:risuscito/core/presentation/song_search/song_search_bar.dart';
 import 'package:risuscito/core/presentation/song_search/song_search_filter.dart';
 import 'package:risuscito/feature/songs/presentation/sections/song_tile.dart';
@@ -37,17 +38,8 @@ class _SearchPageState extends State<SearchPage> {
   void initState() {
     super.initState();
     selectedTag = 0;
-    _searchController.addListener(() {
-      setState(() {
-        _filteredSongs = _searchController.text.isEmpty
-            ? []
-            : SongSearchFilter.filter(
-                songs: songs,
-                query: _searchController.text,
-                selectedTag: selectedTag,
-              );
-      });
-    });
+    // Filtering happens once in build, not also here
+    _searchController.addListener(() => setState(() {}));
   }
 
   @override
@@ -56,152 +48,151 @@ class _SearchPageState extends State<SearchPage> {
     final themeChange = Provider.of<DarkThemeProvider>(context);
     return CupertinoPageScaffold(
       resizeToAvoidBottomInset: false,
-      child: CustomScrollView(
-        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-        slivers: [
-          CupertinoSliverNavigationBar(
-            border: Border.all(color: CupertinoColors.black.withOpacity(0)),
-            backgroundColor: themeChange.darkTheme
-                ? RSColors.bgDarkColor
-                : RSColors.bgLightColor,
-            largeTitle:
-                Text(AppLocalizations.of(context)!.translate('search')!),
-          ),
-          SliverToBoxAdapter(
-            child: SafeArea(
-              top: false,
-              child: BlocBuilder<SongsBloc, SongsState>(
-                builder: (context, state) {
-                  if (state is SongsFailure)
-                    return RSFailureView(failure: state.failure);
-                  if (state is SongsLoaded) {
-                    songs = state.songs.alphabeticalOrder!;
-                    _filteredSongs = _searchController.text.isEmpty
-                        ? []
-                        : SongSearchFilter.filter(
-                            songs: songs,
-                            query: _searchController.text,
-                            selectedTag: selectedTag,
-                          );
-                    return Column(
-                      children: [
-                        SongSearchBar(
-                          controller: _searchController,
-                          selectedTag: selectedTag,
-                          onTagChanged: (tag) {
-                            setState(() {
-                              selectedTag = tag;
-                              _filteredSongs = _searchController.text.isEmpty
-                                  ? []
-                                  : SongSearchFilter.filter(
-                                      songs: songs,
-                                      query: _searchController.text,
-                                      selectedTag: selectedTag,
-                                    );
-                            });
-                          },
-                        ),
-                        if (_filteredSongs.length == 0 &&
-                            _searchController.text.isEmpty)
-                          SizedBox(
-                            height: MediaQuery.sizeOf(context).height / 6,
-                          ),
-                        if (_filteredSongs.length == 0 &&
-                            _searchController.text.isEmpty)
-                          NotSearching(
-                            selectedTag: selectedTag,
-                          ),
-
-                        if (_filteredSongs.length == 0 &&
-                            _searchController.text.isNotEmpty)
-                          SizedBox(
-                            height: MediaQuery.sizeOf(context).height / 6,
-                          ),
-                        if (_filteredSongs.length == 0 &&
-                            _searchController.text.isNotEmpty)
-                          EmptySearch(),
-                        const SizedBox(
-                          height: 24,
-                        ),
-                        if (_filteredSongs.length > 0)
-                          ...List.generate(
-                            _filteredSongs.length,
-                            (index) => SwipeActionCell(
-                              key: ObjectKey(_filteredSongs[index]),
-                              trailingActions: [
-                                SwipeAction(
-                                  color: favSongIds
-                                          .contains(_filteredSongs[index].id!)
-                                      ? RSColors.favouriteRemove
-                                      : RSColors.favourite,
-                                  icon: Icon(
-                                    favSongIds
-                                            .contains(_filteredSongs[index].id!)
-                                        ? CupertinoIcons.star_slash
-                                        : CupertinoIcons.star_fill,
-                                    color: CupertinoColors.white,
-                                  ),
-                                  onTap: (CompletionHandler handler) async {
-                                    handler(false);
-                                    if (favSongIds
-                                        .contains(_filteredSongs[index].id!)) {
-                                      BlocProvider.of<FavouritesBloc>(context)
-                                          .add(
-                                        RemoveFavourite(
-                                          songId: _filteredSongs[index].id!,
-                                          reload: true,
-                                          languageCode:
-                                              AppLocalizations.of(context)!
-                                                  .locale
-                                                  .languageCode,
-                                        ),
-                                      );
-                                    } else
-                                      BlocProvider.of<FavouritesBloc>(context)
-                                          .add(
-                                        SaveFavourite(
-                                          languageCode:
-                                              AppLocalizations.of(context)!
-                                                  .locale
-                                                  .languageCode,
-                                          songId: _filteredSongs[index].id!,
-                                        ),
-                                      );
-                                    Fluttertoast.showToast(
-                                      msg: favSongIds.contains(
-                                              _filteredSongs[index].id!)
-                                          ? AppLocalizations.of(context)!
-                                              .translate('favourite_removed')!
-                                          : AppLocalizations.of(context)!
-                                              .translate('favourite_added')!,
-                                      toastLength: Toast.LENGTH_LONG,
-                                      gravity: ToastGravity.TOP,
-                                      timeInSecForIosWeb: 2,
-                                      backgroundColor: RSColors.cardColorDark
-                                          .withOpacity(0.95),
-                                      textColor: CupertinoColors.white,
-                                      fontSize: 16.0,
-                                    );
-                                    setState(() {});
-                                  },
-                                )
-                              ],
-                              child: SongTile(
-                                song: _filteredSongs[index],
-                                forceRef: selectedTag == 2,
-                                divider: index != _filteredSongs.length - 1,
-                              ),
-                            ),
-                          ),
-                      ],
-                    );
-                  } else
-                    return RSLoadingView();
-                },
+      child: BlocBuilder<SongsBloc, SongsState>(
+        builder: (context, state) {
+          if (state is SongsLoaded) {
+            songs = state.songs.alphabeticalOrder!;
+            _filteredSongs = _searchController.text.isEmpty
+                ? []
+                : SongSearchFilter.filter(
+                    songs: songs,
+                    query: _searchController.text,
+                    selectedTag: selectedTag,
+                  );
+          }
+          final hasResults = state is SongsLoaded && _filteredSongs.isNotEmpty;
+          return CustomScrollView(
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            slivers: [
+              CupertinoSliverNavigationBar(
+                border: Border.all(color: CupertinoColors.black.withOpacity(0)),
+                backgroundColor: themeChange.darkTheme
+                    ? RSColors.bgDarkColor
+                    : RSColors.bgLightColor,
+                largeTitle:
+                    Text(AppLocalizations.of(context)!.translate('search')!),
               ),
-            ),
+              SliverSafeArea(
+                top: false,
+                bottom: !hasResults,
+                sliver: SliverToBoxAdapter(
+                  child: _buildHeader(context, state),
+                ),
+              ),
+              if (hasResults)
+                // Lazy list: only visible rows are built (a 1-letter lyrics
+                // search matches almost every song)
+                SliverSafeArea(
+                  top: false,
+                  sliver: IgnoreKeyboardInsets(
+                    child: SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) =>
+                            _buildResult(context, index, favSongIds),
+                        childCount: _filteredSongs.length,
+                      ),
+                    ),
+                  ),
+                ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildHeader(BuildContext context, SongsState state) {
+    if (state is SongsFailure) return RSFailureView(failure: state.failure);
+    if (state is! SongsLoaded) return RSLoadingView();
+    return Column(
+      children: [
+        SongSearchBar(
+          controller: _searchController,
+          selectedTag: selectedTag,
+          onTagChanged: (tag) {
+            setState(() {
+              selectedTag = tag;
+            });
+          },
+        ),
+        if (_filteredSongs.length == 0 && _searchController.text.isEmpty)
+          SizedBox(
+            height: MediaQuery.sizeOf(context).height / 6,
           ),
-        ],
+        if (_filteredSongs.length == 0 && _searchController.text.isEmpty)
+          NotSearching(
+            selectedTag: selectedTag,
+          ),
+        if (_filteredSongs.length == 0 && _searchController.text.isNotEmpty)
+          SizedBox(
+            height: MediaQuery.sizeOf(context).height / 6,
+          ),
+        if (_filteredSongs.length == 0 && _searchController.text.isNotEmpty)
+          EmptySearch(),
+        const SizedBox(
+          height: 24,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildResult(
+    BuildContext context,
+    int index,
+    List<String> favSongIds,
+  ) {
+    return SwipeActionCell(
+      key: ObjectKey(_filteredSongs[index]),
+      trailingActions: [
+        SwipeAction(
+          color: favSongIds.contains(_filteredSongs[index].id!)
+              ? RSColors.favouriteRemove
+              : RSColors.favourite,
+          icon: Icon(
+            favSongIds.contains(_filteredSongs[index].id!)
+                ? CupertinoIcons.star_slash
+                : CupertinoIcons.star_fill,
+            color: CupertinoColors.white,
+          ),
+          onTap: (CompletionHandler handler) async {
+            handler(false);
+            if (favSongIds.contains(_filteredSongs[index].id!)) {
+              BlocProvider.of<FavouritesBloc>(context).add(
+                RemoveFavourite(
+                  songId: _filteredSongs[index].id!,
+                  reload: true,
+                  languageCode:
+                      AppLocalizations.of(context)!.locale.languageCode,
+                ),
+              );
+            } else
+              BlocProvider.of<FavouritesBloc>(context).add(
+                SaveFavourite(
+                  languageCode:
+                      AppLocalizations.of(context)!.locale.languageCode,
+                  songId: _filteredSongs[index].id!,
+                ),
+              );
+            Fluttertoast.showToast(
+              msg: favSongIds.contains(_filteredSongs[index].id!)
+                  ? AppLocalizations.of(context)!
+                      .translate('favourite_removed')!
+                  : AppLocalizations.of(context)!.translate('favourite_added')!,
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.TOP,
+              timeInSecForIosWeb: 2,
+              backgroundColor: RSColors.cardColorDark.withOpacity(0.95),
+              textColor: CupertinoColors.white,
+              fontSize: 16.0,
+            );
+            setState(() {});
+          },
+        )
+      ],
+      child: SongTile(
+        song: _filteredSongs[index],
+        forceRef: selectedTag == 2,
+        divider: index != _filteredSongs.length - 1,
       ),
     );
   }
